@@ -6,16 +6,22 @@ import { HomeComponent } from './logged-in/home/home.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
-import {AuthGuardService} from './auth-guard.service';
-
+import { AuthGuardService } from './auth-guard.service';
+/**
+ * Routes are to decide which components get rendered based on the url.
+ */
 const routes: Routes = [
   {
+    /**
+     * We have children components because we will want to show a header and footer only for logged in users
+     * canActivate ensures that only logged in users can access these paths
+     */
     path: '',
     component: LoggedInComponent,
-    canActivate :[AuthGuardService],
+    canActivate: [AuthGuardService],
     children: [
       {
-        path:'', component:HomeComponent
+        path: '', component: HomeComponent
       },
       {
         path: 'admin', component: AdminComponent
@@ -31,6 +37,9 @@ const routes: Routes = [
   {
     path: 'login', component: LoginComponent
   },
+  /**
+   * Regex to match any url not specified above, redirects to login
+   */
   { path: '**', redirectTo: 'login' }
 
 ];
