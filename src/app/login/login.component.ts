@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    // To test the authService This will need to be removed
+    // TODO: implement real login scenario
+    this.authService.login("josh", "test")
+      .subscribe(
+        result => console.log(result),
+        err => console.log(err));
   }
 
 }
