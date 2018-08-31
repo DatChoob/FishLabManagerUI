@@ -33,6 +33,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { SpeciesComponent } from './logged-in/admin/species/species.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { MatTableModule } from '@angular/material/table';
     AdminComponent,
     HeaderComponent,
     FooterComponent,
-    LoggedInComponent
+    LoggedInComponent,
+    SpeciesComponent
   ],
   imports: [
     BrowserModule,
