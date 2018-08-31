@@ -33,10 +33,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { SpeciesComponent } from './logged-in/admin/species/species.component';
 import { AdminRoomsComponent } from './logged-in/admin/admin-rooms/admin-rooms.component';
 import { AdminTasksComponent } from './logged-in/admin/admin-tasks/admin-tasks.component';
 import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-projects.component';
+import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
 
 
 @NgModule({
@@ -50,10 +50,10 @@ import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-p
     HeaderComponent,
     FooterComponent,
     LoggedInComponent,
-    SpeciesComponent,
     AdminRoomsComponent,
     AdminTasksComponent,
-    AdminProjectsComponent
+    AdminProjectsComponent,
+    AdminSpeciesComponent
   ],
   imports: [
     BrowserModule,
