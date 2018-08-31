@@ -6,7 +6,7 @@ import { HomeComponent } from './logged-in/home/home.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
-import { AuthGuardService } from './auth-guard.service';
+import { AuthGuardService } from './shared/auth-guard.service';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
