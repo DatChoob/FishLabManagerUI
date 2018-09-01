@@ -37,6 +37,7 @@ import { AdminRoomsComponent } from './logged-in/admin/admin-rooms/admin-rooms.c
 import { AdminTasksComponent } from './logged-in/admin/admin-tasks/admin-tasks.component';
 import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-projects.component';
 import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -76,7 +77,9 @@ import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-spe
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     {
