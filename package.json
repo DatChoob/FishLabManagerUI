@@ -30,6 +30,8 @@
     "jwt-decode": "^2.2.0",
     "moment": "^2.22.2",
     "rxjs": "^6.0.0",
+    "save": "^2.3.2",
+    "validator-service": "^1.0.4",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
