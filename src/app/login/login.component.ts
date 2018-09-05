@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,12 @@ export class LoginComponent implements OnInit {
       .subscribe(
         result => console.log(result),
         err => console.log(err));
+  }
+
+  onSubmit(form: NgForm) { 
+    if (form.valid){
+      console.log(form);
+    }
   }
 
 }
