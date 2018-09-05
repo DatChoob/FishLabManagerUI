@@ -38,6 +38,7 @@ import { AdminTasksComponent } from './logged-in/admin/admin-tasks/admin-tasks.c
 import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-projects.component';
 import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AdminAccountsComponent } from './logged-in/admin/admin-accounts/admin-accounts.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     AdminRoomsComponent,
     AdminTasksComponent,
     AdminProjectsComponent,
-    AdminSpeciesComponent
+    AdminSpeciesComponent,
+    AdminAccountsComponent
   ],
   imports: [
     BrowserModule,
