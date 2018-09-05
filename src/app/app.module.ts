@@ -33,6 +33,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { NavbarComponent } from './header/navbar/navbar.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatIconModule } from '@angular/material';
 
 
 @NgModule({
@@ -45,7 +48,8 @@ import { MatTableModule } from '@angular/material/table';
     AdminComponent,
     HeaderComponent,
     FooterComponent,
-    LoggedInComponent
+    LoggedInComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,9 @@ import { MatTableModule } from '@angular/material/table';
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    LayoutModule,
+    MatIconModule
   ],
   providers: [
     {
