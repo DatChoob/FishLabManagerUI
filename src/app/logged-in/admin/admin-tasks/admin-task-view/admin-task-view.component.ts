@@ -1,34 +1,34 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Task } from '../admin-tasks.component';
 import { TableDataSource, TableElement } from 'angular4-material-table';
-import { DialogService } from '../../../shared/dialogs.service';
 import { Observable } from 'rxjs';
+import { DialogService } from '../../../../shared/dialogs.service';
 
 @Component({
-  selector: 'app-admin-rooms',
-  templateUrl: './admin-rooms.component.html',
-  styleUrls: ['./admin-rooms.component.css']
+  selector: 'app-admin-task-view',
+  templateUrl: './admin-task-view.component.html',
+  styleUrls: ['./admin-task-view.component.css']
 })
-export class AdminRoomsComponent implements OnInit {
-  dataSource: TableDataSource<Room>;
-
-  displayedColumns = ['building', 'roomNumber', 'actionsColumn'];
+export class AdminTaskViewComponent implements OnInit {
 
   constructor(private dialogService: DialogService) { }
 
-  @Input() taskList: Room[] = [
-    { position: 0, building: 'Mark', roomNumber: 15 },
-    { position: 1, building: 'Brad', roomNumber: 50 },
-  ];
+  displayedColumns = ['name', 'actionsColumn'];
 
+  @Input() taskList: Task[];
+
+  //type will be room or global
+  @Input() type: string;
+
+  dataSource: TableDataSource<Task>;
   ngOnInit() {
-    this.dataSource = new TableDataSource<Room>(this.taskList, Room);
+    this.dataSource = new TableDataSource<Task>(this.taskList, Task);
   }
 
-  confirmSave(row: TableElement<Room>) {
+  confirmSave(row: TableElement<Task>) {
     if (row.validator.valid) {
       console.log(row);
       if (row.id == -1) {
-        row.currentData.position = this.taskList.length;
 
         // we are creating a new row
       } else {
@@ -38,10 +38,10 @@ export class AdminRoomsComponent implements OnInit {
     }
   }
 
-
-  cancelOrDelete(row: TableElement<Room>) {
+  cancelOrDelete(row: TableElement<Task>) {
+    console.log(row);
+    console.log(this.type);
     if (!row.editing) {
-      console.log(row);
       //means row was in not edit mode and we are deleting entry
       //delete row from database
       this.openDialog().subscribe(userConfirmed => {
@@ -62,10 +62,4 @@ export class AdminRoomsComponent implements OnInit {
 
   }
 
-}
-
-export class Room {
-  position: number;
-  building: string;
-  roomNumber: number;
 }

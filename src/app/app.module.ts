@@ -40,6 +40,7 @@ import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-p
 import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     AdminProjectsComponent,
     AdminSpeciesComponent,
     ConfirmDialogComponent,
+    AdminTaskViewComponent,
     
   ],
   imports: [
