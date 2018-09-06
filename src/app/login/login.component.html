@@ -3,15 +3,19 @@
     <img src="../../assets/logo.png" alt="Logo" class="avatar">
   </div>
 
+<div class="errors" fxLayout="column">
+  <mat-error *ngIf="incorrectLoginCredentials">
+    Incorrect username or password. Try Again.
+  </mat-error>
+  
+</div>
   <div fxLayout="column">
-    <!-- <label for="uname"><b>Username</b></label> -->
     <mat-form-field>
       <input matInput type="text" placeholder="Enter Username" name="username" ngModel required>
     </mat-form-field>
-    <!-- <label for="psw"><b>Password</b></label> -->
     <mat-form-field>
       <input matInput type="password" placeholder="Enter Password" name="password" ngModel required>
     </mat-form-field>
-    <button mat-raised-button type="submit">Login</button>
+    <button mat-raised-button type="submit" [disabled]="!form.valid">Login</button>
   </div>
 </form>

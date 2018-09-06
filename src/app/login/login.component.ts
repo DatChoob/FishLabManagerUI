@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +10,25 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
-
+  constructor(private authService: AuthService, private router: Router) { }
+  
+  incorrectLoginCredentials:boolean = false;
+  
   ngOnInit() {
-    // To test the authService This will need to be removed
-    // TODO: implement real login scenario
-    this.authService.login("josh", "test")
-      .subscribe(
-        result => console.log(result),
-        err => console.log(err));
   }
 
   onSubmit(form: NgForm) { 
     if (form.valid){
+       this.authService.login(form.value.username,form.value.password)
+      .subscribe(
+        result => {
+          console.log(result)
+          this.router.navigate(['']);
+        },
+        err => {
+          console.log(err);
+          this.incorrectLoginCredentials = true;
+        });
       console.log(form);
     }
   }
