@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort } from '@angular/material';
+import { AdminAccountsDataSource } from './admin-accounts-datasource';
 
 @Component({
   selector: 'app-admin-accounts',
@@ -6,5 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-accounts.component.css']
 })
 export class AdminAccountsComponent implements OnInit {
-ngOnInit(){}
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  dataSource: AdminAccountsDataSource;
+
+  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
+  displayedColumns = ['id', 'name'];
+
+  ngOnInit() {
+    this.dataSource = new AdminAccountsDataSource(this.paginator, this.sort);
+  }
 }
