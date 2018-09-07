@@ -1,6 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
 
+export interface Food {
+  value: string;
+  status: string;
+
+}
+
 @Component({
   selector: 'app-admin-account-detail',
   templateUrl: './admin-account-detail.component.html',
@@ -15,6 +21,12 @@ export class AdminAccountDetailComponent implements OnInit {
   @Input() taskList:Person[] = [
     { index: 0, projectName: 'Mark', status: 15 },
     { index: 1, projectName: 'Brad', status: 50 },
+  ];
+
+  foods: Food[] = [
+    {value: 'steak', status: 'OK'},
+    {value: 'pizza', status: 'OK'},
+    {value: 'tacos', status: 'No'}
   ];
 
   dataSource: TableDataSource<Person>;
@@ -48,6 +60,7 @@ export class AdminAccountDetailComponent implements OnInit {
     }
     row.cancelOrDelete();
   }
+  
 }
 
 class Person {
@@ -55,3 +68,5 @@ class Person {
   projectName: string;
   status: number;
 }
+
+

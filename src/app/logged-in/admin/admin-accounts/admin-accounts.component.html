@@ -13,7 +13,9 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+    [ngClass]="{'highlight': selectedRowIndex == row.id}"
+    (click)="highlightSelectedRow(row)"></tr>
   </table>
 
   <mat-paginator #paginator
@@ -22,4 +24,6 @@
     [pageSize]="50"
     [pageSizeOptions]="[25, 50, 100, 250]">
   </mat-paginator>
+
+  <button (click)="addRow()">Add Row</button>
 </div>

@@ -21,38 +21,52 @@
 </form>
 
 <p>Assigned Projects</p>
+<mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
+  <ng-container matColumnDef="projectName">
+    <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [disabled]="!row.editing" [readonly]="!row.editing" placeholder="projectName" [(ngModel)]="row.currentData.projectName">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [disabled]="!row.editing" type="number" placeholder="Status" [(ngModel)]="row.currentData.status">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actionsColumn">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
+        <i class="fa fa-check mat-icon"></i>
+      </button>
+      <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
+        <i class="fa fa-times mat-icon"></i>
+      </button>
+    </mat-cell>
+  </ng-container>
 
-      <mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
-        <ng-container matColumnDef="projectName">
-          <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-              <input matInput [disabled]="!row.editing" [readonly]="!row.editing" placeholder="projectName"
-                [(ngModel)]="row.currentData.projectName">
-            </mat-form-field>
-          </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="status">
-          <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-              <input matInput [disabled]="!row.editing" type="number" placeholder="Status" [(ngModel)]="row.currentData.status">
-            </mat-form-field>
-          </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="actionsColumn">
-          <mat-cell *matCellDef="let row">
-            <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
-              <i class="fa fa-check mat-icon"></i>
-            </button>
-            <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
-              <i class="fa fa-times mat-icon"></i>
-            </button>
-          </mat-cell>
-        </ng-container>
-      
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<p>
+  Assign Project
+</p>
+<div fxlayout="row">
+    <mat-form-field>
+        <mat-select placeholder="Favorite food">
+          <mat-option *ngFor="let food of foods" [value]="food.value">
+            {{food.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  <button mat-raised-button>Add</button>
+</div>
+<p><button mat-raised-button>Save</button>
+
 
 
