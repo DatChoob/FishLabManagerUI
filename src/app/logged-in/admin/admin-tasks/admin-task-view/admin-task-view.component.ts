@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Task } from '../admin-tasks.component';
 import { TableDataSource, TableElement } from 'angular4-material-table';
 import { Observable } from 'rxjs';
 import { DialogService } from '../../../../shared/dialogs.service';
+import { TaskService } from '../../../../shared/api-services/task.service';
+import { Task } from '../../../../shared/models/task';
 
 @Component({
   selector: 'app-admin-task-view',
@@ -11,43 +12,44 @@ import { DialogService } from '../../../../shared/dialogs.service';
 })
 export class AdminTaskViewComponent implements OnInit {
 
-  constructor(private dialogService: DialogService) { }
+  //type will be room or global
+  @Input() useGlobalTasks: boolean = false;
 
   displayedColumns = ['name', 'actionsColumn'];
-
-  @Input() taskList: Task[];
-
-  //type will be room or global
-  @Input() type: string;
-
   dataSource: TableDataSource<Task>;
+
+  constructor(private dialogService: DialogService, private taskService: TaskService) { }
+
   ngOnInit() {
-    this.dataSource = new TableDataSource<Task>(this.taskList, Task);
+    this.taskService.getRoomTasks().subscribe(data => {
+      this.dataSource = new TableDataSource<Task>(data, Task);
+    });
   }
 
   confirmSave(row: TableElement<Task>) {
     if (row.validator.valid) {
-      console.log(row);
-      if (row.id == -1) {
-
-        // we are creating a new row
-      } else {
-        //we are editing a row
-      }
-      row.confirmEditCreate();
+      this.taskService.createOrUpdate(row.currentData, this.useGlobalTasks)
+        .subscribe(
+          allTasks => {
+            //we must reinitialize the table since we updated data
+            this.dataSource = new TableDataSource<Task>(allTasks, Task)
+            row.confirmEditCreate();
+          }, err => console.log(err));
     }
   }
 
   cancelOrDelete(row: TableElement<Task>) {
-    console.log(row);
-    console.log(this.type);
     if (!row.editing) {
       //means row was in not edit mode and we are deleting entry
       //delete row from database
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           console.log('The dialog was closed');
-          row.cancelOrDelete();
+          this.taskService.deleteTask(row.currentData, this.useGlobalTasks).subscribe(resonse => {
+            //the internal table will delete the row for us, so we don't need to reinitialize the datasource
+            row.cancelOrDelete();
+
+          })
         }
       });
     } else {

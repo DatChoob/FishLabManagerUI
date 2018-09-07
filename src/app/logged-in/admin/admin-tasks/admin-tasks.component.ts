@@ -10,17 +10,6 @@ export class AdminTasksComponent implements OnInit {
 
   ngOnInit() { }
 
-  roomTasks = [
-    { name: "Clean the tanks" },
-    { name: "Add water" }
-  ];
 
-  globalTasks = [
-    { name: "Clean the floors" }
-  ];
 
-}
-
-export class Task {
-  name: string;
 }
