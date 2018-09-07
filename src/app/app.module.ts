@@ -9,8 +9,6 @@ import { HomeComponent } from './logged-in/home/home.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { AdminComponent } from './logged-in/admin/admin.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthInterceptor } from './shared/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,7 +31,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { NavbarComponent } from './header/navbar/navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatIconModule } from '@angular/material';
 
@@ -46,10 +43,7 @@ import { MatIconModule } from '@angular/material';
     TankManagementComponent,
     MaintenanceComponent,
     AdminComponent,
-    HeaderComponent,
-    FooterComponent,
-    LoggedInComponent,
-    NavbarComponent
+    LoggedInComponent
   ],
   imports: [
     BrowserModule,
