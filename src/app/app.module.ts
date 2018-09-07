@@ -89,7 +89,7 @@ import { MaintenanceTableComponent } from './logged-in/maintenance/maintenance-t
     FormsModule,
     MatSortModule
   ],
-  providers: [MaintenanceTableService,
+  providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
