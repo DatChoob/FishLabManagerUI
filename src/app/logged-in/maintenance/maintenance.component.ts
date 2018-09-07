@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MaintenanceTableService } from '../../shared/maintenance-table.service';
+import { MatTabChangeEvent } from '@angular/material';
 
 @Component({
   selector: 'app-maintenance',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MaintenanceComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _maintenanceService: MaintenanceTableService) { }
+
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource = this._maintenanceService.getMaintenanceTableDataSource();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
   }
-
+  onLinkClick(event: MatTabChangeEvent){
+    console.log('event => ', event);
+    console.log('index => ', event.index);
+    console.log('tab => ', event.tab);
+  }
 }

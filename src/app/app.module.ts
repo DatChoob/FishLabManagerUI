@@ -15,7 +15,6 @@ import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthInterceptor } from './shared/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -41,6 +40,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminAccountsComponent } from './logged-in/admin/admin-accounts/admin-accounts.component';
 import { AdminAccountDetailComponent } from './logged-in/admin/admin-account-detail/admin-account-detail.component';
 import { MatSortModule } from '@angular/material';
+import { MaintenanceTableService } from './shared/maintenance-table.service';
+import { MaintenanceTableComponent } from './logged-in/maintenance/maintenance-table/maintenance-table.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { MatSortModule } from '@angular/material';
     AdminProjectsComponent,
     AdminSpeciesComponent,
     AdminAccountsComponent,
-    AdminAccountDetailComponent
+    AdminAccountDetailComponent,
+    MaintenanceTableComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +89,7 @@ import { MatSortModule } from '@angular/material';
     FormsModule,
     MatSortModule
   ],
-  providers: [
+  providers: [MaintenanceTableService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
