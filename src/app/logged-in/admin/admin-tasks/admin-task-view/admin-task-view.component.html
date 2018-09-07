@@ -3,15 +3,7 @@
     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [readonly]="!row.editing" placeholder="Name" [(ngModel)]="row.currentData.name" [disabled]="!row.editing">
-      </mat-form-field>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="age">
-    <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput type="number" placeholder="Age" [(ngModel)]="row.currentData.age" [disabled]="!row.editing">
+        <input matInput [readonly]="!row.editing" placeholder="Name" [(ngModel)]="row.currentData.name" [disabled]="!row.editing" required [minlength]="2">
       </mat-form-field>
     </mat-cell>
   </ng-container>

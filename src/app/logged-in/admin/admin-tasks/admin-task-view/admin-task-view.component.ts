@@ -27,12 +27,12 @@ export class AdminTaskViewComponent implements OnInit {
   }
 
   confirmSave(row: TableElement<Task>) {
-    if (row.validator.valid) {
+    if (row.validator.valid && !!row.currentData.name.trim() ) {
       this.taskService.createOrUpdate(row.currentData, this.useGlobalTasks)
         .subscribe(
           allTasks => {
             //we must reinitialize the table since we updated data
-            this.dataSource = new TableDataSource<Task>(allTasks, Task)
+            this.dataSource.updateDatasource(allTasks);
             row.confirmEditCreate();
           }, err => console.log(err));
     }
@@ -46,7 +46,7 @@ export class AdminTaskViewComponent implements OnInit {
         if (userConfirmed) {
           console.log('The dialog was closed');
           this.taskService.deleteTask(row.currentData, this.useGlobalTasks).subscribe(resonse => {
-            //the internal table will delete the row for us, so we don't need to reinitialize the datasource
+            //the internal table will delete the row for us, so we don't need to update the datasource
             row.cancelOrDelete();
 
           })
