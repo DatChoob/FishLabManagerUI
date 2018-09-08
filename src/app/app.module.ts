@@ -9,8 +9,6 @@ import { HomeComponent } from './logged-in/home/home.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { AdminComponent } from './logged-in/admin/admin.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthInterceptor } from './shared/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,6 +40,8 @@ import { AdminAccountDetailComponent } from './logged-in/admin/admin-account-det
 import { MatSortModule } from '@angular/material';
 import { MaintenanceTableService } from './shared/maintenance-table.service';
 import { MaintenanceTableComponent } from './logged-in/maintenance/maintenance-table/maintenance-table.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatIconModule } from '@angular/material';
 
 
 @NgModule({
@@ -52,8 +52,6 @@ import { MaintenanceTableComponent } from './logged-in/maintenance/maintenance-t
     TankManagementComponent,
     MaintenanceComponent,
     AdminComponent,
-    HeaderComponent,
-    FooterComponent,
     LoggedInComponent,
     AdminRoomsComponent,
     AdminTasksComponent,
@@ -87,7 +85,9 @@ import { MaintenanceTableComponent } from './logged-in/maintenance/maintenance-t
     MatTableModule,
     ReactiveFormsModule,
     FormsModule,
-    MatSortModule
+    MatSortModule,
+    LayoutModule,
+    MatIconModule
   ],
   providers: [
     {
