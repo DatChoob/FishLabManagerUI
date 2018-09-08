@@ -57,7 +57,7 @@ export class TaskService {
   }
 
   private createOrUpdateGlobalTask(taskToCreateOrUpdate: Task) {
-    let originalData = this.roomTasks.getValue();
+    let originalData = this.globalTasks.getValue();
     //TODO: remove of() with http request
     return of(taskToCreateOrUpdate).pipe(
       map(task => {
@@ -67,18 +67,18 @@ export class TaskService {
           originalData.push(task);
         } else {
           //this is an update. find the index by id and replace the item at the index with our updated one
-          let indexToUpdate = this.roomTasks.value.findIndex(roomTask => roomTask.id == taskToCreateOrUpdate.id);
+          let indexToUpdate = this.globalTasks.value.findIndex(globalTask => globalTask.id == taskToCreateOrUpdate.id);
           originalData[indexToUpdate] = taskToCreateOrUpdate;
         }
 
-        this.roomTasks.next(originalData);
-        return this.roomTasks.value;
+        this.globalTasks.next(originalData);
+        return this.globalTasks.value;
       })
     );
   }
 
   deleteTask(taskToDelete: Task, isGlobalTask: boolean) {
-    return isGlobalTask? this.deleteRoomTask(taskToDelete): this.deleteGlobalTask(taskToDelete);
+    return isGlobalTask? this.deleteGlobalTask(taskToDelete):this.deleteRoomTask(taskToDelete);
 
   }
 
