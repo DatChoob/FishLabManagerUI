@@ -1,3 +1,55 @@
-<p>
-  admin-species works!
-</p>
+<mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
+
+
+
+
+  <ng-container matColumnDef="currentName">
+    <mat-header-cell *matHeaderCellDef> Current Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [readonly]="!row.editing" placeholder="Current Name" [(ngModel)]="row.currentData.currentName" required [disabled]="!row.editing">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+
+  <ng-container matColumnDef="commonName">
+    <mat-header-cell *matHeaderCellDef> Common Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [readonly]="!row.editing" placeholder="Common Name" [(ngModel)]="row.currentData.commonName" required [disabled]="!row.editing">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="originalName">
+    <mat-header-cell *matHeaderCellDef> Original Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [readonly]="!row.editing" placeholder="Original Name" [(ngModel)]="row.currentData.originalName" required [disabled]="!row.editing">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+
+
+  <ng-container matColumnDef="actionsColumn">
+    <mat-header-cell *matHeaderCellDef>
+      <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i></button>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+        <i class="fa fa-pencil mat-icon"></i>
+      </button>
+      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
+        <i class="fa fa-check mat-icon"></i>
+      </button>
+      <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
+        <i class="fa fa-times mat-icon"></i>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
