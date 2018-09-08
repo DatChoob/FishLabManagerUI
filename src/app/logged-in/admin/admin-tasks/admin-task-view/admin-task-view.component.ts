@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { DialogService } from '../../../../shared/dialogs.service';
 import { TaskService } from '../../../../shared/api-services/task.service';
 import { Task } from '../../../../shared/models/task';
-
+import { cloneDeep } from 'lodash';
 @Component({
   selector: 'app-admin-task-view',
   templateUrl: './admin-task-view.component.html',
@@ -21,18 +21,28 @@ export class AdminTaskViewComponent implements OnInit {
   constructor(private dialogService: DialogService, private taskService: TaskService) { }
 
   ngOnInit() {
-    this.taskService.getRoomTasks().subscribe(data => {
-      this.dataSource = new TableDataSource<Task>(data, Task);
-    });
+
+    if(this.useGlobalTasks){
+      this.taskService.globalTasks.subscribe(data => {
+        //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
+        let clone: Task[] = cloneDeep(data);
+        this.dataSource = new TableDataSource<Task>(clone, Task);
+      });
+    }else{
+      this.taskService.roomTasks.subscribe(data => {
+        //we do a deep clone so that any edits in the table don't reflect in our roomtasks in the service
+        let clone: Task[] = cloneDeep(data);
+        this.dataSource = new TableDataSource<Task>(clone, Task);
+      });
+    }
+   
   }
 
   confirmSave(row: TableElement<Task>) {
-    if (row.validator.valid && !!row.currentData.name.trim() ) {
+    if (row.validator.valid && !!row.currentData.name.trim()) {
       this.taskService.createOrUpdate(row.currentData, this.useGlobalTasks)
         .subscribe(
           allTasks => {
-            //we must reinitialize the table since we updated data
-            this.dataSource.updateDatasource(allTasks);
             row.confirmEditCreate();
           }, err => console.log(err));
     }
@@ -44,15 +54,11 @@ export class AdminTaskViewComponent implements OnInit {
       //delete row from database
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
-          console.log('The dialog was closed');
-          this.taskService.deleteTask(row.currentData, this.useGlobalTasks).subscribe(resonse => {
-            //the internal table will delete the row for us, so we don't need to update the datasource
-            row.cancelOrDelete();
-
-          })
+          this.taskService.deleteTask(row.currentData, this.useGlobalTasks).subscribe(resonse => { });
         }
       });
     } else {
+      //cancels edit and restores to original text
       row.cancelOrDelete();
 
     }
