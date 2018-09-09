@@ -39,7 +39,7 @@ export class AdminTaskViewComponent implements OnInit {
   }
 
   confirmSave(row: TableElement<Task>) {
-    if (row.validator.valid && !!row.currentData.name.trim()) {
+    if (row.validator.valid &&  !!row.currentData.name && !!row.currentData.name.trim()) {
       this.taskService.createOrUpdate(row.currentData, this.useGlobalTasks)
         .subscribe(
           allTasks => {
