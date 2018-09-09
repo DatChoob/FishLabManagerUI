@@ -1,3 +1,4 @@
+import { UserAccountComponent } from './logged-in/admin/user-account/user-account.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -21,16 +22,24 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     children: [
       {
-        path: '', component: HomeComponent
+        path: '', 
+        component: HomeComponent
       },
       {
-        path: 'admin', component: AdminComponent
+        path: 'admin', 
+        component: AdminComponent,
       },
       {
-        path: 'tank-management', component: TankManagementComponent
+        path: 'admin/account/details/:id', 
+        component: UserAccountComponent
       },
       {
-        path: 'maintenance', component: MaintenanceComponent
+        path: 'tank-management', 
+        component: TankManagementComponent
+      },
+      {
+        path: 'maintenance', 
+        component: MaintenanceComponent
       }
     ]
   },
