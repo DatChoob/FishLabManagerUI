@@ -9,8 +9,6 @@ import { HomeComponent } from './logged-in/home/home.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { AdminComponent } from './logged-in/admin/admin.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthInterceptor } from './shared/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,6 +38,9 @@ import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-p
 import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatIconModule } from '@angular/material';
 
 
 @NgModule({
@@ -50,15 +51,15 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     TankManagementComponent,
     MaintenanceComponent,
     AdminComponent,
-    HeaderComponent,
-    FooterComponent,
     LoggedInComponent,
     AdminRoomsComponent,
     AdminTasksComponent,
     AdminProjectsComponent,
     AdminSpeciesComponent,
     ConfirmDialogComponent,
+    AdminTaskViewComponent,
     
+    LoggedInComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +85,9 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     MatTableModule,
     ReactiveFormsModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    LayoutModule,
+    MatIconModule
   ],
   providers: [
     {

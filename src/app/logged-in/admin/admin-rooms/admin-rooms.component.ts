@@ -1,8 +1,8 @@
-import { Component, Input, Output, OnInit } from '@angular/core';
-// import { PersonValidatorService } from npm i validator-service -- save;
-import { TableDataSource, ValidatorService, TableElement } from 'angular4-material-table';
+import { Room } from './../../../shared/models/room';
 import { Observable } from 'rxjs';
 import { DialogService } from '../../../shared/dialogs.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { TableDataSource, TableElement } from 'angular4-material-table';
 
 @Component({
   selector: 'app-admin-rooms',
@@ -10,45 +10,51 @@ import { DialogService } from '../../../shared/dialogs.service';
   styleUrls: ['./admin-rooms.component.css']
 })
 export class AdminRoomsComponent implements OnInit {
+  dataSource: TableDataSource<Room>;
 
-  // constructor(private personValidator: PersonValidatorService, private dialogService: DialogService) { }
+  displayedColumns = ['building', 'roomNumber', 'actionsColumn'];
 
-  displayedColumns = ['name', 'age', 'actionsColumn'];
+  constructor(private dialogService: DialogService) { }
 
-  @Input() taskList: Rooms[] = [
-    { index: 0, building: 'Humboldt', room: 115 },
-    { index: 1, building: 'Humboldt', room: 119 },
-    { index: 2, building: 'Humboldt', room: 123 },
+  @Input() taskList: Room[] = [
+    { position: 0, building: 'Mark', roomNumber: 15 },
+    { position: 1, building: 'Brad', roomNumber: 50 },
   ];
 
-  dataSource: TableDataSource<Rooms>;
-
   ngOnInit() {
-    this.dataSource = new TableDataSource<Rooms>(this.taskList, Rooms);
+    this.dataSource = new TableDataSource<Room>(this.taskList, Room);
   }
 
-  confirmSave(row: TableElement<Rooms>) {
-    console.log(row);
-    if (row.id == -1) {
-      row.currentData.index = this.taskList.length;
+  confirmSave(row: TableElement<Room>) {
+    if (row.validator.valid) {
+      console.log(row);
+      if (row.id == -1) {
+        row.currentData.position = this.taskList.length;
 
-      // we are creating a new row
-    } else {
-      //we are editing a row
+        // we are creating a new row
+      } else {
+        //we are editing a row
+      }
+      row.confirmEditCreate();
     }
-    row.confirmEditCreate();
   }
 
-  cancelOrDelete(row: TableElement<Rooms>) {
-    console.log(row);
+
+  cancelOrDelete(row: TableElement<Room>) {
     if (!row.editing) {
+      console.log(row);
       //means row was in not edit mode and we are deleting entry
       //delete row from database
-      this.openDialog().subscribe(result => {
-        console.log('The dialog was closed ' + result);
+      this.openDialog().subscribe(userConfirmed => {
+        if (userConfirmed) {
+          console.log('The dialog was closed');
+          row.cancelOrDelete();
+        }
       });
+    } else {
+      row.cancelOrDelete();
+
     }
-    row.cancelOrDelete();
   }
 
   openDialog(): Observable<boolean> {
@@ -56,11 +62,5 @@ export class AdminRoomsComponent implements OnInit {
       .confirm('Confirm Dialog', 'Are you sure you want to do this?')
 
   }
-}
 
-class Rooms {
-  index: number;
-  building: string;
-  room: number;
 }
-
