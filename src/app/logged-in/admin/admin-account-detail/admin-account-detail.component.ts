@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
+import { ActivatedRoute } from '@angular/router';
 
 export interface Food {
   value: string;
@@ -14,8 +15,11 @@ export interface Food {
 })
 export class AdminAccountDetailComponent implements OnInit {
 
-  constructor() { }
-
+  id : string;
+  constructor(private readonly route: ActivatedRoute) {
+    this.id = route.snapshot.paramMap.get('id');
+    console.log(this.id);
+  }
   displayedColumns = ['projectName', 'status', 'actionsColumn'];
 
   @Input() taskList:Person[] = [

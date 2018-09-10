@@ -1,4 +1,3 @@
-import { UserAccountComponent } from './logged-in/admin/user-account/user-account.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -8,6 +7,7 @@ import { MaintenanceComponent } from './logged-in/maintenance/maintenance.compon
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthGuardService } from './shared/auth-guard.service';
+import { AdminAccountDetailComponent } from './logged-in/admin/admin-account-detail/admin-account-detail.component';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
@@ -31,7 +31,11 @@ const routes: Routes = [
       },
       {
         path: 'admin/account/details/:id', 
-        component: UserAccountComponent
+        component: AdminAccountDetailComponent
+      },
+      {
+        path: 'admin/account/details', 
+        component: AdminAccountDetailComponent
       },
       {
         path: 'tank-management', 

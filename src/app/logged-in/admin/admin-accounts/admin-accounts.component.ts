@@ -32,7 +32,7 @@ export class AdminAccountsComponent implements OnInit {
   }
 
   addRow(){
-    this.dataSource.data.push( {id: 21, name: 'Calcium'});
+    this.router.navigate([`./account/details`],{relativeTo:this.route});
   }
 
   modifyRow(){
