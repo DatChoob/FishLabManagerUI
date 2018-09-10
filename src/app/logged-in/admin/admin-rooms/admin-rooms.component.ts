@@ -17,8 +17,8 @@ export class AdminRoomsComponent implements OnInit {
   constructor(private dialogService: DialogService) { }
 
   @Input() taskList: Room[] = [
-    { position: 0, building: 'Mark', roomNumber: 15 },
-    { position: 1, building: 'Brad', roomNumber: 50 },
+    { id: 0, building: 'Mark', roomNumber: 15 },
+    { id: 1, building: 'Brad', roomNumber: 50 },
   ];
 
   ngOnInit() {
@@ -29,7 +29,7 @@ export class AdminRoomsComponent implements OnInit {
     if (row.validator.valid) {
       console.log(row);
       if (row.id == -1) {
-        row.currentData.position = this.taskList.length;
+        row.currentData.id = this.taskList.length;
 
         // we are creating a new row
       } else {

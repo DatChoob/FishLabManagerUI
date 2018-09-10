@@ -1,5 +1,5 @@
 export class Room {
-    position: number;
+    id: number;
     building: string;
     roomNumber: number;
   }
