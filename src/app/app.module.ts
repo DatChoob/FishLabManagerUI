@@ -10,8 +10,6 @@ import { HomeComponent } from './logged-in/home/home.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { AdminComponent } from './logged-in/admin/admin.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthInterceptor } from './shared/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,7 +33,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatIconModule } from '@angular/material';
 
 
 @NgModule({
@@ -46,8 +45,6 @@ import { MatIconModule } from '@angular/material/icon';
     TankManagementComponent,
     MaintenanceComponent,
     AdminComponent,
-    HeaderComponent,
-    FooterComponent,
     LoggedInComponent
   ],
   imports: [
@@ -76,6 +73,7 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     MatDialogModule,
     MatIconModule,
+    LayoutModule,
   ],
   providers: [
     {
