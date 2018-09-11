@@ -36,7 +36,7 @@ import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-p
 import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminAccountsComponent } from './logged-in/admin/admin-accounts/admin-accounts.component';
-import { AdminAccountDetailComponent } from './logged-in/admin/admin-account-detail/admin-account-detail.component';
+import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
 import { MatSortModule } from '@angular/material';
 import { MaintenanceTableService } from './shared/maintenance-table.service';
 import { MaintenanceTableComponent } from './logged-in/maintenance/maintenance-table/maintenance-table.component';

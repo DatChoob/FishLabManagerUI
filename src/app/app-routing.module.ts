@@ -7,7 +7,7 @@ import { MaintenanceComponent } from './logged-in/maintenance/maintenance.compon
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthGuardService } from './shared/auth-guard.service';
-import { AdminAccountDetailComponent } from './logged-in/admin/admin-account-detail/admin-account-detail.component';
+import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
