@@ -1,3 +1,76 @@
-<p>
-  tank-management works!
-</p>
+<b>Tank Management</b>
+
+<mat-tab-group>
+    <mat-tab label="Humboldt 121">
+        <mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> Tank ID </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+                <input matInput [readonly]="!row.editing" placeholder="Tank ID" [(ngModel)]="row.currentData.id">
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="projID">
+            <mat-header-cell *matHeaderCellDef> Project ID </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+                <input matInput [readonly]="!row.editing" placeholder="Project ID" [(ngModel)]="row.currentData.projID">
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="UID">
+            <mat-header-cell *matHeaderCellDef> UID </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+                <input matInput [readonly]="!row.editing" placeholder="UID" [(ngModel)]="row.currentData.UID">
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-form-field floatLabel="{{ row.editing ? 'string' : 'never'}}">
+                <input matInput [readonly]="!row.editing" placeholder="Status" [(ngModel)]="row.currentData.status">
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="speciesNames">
+            <mat-header-cell *matHeaderCellDef> Species Names </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-form-field floatLabel="{{ row.editing ? 'string' : 'never'}}">
+                <input matInput [readonly]="!row.editing" placeholder="Species Names" [(ngModel)]="row.currentData.speciesNames">
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+
+            <ng-container matColumnDef="actionColumn">
+              <mat-header-cell *matHeaderCellDef>
+                <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i></button>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+                      <i class="fa fa-pencil mat-icon"></i>
+                    </button>
+                <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
+                      <i class="fa fa-check mat-icon"></i>
+                    </button>
+                <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
+                      <i class="fa fa-times mat-icon"></i>
+                    </button>
+              </mat-cell>
+            </ng-container>
+          
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+
+    </mat-tab>
+    <mat-tab label="Humboldt 122">
+    </mat-tab>
+  </mat-tab-group>
