@@ -4,7 +4,7 @@ import { User } from './models/user';
 
 import * as moment from "moment";
 import { shareReplay, tap } from 'rxjs/operators';
-import * as jwt_decode from "jwt-decode";
+import * as JWT from "jwt-decode";
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -26,7 +26,7 @@ export class AuthService {
 
   private setSession(authResult) {
     const accessToken = authResult.access_token;
-    const decodedAccessToken = jwt_decode(accessToken);
+    const decodedAccessToken:any = JWT(accessToken);
     const expiresAt = moment.unix(decodedAccessToken.exp)
 
     localStorage.setItem('access_token', accessToken);

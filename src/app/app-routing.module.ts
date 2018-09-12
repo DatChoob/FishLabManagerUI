@@ -8,6 +8,7 @@ import { TankManagementComponent } from './logged-in/tank-management/tank-manage
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
+import { LogoutComponent } from './logout/logout.component';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
@@ -49,6 +50,9 @@ const routes: Routes = [
   },
   {
     path: 'login', component: LoginComponent
+  },
+  {
+    path: 'logout', component: LogoutComponent
   },
   /**
    * Regex to match any url not specified above, redirects to login
