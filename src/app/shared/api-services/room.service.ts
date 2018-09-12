@@ -7,7 +7,7 @@ import { Room } from '../models/room';
 @Injectable({
   providedIn: 'root'
 })
-export class tankResponseService {
+export class RoomService {
 
   rooms: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>(
     [
@@ -23,20 +23,24 @@ export class tankResponseService {
    * the api will respond back with the update/new object. 
    * if the data coming in doesnt have an id, then we know this will be a new object. 
    * @param data data to add to database
-   * @param isGlobaltankResponse is this data for a global tankResponse?
    */
-  createOrUpdate(roomToCreateOrUpdate: Room, isGlobaltankResponse: boolean): Observable<Room[]> {
+
+  getRooms(): Observable<Room[]>{
+    return this.rooms.asObservable();
+  }
+
+  createOrUpdate(roomToCreateOrUpdate: Room): Observable<Room[]> {
     let originalData = this.rooms.getValue();
     //TODO: remove of() with http request
     return of(roomToCreateOrUpdate).pipe(
-      map(tankResponse => {
+      map(roomResponse => {
         if (roomToCreateOrUpdate.id == null) {
-          //This is a create. In real api call, the tankResponse will already have the id. we assigning one for now
-          tankResponse.id = 21;
-          originalData.push(tankResponse);
+          //This is a create. In real api call, the roomResponse will already have the id. we assigning one for now
+          roomResponse.id = 21;
+          originalData.push(roomResponse);
         } else {
           //this is an update. find the index by id and replace the item at the index with our updated one
-          let indexToUpdate = this.rooms.value.findIndex(roomtankResponse => roomtankResponse.id == roomToCreateOrUpdate.id);
+          let indexToUpdate = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToCreateOrUpdate.id);
           originalData[indexToUpdate] = roomToCreateOrUpdate;
         }
 
@@ -46,12 +50,13 @@ export class tankResponseService {
     );
   }
 
-  deletetankResponse(roomToDelete: Room) {
+  deleteRoom(roomToDelete: Room) {
       //TODO replace this with a real http request to delete by id.
-      let indexToDelete = this.rooms.value.findIndex(roomtankResponse => roomtankResponse.id == roomToDelete.id);
+      let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToDelete.id);
       this.rooms.value.splice(indexToDelete, 1);
       this.rooms.next(this.rooms.value);
       return of(true);
-
   }
+
+
 }

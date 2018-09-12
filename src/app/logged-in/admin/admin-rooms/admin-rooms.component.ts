@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 import { DialogService } from '../../../shared/dialogs.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
-
+import { RoomService } from '../../../shared/api-services/room.service';
+import { cloneDeep } from 'lodash';
 @Component({
   selector: 'app-admin-rooms',
   templateUrl: './admin-rooms.component.html',
@@ -14,41 +15,35 @@ export class AdminRoomsComponent implements OnInit {
 
   displayedColumns = ['building', 'roomNumber', 'actionsColumn'];
 
-  constructor(private dialogService: DialogService) { }
-
-  @Input() taskList: Room[] = [
-    { id: 0, building: 'Mark', roomNumber: 15 },
-    { id: 1, building: 'Brad', roomNumber: 50 },
-  ];
+  constructor(private dialogService: DialogService, private roomService: RoomService) { }
 
   ngOnInit() {
-    this.dataSource = new TableDataSource<Room>(this.taskList, Room);
+    this.roomService.getRooms().subscribe(rooms => {
+      this.roomService.rooms.subscribe(newRooms => {
+        let clone: Room[] = cloneDeep(newRooms);
+        this.dataSource = new TableDataSource<Room>(clone);
+      })
+    });
   }
 
   confirmSave(row: TableElement<Room>) {
-    if (row.validator.valid) {
-      console.log(row);
-      if (row.id == -1) {
-        row.currentData.id = this.taskList.length;
-
-        // we are creating a new row
-      } else {
-        //we are editing a row
-      }
-      row.confirmEditCreate();
+    if (row.validator.valid) 
+      this.roomService.createOrUpdate(row.currentData)
+      .subscribe(
+        allRooms => {
+          row.confirmEditCreate();
+        },
+        err => console.log(err));        
     }
-  }
 
 
   cancelOrDelete(row: TableElement<Room>) {
     if (!row.editing) {
-      console.log(row);
       //means row was in not edit mode and we are deleting entry
       //delete row from database
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
-          console.log('The dialog was closed');
-          row.cancelOrDelete();
+          this.roomService.deleteRoom(row.currentData).subscribe(response => {});
         }
       });
     } else {
@@ -59,8 +54,7 @@ export class AdminRoomsComponent implements OnInit {
 
   openDialog(): Observable<boolean> {
     return this.dialogService
-      .confirm('Confirm Dialog', 'Are you sure you want to do this?')
-
+      .confirm('Confirm Dialog', 'Are you sure you want to do this?');
   }
 
 }
