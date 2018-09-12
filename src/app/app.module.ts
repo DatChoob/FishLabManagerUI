@@ -27,12 +27,21 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatDialogModule} from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { AdminRoomsComponent } from './logged-in/admin/admin-rooms/admin-rooms.component';
+import { AdminTasksComponent } from './logged-in/admin/admin-tasks/admin-tasks.component';
+import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-projects.component';
+import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatIconModule } from '@angular/material';
+import { LogoutComponent } from './logout/logout.component';
 
 
 @NgModule({
@@ -43,7 +52,17 @@ import { MatIconModule } from '@angular/material';
     TankManagementComponent,
     MaintenanceComponent,
     AdminComponent,
-    LoggedInComponent
+    LoggedInComponent,
+    AdminRoomsComponent,
+    AdminTasksComponent,
+    AdminProjectsComponent,
+    AdminSpeciesComponent,
+    ConfirmDialogComponent,
+    AdminTaskViewComponent,
+    
+    LoggedInComponent,
+    
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +86,9 @@ import { MatIconModule } from '@angular/material';
     MatTooltipModule,
     MatPaginatorModule,
     MatTableModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatDialogModule,
     LayoutModule,
     MatIconModule
   ],
@@ -77,6 +99,7 @@ import { MatIconModule } from '@angular/material';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmDialogComponent]
 })
 export class AppModule { }
