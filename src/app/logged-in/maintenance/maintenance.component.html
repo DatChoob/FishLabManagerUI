@@ -4,16 +4,10 @@
   </mat-tab>
   <mat-tab label= "Room Level"> 
       <mat-tab-group>
-          <mat-tab label="119">
-            <app-maintenance-table></app-maintenance-table>
-          </mat-tab>
-          <mat-tab label="121">
-            <app-maintenance-table></app-maintenance-table>
-          </mat-tab>
-          <mat-tab label="125">
-            <app-maintenance-table></app-maintenance-table>
-          </mat-tab>
-        </mat-tab-group>
+        <mat-tab *ngFor="let room of rooms" label={{room}}>
+          <app-maintenance-table></app-maintenance-table>
+        </mat-tab>
+      </mat-tab-group>
   </mat-tab>
   
 </mat-tab-group>

@@ -10,6 +10,8 @@ import { MatTabChangeEvent } from '@angular/material';
 })
 export class MaintenanceComponent implements OnInit {
 
+   rooms = ["119", '121', '123'];
+
   constructor(private _maintenanceService: MaintenanceTableService) { }
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
