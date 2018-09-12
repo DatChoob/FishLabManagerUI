@@ -13,5 +13,4 @@ export class ConfirmDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>) { }
  
-
 }
