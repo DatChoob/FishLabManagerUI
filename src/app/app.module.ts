@@ -41,6 +41,7 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
 import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatIconModule } from '@angular/material';
+import { LogoutComponent } from './logout/logout.component';
 
 
 @NgModule({
@@ -59,7 +60,9 @@ import { MatIconModule } from '@angular/material';
     ConfirmDialogComponent,
     AdminTaskViewComponent,
     
-    LoggedInComponent
+    LoggedInComponent,
+    
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
