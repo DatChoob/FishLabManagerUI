@@ -1,3 +1,40 @@
-<p>
-  admin-projects works!
-</p>
+<!-- Rooms Table -->
+<mat-table class="table-margin-bottom" [dataSource]="dataSource">
+  <ng-container matColumnDef="project">
+    <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput minlength="3" placeholder="Building" [(ngModel)]="row.currentData.building" required [disabled]="!row.editing">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="roomNumber">
+    <mat-header-cell *matHeaderCellDef> Tank List </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field>
+        <mat-select placeholder="Toppings" [formControl]="toppings" multiple>
+          <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actionsColumn">
+    <mat-header-cell *matHeaderCellDef>
+      <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i></button>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+        <i class="fa fa-pencil mat-icon"></i>
+      </button>
+      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
+        <i class="fa fa-check mat-icon"></i>
+      </button>
+      <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
+        <i class="fa fa-times mat-icon"></i>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
