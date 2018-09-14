@@ -19,9 +19,9 @@ export class AdminProjectsComponent implements OnInit {
   constructor(private dialogService: DialogService, private projectService: ProjectService) { }
 
   ngOnInit() {
-    this.projectService.getProjects().subscribe(rooms => {
-      this.projectService.projects.subscribe(newRooms => {
-        let clone: Project[] = cloneDeep(newRooms);
+    this.projectService.getProjects().subscribe(projects => {
+      this.projectService.projects.subscribe(newProjects => {
+        let clone: Project[] = cloneDeep(newProjects);
         this.dataSource = new TableDataSource<Project>(clone);
       })
     });
