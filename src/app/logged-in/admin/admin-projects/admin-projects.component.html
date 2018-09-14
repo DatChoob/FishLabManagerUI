@@ -4,16 +4,16 @@
     <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput minlength="3" placeholder="Building" [(ngModel)]="row.currentData.building" required [disabled]="!row.editing">
+        <input matInput placeholder="Project" [(ngModel)]="row.currentData.project" required [disabled]="!row.editing">
       </mat-form-field>
     </mat-cell>
   </ng-container>
-  <ng-container matColumnDef="roomNumber">
+  <ng-container matColumnDef="tankList">
     <mat-header-cell *matHeaderCellDef> Tank List </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field>
-        <mat-select placeholder="Toppings" [formControl]="toppings" multiple>
-          <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+        <mat-select matInput placeholder="Tanks" [(ngModel)] = 'row.currentData.tankList' required [disabled]="!row.editing" multiple>
+          <mat-option selected *ngFor="let tank of tankList" [value]="tank">{{tank}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-cell>

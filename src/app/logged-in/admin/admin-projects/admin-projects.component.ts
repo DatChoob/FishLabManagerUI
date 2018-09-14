@@ -5,6 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
 import { ProjectService } from '../../../shared/api-services/project.service';
 import { cloneDeep } from 'lodash';
+
 @Component({
   selector: 'app-admin-projects',
   templateUrl: './admin-projects.component.html',
@@ -13,8 +14,8 @@ import { cloneDeep } from 'lodash';
 export class AdminProjectsComponent implements OnInit {
   dataSource: TableDataSource<Project>;
 
-  displayedColumns = ['projectName', 'projectID', 'tanksColumn'];
-
+  displayedColumns = ['project', 'tankList', 'actionsColumn'];
+  tankList = ['Tank 1','Tank 2', 'Tank 3']
   constructor(private dialogService: DialogService, private projectService: ProjectService) { }
 
   ngOnInit() {

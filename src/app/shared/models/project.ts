@@ -1,5 +1,7 @@
+import { FormControl } from '@angular/forms';
+
 export class Project {
     id: number;
-    projectName: string;
-    tanks: any;
+    project: string;
+    tankList: string[];
   }

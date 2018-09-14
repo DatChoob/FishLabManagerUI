@@ -11,8 +11,8 @@ export class ProjectService {
 
   projects: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>(
     [
-      { id: 1, projectName: 'Project1', tanks: 1},
-      { id: 2, projectName: 'Project2', tanks: 1}
+      { id: 1, project: 'Project1', tankList: ['Tank 1', 'Tank 2', 'Tank 3']},
+      { id: 2, project: 'Project2', tankList: ['Tank 1', 'Tank 2', 'Tank 3']}
     ]
   );
 
@@ -47,7 +47,7 @@ export class ProjectService {
     this.projects.value.splice(indexToDelete, 1);
     this.projects.next(this.projects.value);
     return of(true);
-}
+  }
 
 
 }
