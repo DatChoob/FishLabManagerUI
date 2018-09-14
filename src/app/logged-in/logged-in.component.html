@@ -9,10 +9,10 @@
       <mat-toolbar color="primary">Menu</mat-toolbar>
       <mat-nav-list>
         <a mat-list-item routerLink ="">Home</a>
-        <a mat-list-item routerLink ="/maintenance">Maintenance</a>
-        <a mat-list-item routerLink ="/tank-management">Tank Managment</a>
-        <a mat-list-item routerLink ="/admin">Admin</a>
-        <a mat-list-item routerLink ="/logout">Logout</a>
+        <a mat-list-item routerLink ="/maintenance" (click)="drawer.toggle()">Maintenance</a>
+        <a mat-list-item routerLink ="/tank-management" (click)="drawer.toggle()">Tank Managment</a>
+        <a mat-list-item routerLink ="/admin" (click)="drawer.toggle()">Admin</a>
+        <a mat-list-item routerLink ="/logout" (click)="drawer.toggle()">Logout</a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
