@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
+import { Maintenance } from './models/maintenance';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MaintenanceTableService {
 
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Maintenance>(ELEMENT_DATA);
 
   constructor() { }
 
@@ -15,13 +16,8 @@ export class MaintenanceTableService {
   }
 }
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: '', weight: 0},
-  {position: 2, name: '', weight: 0}
+const ELEMENT_DATA: Maintenance[] = [
+  {taskId: 1, name: 'First Student', date: '12/1/2018', status:false},
+  {taskId: 2, name: 'Second Student', date: '12/4/2018', status:false}
 ];
