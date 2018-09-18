@@ -1,69 +1,54 @@
-import { Tank } from './../../shared/models/tank';
-import { Observable } from 'rxjs';
-import { DialogService } from '../../shared/dialogs.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { TableDataSource, TableElement } from 'angular4-material-table';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort } from '@angular/material';
+import { TankManagementDataSource } from './tank-management-datasource';
+import { Tank } from '../../shared/models/tank';
 
 @Component({
   selector: 'app-tank-management',
   templateUrl: './tank-management.component.html',
   styleUrls: ['./tank-management.component.css']
 })
+
 export class TankManagementComponent implements OnInit {
-  dataSource: TableDataSource<Tank>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  dataSource: TankManagementDataSource;
 
-  displayedColumns = ['id', 'projID', 'UID', 'status', 'speciesNames', 'actionColumn'];
+  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
+  displayedColumns = ['id', 'projID', 'UID', 'status', 'speciesNames'];
+  selectedRowIndex = 1;
+  selectedRow: Tank;
 
-  constructor(private dialogService: DialogService) { }
-
-  @Input() tankList: Tank[] = [
-    { id: 0, projID: 0, UID: 15, status: "Okay", speciesNames: "Bad Fish" },
-    { id: 10, projID: 10, UID: 16, status: "Bad", speciesNames: "Alright Fish" },
-    { id: 20, projID: 20, UID: 17, status: "Okay", speciesNames: "Small Fish" },
-    { id: 22, projID: 22, UID: 19, status: "Great", speciesNames: "Big Fish" },
-    { id: 29, projID: 29, UID: 20, status: "Pregnant", speciesNames: "Little Fish" },
-  ];
+  constructor(private readonly router: Router,
+    private readonly route: ActivatedRoute) {
+    }
 
   ngOnInit() {
-    this.dataSource = new TableDataSource<Tank>(this.tankList, Tank);
+    this.dataSource = new TankManagementDataSource(this.paginator, this.sort);
   }
 
-  confirmSave(row: TableElement<Tank>) {
-    if (row.validator.valid) {
-      console.log(row);
-      if (row.id == -1) {
-        row.currentData.id = this.tankList.length;
-
-        // we are creating a new row
-      } else {
-        //we are editing a row
-      }
-      row.confirmEditCreate();
-    }
+  highlightSelectedRow(row) {
+    this.selectedRowIndex = row.id;
+    this.selectedRow = row;
+    console.log(this.selectedRow);  // TODO: Delete me
   }
 
-
-  cancelOrDelete(row: TableElement<Tank>) {
-    if (!row.editing) {
-      console.log(row);
-      //means row was in not edit mode and we are deleting entry
-      //delete row from database
-      this.openDialog().subscribe(userConfirmed => {
-        if (userConfirmed) {
-          console.log('The dialog was closed');
-          row.cancelOrDelete();
-        }
-      });
-    } else {
-      row.cancelOrDelete();
-
-    }
+  getRowProperty(propertyName) {
+    console.log("Testing");
+    console.log("The value of " + propertyName + " is : " + this.selectedRow[propertyName]);
   }
 
-  openDialog(): Observable<boolean> {
-    return this.dialogService
-      .confirm('Confirm Dialog', 'Are you sure you want to do this?')
+  addRow() {
+    this.router.navigate(['details/'], {relativeTo:this.route});
+  }
 
+  modifyRow() {
+    this.router.navigate(['details/' + this.selectedRowIndex], {relativeTo:this.route});
+  }
+
+  deleteRow() {
+    // TODO
   }
 
 }

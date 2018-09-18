@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './logged-in/home/home.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
+import { TankManagementDetailComponent } from './logged-in/tank-management/tank-management-detail/tank-management-detail.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { AdminComponent } from './logged-in/admin/admin.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
@@ -40,8 +41,8 @@ import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-spe
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatIconModule } from '@angular/material';
 import { LogoutComponent } from './logout/logout.component';
+import { MatIconModule, MatSortModule } from '@angular/material';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { LogoutComponent } from './logout/logout.component';
     LoginComponent,
     HomeComponent,
     TankManagementComponent,
+    TankManagementDetailComponent,
     MaintenanceComponent,
     AdminComponent,
     LoggedInComponent,
@@ -91,6 +93,7 @@ import { LogoutComponent } from './logout/logout.component';
     ReactiveFormsModule,
     MatDialogModule,
     LayoutModule,
+    MatSortModule,
   ],
   providers: [
     {

@@ -8,6 +8,7 @@ import { TankManagementComponent } from './logged-in/tank-management/tank-manage
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { LogoutComponent } from './logout/logout.component';
+import { TankManagementDetailComponent } from './logged-in/tank-management/tank-management-detail/tank-management-detail.component';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
@@ -32,7 +33,13 @@ const routes: Routes = [
       },
       {
         path: 'maintenance', component: MaintenanceComponent
-      }
+      },
+      {
+        path: 'tank-management/details/:id', component: TankManagementDetailComponent
+      },
+      {
+        path: 'tank-management/details', component: TankManagementDetailComponent
+      },
     ]
   },
   {
