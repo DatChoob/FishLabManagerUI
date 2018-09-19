@@ -3,18 +3,14 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Room } from '../models/room';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
-  rooms: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>(
-    [
-      { id: 1, building: 'Humboldt', roomNumber: 121},
-      { id: 2, building: 'Humboldt', roomNumber: 123}
-    ]
-  );
+  rooms: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>([]);
 
   constructor(private http: HttpClient) { }
 
@@ -25,22 +21,18 @@ export class RoomService {
    * @param data data to add to database
    */
 
-  getRooms(): Observable<Room[]>{
-    return this.rooms.asObservable();
-  }
-
   createOrUpdate(roomToCreateOrUpdate: Room): Observable<Room[]> {
     let originalData = this.rooms.getValue();
     //TODO: remove of() with http request
     return of(roomToCreateOrUpdate).pipe(
       map(roomResponse => {
-        if (roomToCreateOrUpdate.id == null) {
+        if (roomToCreateOrUpdate.roomId == null) {
           //This is a create. In real api call, the roomResponse will already have the id. we assigning one for now
-          roomResponse.id = 21;
+          roomResponse.roomId = 21;
           originalData.push(roomResponse);
         } else {
           //this is an update. find the index by id and replace the item at the index with our updated one
-          let indexToUpdate = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToCreateOrUpdate.id);
+          let indexToUpdate = originalData.findIndex(currentRoom => currentRoom.roomId == roomToCreateOrUpdate.roomId);
           originalData[indexToUpdate] = roomToCreateOrUpdate;
         }
 
@@ -50,12 +42,26 @@ export class RoomService {
     );
   }
 
+  loadRooms(): Observable<Room[]> {
+    return this.http.get(environment.endpoints.ROOM).
+      pipe(
+        map((allRooms: Room[]) => {
+          this.rooms.next(allRooms)
+          return this.rooms.value;
+        })
+      );
+  }
+
   deleteRoom(roomToDelete: Room) {
-      //TODO replace this with a real http request to delete by id.
-      let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToDelete.id);
-      this.rooms.value.splice(indexToDelete, 1);
-      this.rooms.next(this.rooms.value);
-      return of(true);
+    let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.roomId == roomToDelete.roomId);
+    return this.http.delete(environment.endpoints.ROOM + "/" + roomToDelete.roomId).
+      pipe(
+        map((deletedRoom: Room) => {
+          console.log("deleted room" + deletedRoom);
+          this.rooms.value.splice(indexToDelete, 1)
+          this.rooms.next(this.rooms.value)
+        })
+      );
   }
 
 

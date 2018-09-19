@@ -18,12 +18,13 @@ export class AdminRoomsComponent implements OnInit {
   constructor(private dialogService: DialogService, private roomService: RoomService) { }
 
   ngOnInit() {
-    this.roomService.getRooms().subscribe(rooms => {
+    this.roomService.loadRooms().subscribe(rooms => {
       this.roomService.rooms.subscribe(newRooms => {
         let clone: Room[] = cloneDeep(newRooms);
         this.dataSource = new TableDataSource<Room>(clone);
       })
     });
+
   }
 
   confirmSave(row: TableElement<Room>) {
