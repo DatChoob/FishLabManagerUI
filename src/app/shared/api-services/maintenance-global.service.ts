@@ -15,4 +15,5 @@ export class MaintenanceGlobalService {
       { taskId: 1, name: "Clean up", date: "", status:false },
     ]
   );
+  constructor(private http: HttpClient) { }
 }

@@ -1,11 +1,11 @@
 <mat-tab-group>
   <mat-tab label="Global Level">
-    <app-maintenance-table type="global" [useGlobalTasks]="true"></app-maintenance-table>
+    <app-maintenance-global-level></app-maintenance-global-level>
   </mat-tab>
   <mat-tab label= "Room Level"> 
       <mat-tab-group>
         <mat-tab *ngFor="let room of rooms" label={{room}}>
-          <app-maintenance-table type="room"></app-maintenance-table>
+          <app-maintenance-room-level> </app-maintenance-room-level>
         </mat-tab>
       </mat-tab-group>
   </mat-tab>

@@ -15,4 +15,5 @@ export class MaintenanceRoomService {
       { taskId: 1, name: "Clean the tanks", date: "", status:false },
     ]
   );
+  constructor(private http: HttpClient) { }
 }

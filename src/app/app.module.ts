@@ -46,9 +46,8 @@ import { MatIconModule } from '@angular/material';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
 import { LogoutComponent } from './logout/logout.component';
-import { MaintenanceGlobalTableComponent } from './logged-in/maintenance/maintenance-global-table/maintenance-global-table.component';
 import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
-
+import {MaintenanceGlobalLevelComponent} from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +69,7 @@ import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenan
     AdminTaskViewComponent,
     LoggedInComponent,
     LogoutComponent,
-    MaintenanceGlobalTableComponent,
+    MaintenanceGlobalLevelComponent,
     MaintenanceRoomLevelComponent
   ],
   imports: [
