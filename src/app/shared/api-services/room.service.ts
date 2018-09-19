@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Room } from '../models/room';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,6 @@ export class RoomService {
    * @param data data to add to database
    */
 
-  getRooms(): Observable<Room[]>{
-    return this.rooms.asObservable();
-  }
-
   createOrUpdate(roomToCreateOrUpdate: Room): Observable<Room[]> {
     let originalData = this.rooms.getValue();
     //TODO: remove of() with http request
@@ -50,12 +47,25 @@ export class RoomService {
     );
   }
 
+  loadRooms():Observable<Room[]>{
+   return this.http.get(environment.endpoints.GET_ALL_ROOMS).
+    pipe(
+      tap((allRooms:Room[]) => {
+        this.rooms.next(allRooms)
+      })
+    );
+  }
+
   deleteRoom(roomToDelete: Room) {
-      //TODO replace this with a real http request to delete by id.
-      let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToDelete.id);
-      this.rooms.value.splice(indexToDelete, 1);
-      this.rooms.next(this.rooms.value);
-      return of(true);
+    //TODO replace this with a real http request to delete by id.
+    let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToDelete.id);
+    return this.http.delete(environment.endpoints.DELETE+"/"+roomToDelete.id).
+    pipe(
+      tap((allRooms:Room[]) => {
+        this.rooms.value.splice(indexToDelete, 1)
+        this.rooms.next(this.rooms.value)
+      })
+    );
   }
 
 
