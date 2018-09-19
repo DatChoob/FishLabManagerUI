@@ -26,13 +26,13 @@ export class RoomService {
     //TODO: remove of() with http request
     return of(roomToCreateOrUpdate).pipe(
       map(roomResponse => {
-        if (roomToCreateOrUpdate.id == null) {
+        if (roomToCreateOrUpdate.roomId == null) {
           //This is a create. In real api call, the roomResponse will already have the id. we assigning one for now
-          roomResponse.id = 21;
+          roomResponse.roomId = 21;
           originalData.push(roomResponse);
         } else {
           //this is an update. find the index by id and replace the item at the index with our updated one
-          let indexToUpdate = originalData.findIndex(currentRoom => currentRoom.id == roomToCreateOrUpdate.id);
+          let indexToUpdate = originalData.findIndex(currentRoom => currentRoom.roomId == roomToCreateOrUpdate.roomId);
           originalData[indexToUpdate] = roomToCreateOrUpdate;
         }
 
@@ -53,8 +53,8 @@ export class RoomService {
   }
 
   deleteRoom(roomToDelete: Room) {
-    let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToDelete.id);
-    return this.http.delete(environment.endpoints.ROOM + "/" + roomToDelete.id).
+    let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.roomId == roomToDelete.roomId);
+    return this.http.delete(environment.endpoints.ROOM + "/" + roomToDelete.roomId).
       pipe(
         map((deletedRoom: Room) => {
           console.log("deleted room" + deletedRoom);
