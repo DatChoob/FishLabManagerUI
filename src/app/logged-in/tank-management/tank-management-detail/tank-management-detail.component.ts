@@ -1,7 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TableDataSource, TableElement } from 'angular4-material-table';
+import { TableElement } from 'angular4-material-table';
+// import { MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Tank } from '../../../shared/models/tank';
+import { TankManagementService } from '../../../shared/tank-management.service'
+import { DialogService } from '../../../shared/dialogs.service'
+import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tank-management-detail',
@@ -9,56 +14,53 @@ import { Tank } from '../../../shared/models/tank';
   styleUrls: ['./tank-management-detail.component.css']
 })
 export class TankManagementDetailComponent implements OnInit {
+  id: string;
+  row: Tank;
+  // Projects: ProjectID, Trial Code, Start/End Date, UserIDs, Status
+  // Will need all dataSource-related lines of code for projects table
+  // dataSource: MatTableDataSource<Tank>;
 
-  id : string;
-  constructor(private readonly route: ActivatedRoute) {
+  constructor(private readonly route: ActivatedRoute,
+    private tankManagementService: TankManagementService,
+    private dialogService: DialogService) {
   }
-  
-  displayedColumns = ['id', 'projID', 'UID', 'status', 'speciesNames', 'actionsColumn'];
 
-  @Input() tankList:Tank[] = [
-    {id: 1, projID: 2, UID: 123, status: 'Cool', speciesNames: 'Cool Fish'},
-    {id: 2, projID: 3, UID: 555, status: 'Bad', speciesNames: 'Bad Fish'},
-    {id: 3, projID: 4, UID: 666, status: 'Dumb', speciesNames: 'Dumb Fish'},
+  tankList: Tank[] = [
+    { id: 1, projID: 2, UID: 123, status: 'Cool', speciesNames: 'Cool Fish' },
+    { id: 2, projID: 3, UID: 555, status: 'Bad', speciesNames: 'Bad Fish' },
+    { id: 3, projID: 4, UID: 666, status: 'Dumb', speciesNames: 'Dumb Fish' },
   ];
 
-  dataSource: TableDataSource<Tank>;
   ngOnInit() {
-
-     this.route.paramMap.subscribe(params=> {
-       this.id=params.get("id"); 
-       console.log(this.id);}
-
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get("id");
+      console.log(this.id);
+      if (this.id) {
+        this.row = cloneDeep(this.tankManagementService.getTankByProperty(this.id))
+        console.log("Row: " + this.row);
+      }
+    }
     )
+    // this.dataSource = new MatTableDataSource(this.tankListArray);
+  }
 
-    this.dataSource = new TableDataSource<any>(this.tankList, Tank);
+  confirmSave(row: Tank) {
+    // TODO: implement
+  }
 
-    this.dataSource.datasourceSubject.subscribe(tankList => {
-      console.log(tankList);
-
+  confirmDelete(row: Tank) {
+    // TODO: Route back to initial tank management page after delete
+    this.openDialog().subscribe(userConfirmed => {
+      if (userConfirmed) {
+        this.tankManagementService.deleteTank(row).subscribe(response => { });
+      }
     });
   }
 
-  confirmSave(row: TableElement<any>) {
-    console.log(this.tankList);
-    console.log(row);
-    if (row.id == -1) {
-      row.currentData.index=this.tankList.length;
-      
-      // we are creating a new row
-    } else {
-      //we are editing a row
-    }
-    row.confirmEditCreate();
+  openDialog(): Observable<boolean> {
+    return this.dialogService
+      .confirm('Confirm Dialog', 'Are you sure you want to do this?')
+
   }
 
-  cancelOrDelete(row: TableElement<any>) {
-    console.log(row);
-    if (!row.editing) {
-      //means row was in not edit mode and we are deleting entry
-      //delete row from database
-    }
-    row.cancelOrDelete();
-  }
-  
 }

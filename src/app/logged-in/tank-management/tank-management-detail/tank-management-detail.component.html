@@ -3,84 +3,25 @@
   <div fxLayout="column">
     <!-- If modify, get row from datasource with id in route (?) and fill values of form accordingly -->
     <mat-form-field>
-      <input matInput type="text" placehole="Tank ID"
-      *ngFor="let key of ['id']" value="getRowProperty('id')" required>
+      <input matInput type="text" placeholder="Tank ID" value="{{ row.id }}" name="tankID" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" placeholder="Project ID" name="projID" required>
+      <input matInput type="text" placeholder="Project ID" value="{{ row.projID }}" name="projID" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" placeholder="User ID" name="UID" required>
+      <input matInput type="text" placeholder="User ID" value="{{ row.UID }}" name="UID" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" placeholder="Tank Status" name="status" required>
+      <input matInput type="text" placeholder="Tank Status" value="{{ row.status }}" name="status" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" placeholder="Species Names" name="speciesNames" required>
+      <input matInput type="text" placeholder="Species Names" value="{{ row.speciesNames }}" name="speciesNames" required>
     </mat-form-field>
   </div>
 </form>
 
-<p>Assigned Projects</p>
-<mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [disabled]="!row.editing" [readonly]="!row.editing" placeholder="id" [(ngModel)]="row.currentData.id">
-      </mat-form-field>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="projID">
-      <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-          <input matInput [disabled]="!row.editing" [readonly]="!row.editing" placeholder="projID" [(ngModel)]="row.currentData.projID">
-        </mat-form-field>
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="UID">
-        <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-            <input matInput [disabled]="!row.editing" [readonly]="!row.editing" placeholder="UID" [(ngModel)]="row.currentData.UID">
-          </mat-form-field>
-        </mat-cell>
-      </ng-container>
-  <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [disabled]="!row.editing" type="number" placeholder="Status" [(ngModel)]="row.currentData.status">
-      </mat-form-field>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="speciesNames">
-      <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-          <input matInput [disabled]="!row.editing" [readonly]="!row.editing" placeholder="speciesNames" [(ngModel)]="row.currentData.speciesNames">
-        </mat-form-field>
-      </mat-cell>
-    </ng-container>
-  <ng-container matColumnDef="actionsColumn">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
-        <i class="fa fa-check mat-icon"></i>
-      </button>
-      <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
-        <i class="fa fa-times mat-icon"></i>
-      </button>
-    </mat-cell>
-  </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
-
-
-<p><button mat-raised-button
-  (click)="confirmSave(row)">Save</button>
+<p><button mat-raised-button (click)="confirmSave(row)">Save</button>
+<button mat-raised-button (click)="confirmDelete(row)">Delete</button></p>
 
 
