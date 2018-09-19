@@ -10,12 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class RoomService {
 
-  rooms: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>(
-    [
-      { id: 1, building: 'Humboldt', roomNumber: 121},
-      { id: 2, building: 'Humboldt', roomNumber: 123}
-    ]
-  );
+  rooms: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>([]);
 
   constructor(private http: HttpClient) { }
 
@@ -37,7 +32,7 @@ export class RoomService {
           originalData.push(roomResponse);
         } else {
           //this is an update. find the index by id and replace the item at the index with our updated one
-          let indexToUpdate = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToCreateOrUpdate.id);
+          let indexToUpdate = originalData.findIndex(currentRoom => currentRoom.id == roomToCreateOrUpdate.id);
           originalData[indexToUpdate] = roomToCreateOrUpdate;
         }
 
@@ -47,25 +42,26 @@ export class RoomService {
     );
   }
 
-  loadRooms():Observable<Room[]>{
-   return this.http.get(environment.endpoints.GET_ALL_ROOMS).
-    pipe(
-      tap((allRooms:Room[]) => {
-        this.rooms.next(allRooms)
-      })
-    );
+  loadRooms(): Observable<Room[]> {
+    return this.http.get(environment.endpoints.ROOM).
+      pipe(
+        map((allRooms: Room[]) => {
+          this.rooms.next(allRooms)
+          return this.rooms.value;
+        })
+      );
   }
 
   deleteRoom(roomToDelete: Room) {
-    //TODO replace this with a real http request to delete by id.
     let indexToDelete = this.rooms.value.findIndex(currentRoom => currentRoom.id == roomToDelete.id);
-    return this.http.delete(environment.endpoints.DELETE+"/"+roomToDelete.id).
-    pipe(
-      tap((allRooms:Room[]) => {
-        this.rooms.value.splice(indexToDelete, 1)
-        this.rooms.next(this.rooms.value)
-      })
-    );
+    return this.http.delete(environment.endpoints.ROOM + "/" + roomToDelete.id).
+      pipe(
+        map((deletedRoom: Room) => {
+          console.log("deleted room" + deletedRoom);
+          this.rooms.value.splice(indexToDelete, 1)
+          this.rooms.next(this.rooms.value)
+        })
+      );
   }
 
 
