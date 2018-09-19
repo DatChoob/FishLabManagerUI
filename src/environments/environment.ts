@@ -7,8 +7,9 @@ const host = "https://www.fishlabmanager.com/api";
 
 export const environment = {
   production: false,
-  endpoints:{
-    LOGIN: host+"/login"
+  endpoints: {
+    LOGIN: host + "/login",
+    ROOM: host + "/room"
   }
 };
 

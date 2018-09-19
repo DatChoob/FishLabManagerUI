@@ -1,3 +1,13 @@
-<p>
-  maintenance works!
-</p>
+<mat-tab-group>
+  <mat-tab label="Global Level">
+    <app-maintenance-global-level></app-maintenance-global-level>
+  </mat-tab>
+  <mat-tab label= "Room Level"> 
+      <mat-tab-group>
+        <mat-tab *ngFor="let room of rooms" label={{room}}>
+          <app-maintenance-room-level> </app-maintenance-room-level>
+        </mat-tab>
+      </mat-tab-group>
+  </mat-tab>
+  
+</mat-tab-group>

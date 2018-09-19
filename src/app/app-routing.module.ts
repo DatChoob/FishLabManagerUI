@@ -7,6 +7,7 @@ import { MaintenanceComponent } from './logged-in/maintenance/maintenance.compon
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthGuardService } from './shared/auth-guard.service';
+import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
 import { LogoutComponent } from './logout/logout.component';
 import { TankManagementDetailComponent } from './logged-in/tank-management/tank-management-detail/tank-management-detail.component';
 /**
@@ -23,13 +24,16 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     children: [
       {
-        path: '', component: HomeComponent
+        path: '', 
+        component: HomeComponent
       },
       {
-        path: 'admin', component: AdminComponent
+        path: 'admin', 
+        component: AdminComponent,
       },
       {
-        path: 'tank-management', component: TankManagementComponent
+        path: 'admin/account/details/:id', 
+        component: AdminAccountDetailComponent
       },
       {
         path: 'maintenance', component: MaintenanceComponent
@@ -40,6 +44,18 @@ const routes: Routes = [
       {
         path: 'tank-management/details', component: TankManagementDetailComponent
       },
+      {
+        path: 'admin/account/details', 
+        component: AdminAccountDetailComponent
+      },
+      {
+        path: 'tank-management', 
+        component: TankManagementComponent
+      },
+      {
+        path: 'maintenance', 
+        component: MaintenanceComponent
+      }
     ]
   },
   {
