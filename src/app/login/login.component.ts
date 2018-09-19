@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
           console.log(err);
           this.incorrectLoginCredentials = true;
         });
-      console.log(form);
     }
   }
 
