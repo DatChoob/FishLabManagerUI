@@ -3,6 +3,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-logged-in',
@@ -16,7 +17,7 @@ export class LoggedInComponent implements OnInit {
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(private breakpointObserver: BreakpointObserver, private authService:AuthService) { }
 
   ngOnInit() {
   }
