@@ -1,54 +1,15 @@
-<mat-form-field>
-  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-</mat-form-field>
+<nav mat-tab-nav-bar>
+  <a mat-tab-link
+     *ngFor="let room of tankManagementService.roomTanks$ | async"
+     [routerLink]="room.roomId"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">
+    {{room.building}} {{room.roomNumber}}
+  </a>
+</nav>
 
-<div class="mat-elevation-z8">
-  <table mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
-    
-    <!-- Tank ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tank ID</th>
-      <td mat-cell *matCellDef="let row">{{row.id}}</td>
-    </ng-container>
+<router-outlet></router-outlet>
 
-    <!-- Project ID Column -->
-    <ng-container matColumnDef="projID">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Project ID</th>
-      <td mat-cell *matCellDef="let row">{{row.projID}}</td>
-    </ng-container>
 
-    <!-- User ID Column -->
-    <ng-container matColumnDef="UID">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>User ID</th>
-      <td mat-cell *matCellDef="let row">{{row.UID}}</td>
-    </ng-container>
 
-    <!-- Tank Status Column -->
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tank Status</th>
-      <td mat-cell *matCellDef="let row">{{row.status}}</td>
-    </ng-container>
 
-    <!-- Species Names Column -->
-    <ng-container matColumnDef="speciesNames">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Number of Species</th>
-      <td mat-cell *matCellDef="let row">{{row.speciesNames}}</td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-      [ngClass]="{'highlight': selectedRowIndex == row.id}"
-      (click)="highlightSelectedRow(row)">
-    </tr>
-  </table>
-
-  <mat-paginator #paginator
-    [length]="dataSource.data.length"
-    [pageIndex]="0"
-    [pageSize]="50"
-    [pageSizeOptions]="[5, 10, 25, 50, 100, 250]">
-  </mat-paginator>
-
-  <button mat-raised-button (click)="addRow()">Add</button>
-  <button mat-raised-button (click)="modifyRow()">Modify</button>
-</div>

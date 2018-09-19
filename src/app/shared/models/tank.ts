@@ -1,5 +1,5 @@
 export class Tank {
-    id: number;
+    tankId: number;
     projID: number;
     UID: number;
     status: string;

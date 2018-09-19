@@ -26,9 +26,9 @@ export class TankManagementDetailComponent implements OnInit {
   }
 
   tankList: Tank[] = [
-    { id: 1, projID: 2, UID: 123, status: 'Cool', speciesNames: 'Cool Fish' },
-    { id: 2, projID: 3, UID: 555, status: 'Bad', speciesNames: 'Bad Fish' },
-    { id: 3, projID: 4, UID: 666, status: 'Dumb', speciesNames: 'Dumb Fish' },
+    { tankId: 1, projID: 2, UID: 123, status: 'Cool', speciesNames: 'Cool Fish' },
+    { tankId: 2, projID: 3, UID: 555, status: 'Bad', speciesNames: 'Bad Fish' },
+    { tankId: 3, projID: 4, UID: 666, status: 'Dumb', speciesNames: 'Dumb Fish' },
   ];
 
   ngOnInit() {

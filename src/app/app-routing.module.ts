@@ -10,6 +10,7 @@ import { AuthGuardService } from './shared/auth-guard.service';
 import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
 import { LogoutComponent } from './logout/logout.component';
 import { TankManagementDetailComponent } from './logged-in/tank-management/tank-management-detail/tank-management-detail.component';
+import { TankManagementRoomOverviewComponent } from './logged-in/tank-management/tank-management-room-overview/tank-management-room-overview.component';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
@@ -39,10 +40,10 @@ const routes: Routes = [
         path: 'maintenance', component: MaintenanceComponent
       },
       {
-        path: 'tank-management/details/:id', component: TankManagementDetailComponent
+        path: 'tank-management/:roomId/details/:id', component: TankManagementDetailComponent
       },
       {
-        path: 'tank-management/details', component: TankManagementDetailComponent
+        path: 'tank-management/:roomId/details', component: TankManagementDetailComponent
       },
       {
         path: 'admin/account/details', 
@@ -50,7 +51,14 @@ const routes: Routes = [
       },
       {
         path: 'tank-management', 
-        component: TankManagementComponent
+        component: TankManagementComponent,
+        children:[
+          {
+            //tank-mangagement/:roomId
+            path:":roomId",
+            component: TankManagementRoomOverviewComponent
+          }
+        ]
       },
       {
         path: 'maintenance', 
