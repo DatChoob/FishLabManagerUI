@@ -25,4 +25,12 @@ export class MaintenanceRoomLevelComponent implements OnInit {
       });
 
   }
+  changeStatus(row){
+    row.currentData.status = !row.currentData.status;
+    console.log(row);
+    row.currentData.name = "hi";
+    
+    row.currentData.date = "dog";
+    console.log(row);
+  }
 }
