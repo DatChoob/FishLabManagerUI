@@ -5,6 +5,7 @@ import { DialogService } from '../../../../shared/dialogs.service';
 import { TaskService } from '../../../../shared/api-services/task.service';
 import { Task } from '../../../../shared/models/task';
 import { cloneDeep } from 'lodash';
+import { tap } from 'rxjs/operators';
 @Component({
   selector: 'app-admin-task-view',
   templateUrl: './admin-task-view.component.html',
@@ -22,24 +23,31 @@ export class AdminTaskViewComponent implements OnInit {
 
   ngOnInit() {
 
-    if(this.useGlobalTasks){
-      this.taskService.globalTasks.subscribe(data => {
-        //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
-        let clone: Task[] = cloneDeep(data);
-        this.dataSource = new TableDataSource<Task>(clone, Task);
-      });
-    }else{
-      this.taskService.roomTasks.subscribe(data => {
-        //we do a deep clone so that any edits in the table don't reflect in our roomtasks in the service
-        let clone: Task[] = cloneDeep(data);
-        this.dataSource = new TableDataSource<Task>(clone, Task);
-      });
+    if (this.useGlobalTasks) {
+      this.taskService.loadGlobalMaintainenceTasks().pipe(
+        tap(t => {
+          this.taskService.globalTasks.subscribe(data => {
+            //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
+            this.dataSource = new TableDataSource<Task>(cloneDeep(data), Task);
+          });
+        })
+      ).subscribe();
+
+    } else {
+      this.taskService.loadRoomMaintainenceTasks().pipe(
+        tap(t => {
+          this.taskService.roomTasks.subscribe(data => {
+            //we do a deep clone so that any edits in the table don't reflect in our roomtasks in the service
+            this.dataSource = new TableDataSource<Task>(cloneDeep(data), Task);
+          });
+        })
+      ).subscribe();
     }
-   
+
   }
 
   confirmSave(row: TableElement<Task>) {
-    if (row.validator.valid &&  !!row.currentData.name && !!row.currentData.name.trim()) {
+    if (row.validator.valid && !!row.currentData.description && !!row.currentData.description.trim()) {
       this.taskService.createOrUpdate(row.currentData, this.useGlobalTasks)
         .subscribe(
           allTasks => {
