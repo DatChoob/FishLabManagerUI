@@ -1,5 +1,5 @@
 <mat-tab-group routerTabs>
-  <mat-tab [label]="room.building + room.roomNumber"
+  <mat-tab [label]="room.building + ' ' + room.roomNumber"
      *ngFor="let room of tankManagementService.roomTanks$ | async"
      [routerLink]="room.roomId">
   </mat-tab>
