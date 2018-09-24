@@ -47,7 +47,7 @@ import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/ad
 import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
 import { MaintenanceGlobalLevelComponent } from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 import { TankManagementRoomOverviewComponent } from './logged-in/tank-management/tank-management-room-overview/tank-management-room-overview.component';
-
+import { RouterTabModule } from '@zerohouse/router-tab';
 @NgModule({
   declarations: [
     AppComponent,
@@ -101,6 +101,7 @@ import { TankManagementRoomOverviewComponent } from './logged-in/tank-management
     MatDialogModule,
     LayoutModule,
     MatSortModule,
+    RouterTabModule
   ],
   providers: [
     {

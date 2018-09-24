@@ -1,12 +1,9 @@
-<nav mat-tab-nav-bar>
-  <a mat-tab-link
+<mat-tab-group routerTabs>
+  <mat-tab [label]="room.building + room.roomNumber"
      *ngFor="let room of tankManagementService.roomTanks$ | async"
-     [routerLink]="room.roomId"
-     routerLinkActive #rla="routerLinkActive"
-     [active]="rla.isActive">
-    {{room.building}} {{room.roomNumber}}
-  </a>
-</nav>
+     [routerLink]="room.roomId">
+  </mat-tab>
+</mat-tab-group>
 
 <router-outlet></router-outlet>
 
