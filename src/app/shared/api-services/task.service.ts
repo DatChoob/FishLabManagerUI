@@ -44,7 +44,7 @@ export class TaskService {
     return isGlobalTask ? this.createOrUpdateGlobalTask(taskToCreateOrUpdate) : this.createOrUpdateRoomTask(taskToCreateOrUpdate);
   }
 
-  private createOrUpdateRoomTask(taskToCreateOrUpdate: Task) {
+  private createOrUpdateRoomTask(taskToCreateOrUpdate: Task) : Observable<Task[]> {
     if (taskToCreateOrUpdate.taskId == null)
       return this.createRoomMaintainenceTask(taskToCreateOrUpdate);
     else
@@ -53,7 +53,7 @@ export class TaskService {
 
   }
 
-  createRoomMaintainenceTask(taskToCreate: Task) {
+  createRoomMaintainenceTask(taskToCreate: Task) : Observable<Task[]> {
     let originalData = this.roomTasks.getValue();
     //TODO: remove of() with http request
     return this.http.post<Task>(environment.endpoints.ROOM_MAINTENANCE_DEFINITION, taskToCreate).pipe(
@@ -66,7 +66,7 @@ export class TaskService {
 
   }
 
-  updateRoomMaintainenceTask(taskToUpdate: Task) {
+  updateRoomMaintainenceTask(taskToUpdate: Task) : Observable<Task[]> {
 
     let originalData = this.roomTasks.getValue();
     //TODO: remove of() with http request
@@ -83,7 +83,7 @@ export class TaskService {
 
   }
 
-  private createOrUpdateGlobalTask(taskToCreateOrUpdate: Task) {
+  private createOrUpdateGlobalTask(taskToCreateOrUpdate: Task) : Observable<Task[]> {
     if (taskToCreateOrUpdate.taskId == null)
       return this.createGlobalMaintainenceTask(taskToCreateOrUpdate);
     else
@@ -91,7 +91,7 @@ export class TaskService {
 
   }
 
-  createGlobalMaintainenceTask(taskToCreate: Task) {
+  createGlobalMaintainenceTask(taskToCreate: Task) : Observable<Task[]> {
     let originalData = this.globalTasks.getValue();
     //TODO: remove of() with http request
     return this.http.post<Task>(environment.endpoints.GLOBAL_MAINTENANCE_DEFINITION, taskToCreate).pipe(
@@ -104,11 +104,11 @@ export class TaskService {
 
   }
 
-  updateGlobalMaintainenceTask(taskToUpdate: Task) {
+  updateGlobalMaintainenceTask(taskToUpdate: Task) : Observable<Task[]> {
 
     let originalData = this.globalTasks.getValue();
     //TODO: remove of() with http request
-    return this.http.put<Task>(environment.endpoints.GLOBAL_MAINTENANCE_DEFINITION, taskToUpdate).pipe(
+    return this.http.put<Task>(environment.endpoints.GLOBAL_MAINTENANCE_DEFINITION + '/' + taskToUpdate.taskId, taskToUpdate).pipe(
       map(updatedTask => {
         //this is an update. find the index by id and replace the item at the index with our updated one
         let indexToUpdate = this.globalTasks.value.findIndex(globalTask => globalTask.taskId == taskToUpdate.taskId);
@@ -121,12 +121,12 @@ export class TaskService {
 
   }
 
-  deleteTask(taskToDelete: Task, isGlobalTask: boolean) {
+  deleteTask(taskToDelete: Task, isGlobalTask: boolean) : Observable<Task[]> {
     return isGlobalTask ? this.deleteGlobalTask(taskToDelete) : this.deleteRoomTask(taskToDelete);
 
   }
 
-  private deleteRoomTask(taskToDelete: Task) {
+  private deleteRoomTask(taskToDelete: Task) : Observable<Task[]> {
     return this.http.delete<Task>(environment.endpoints.ROOM_MAINTENANCE_DEFINITION + "/" + taskToDelete.taskId).pipe(
       map(deletedTask => {
         let indexToDelete = this.roomTasks.value.findIndex(roomTask => roomTask.taskId == deletedTask.taskId);
@@ -137,7 +137,7 @@ export class TaskService {
     );
   }
 
-  private deleteGlobalTask(taskToDelete: Task) {
+  private deleteGlobalTask(taskToDelete: Task) : Observable<Task[]>{
     return this.http.delete<Task>(environment.endpoints.GLOBAL_MAINTENANCE_DEFINITION + "/" + taskToDelete.taskId).pipe(
       map(deletedTask => {
         let indexToDelete = this.globalTasks.value.findIndex(roomTask => roomTask.taskId == deletedTask.taskId);
