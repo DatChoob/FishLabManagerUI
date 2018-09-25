@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { Task } from '../models/task';
+import { MaintenanceTaskDefinition } from '../models/mantenance-task-definition';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Maintenance } from '../models/maintenance';

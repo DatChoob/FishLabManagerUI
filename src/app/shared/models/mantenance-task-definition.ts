@@ -1,4 +1,4 @@
-export class Task {
+export class MaintenanceTaskDefinition {
     taskId: number;
     description: string;
 }
