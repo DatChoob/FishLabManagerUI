@@ -21,25 +21,15 @@ export class RoomService {
    * @param data data to add to database
    */
 
-  createOrUpdate(roomToCreateOrUpdate: Room): Observable<Room[]> {
-    let originalData = this.rooms.getValue();
-    //TODO: remove of() with http request
-    return of(roomToCreateOrUpdate).pipe(
-      map(roomResponse => {
-        if (roomToCreateOrUpdate.roomId == null) {
-          //This is a create. In real api call, the roomResponse will already have the id. we assigning one for now
-          roomResponse.roomId = 21;
-          originalData.push(roomResponse);
-        } else {
-          //this is an update. find the index by id and replace the item at the index with our updated one
-          let indexToUpdate = originalData.findIndex(currentRoom => currentRoom.roomId == roomToCreateOrUpdate.roomId);
-          originalData[indexToUpdate] = roomToCreateOrUpdate;
-        }
-
-        this.rooms.next(originalData);
-        return this.rooms.value;
-      })
-    );
+  createOrUpdate(roomToCreateOrUpdate: Room) {
+    console.log(roomToCreateOrUpdate)
+    if (roomToCreateOrUpdate.roomId) {
+      //this is an update. find the index by id and replace the item at the index with our updated one
+      return this.updateRoom(roomToCreateOrUpdate);
+    } else {
+      //This is a create. In real api call, the roomResponse will already have the id. we assigning one for now
+      return this.createRoom(roomToCreateOrUpdate);
+    }
   }
 
   loadRooms(): Observable<Room[]> {
@@ -47,6 +37,32 @@ export class RoomService {
       pipe(
         map((allRooms: Room[]) => {
           this.rooms.next(allRooms)
+          return this.rooms.value;
+        })
+      );
+  }
+
+  createRoom(roomToCreate : Room): Observable<Room[]> {
+    let originalData = this.rooms.getValue()
+    return this.http.post(environment.endpoints.ROOM, roomToCreate).pipe(
+      map((createdRoom: Room) => {
+        console.log("created room" + createdRoom);  
+        originalData.push(createdRoom);
+        this.rooms.next(originalData);
+        return this.rooms.value;
+      })
+    )
+  }
+
+  updateRoom(roomToUpdate : Room): Observable<Room[]> {
+    console.log(roomToUpdate);
+    let indexToUpdate = this.rooms.value.findIndex(currentRoom => currentRoom.roomId == roomToUpdate.roomId);
+    return this.http.put(environment.endpoints.ROOM + "/" + roomToUpdate.roomId, roomToUpdate).
+      pipe(
+        map((updatedRoom: Room) => {
+          console.log("updated room" + updatedRoom);
+          this.rooms.value[indexToUpdate] = updatedRoom;
+          this.rooms.next(this.rooms.value);
           return this.rooms.value;
         })
       );
