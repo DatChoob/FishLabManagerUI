@@ -17,18 +17,18 @@ export class MaintenanceTaskDefinitionService {
 
 
 
-  loadGlobalMaintainenceTasks(): Observable<MaintenanceTaskDefinition[]> {
+  loadGlobalMaintenanceTasks(): Observable<MaintenanceTaskDefinition[]> {
     return this.http.get<MaintenanceTaskDefinition[]>(environment.endpoints.GLOBAL_MAINTENANCE_DEFINITION).pipe(
-      tap(globalMaintainenceTasksDefinitions => {
-        this.globalTasks.next(globalMaintainenceTasksDefinitions)
+      tap(globalMaintenanceTasksDefinitions => {
+        this.globalTasks.next(globalMaintenanceTasksDefinitions)
       })
     )
   }
 
-  loadRoomMaintainenceTasks(): Observable<MaintenanceTaskDefinition[]> {
+  loadRoomMaintenanceTasks(): Observable<MaintenanceTaskDefinition[]> {
     return this.http.get<MaintenanceTaskDefinition[]>(environment.endpoints.ROOM_MAINTENANCE_DEFINITION).pipe(
-      tap(roomMaintainenceTasksDefinitions => {
-        this.roomTasks.next(roomMaintainenceTasksDefinitions)
+      tap(roomMaintenanceTasksDefinitions => {
+        this.roomTasks.next(roomMaintenanceTasksDefinitions)
       })
     )
   }
@@ -46,14 +46,14 @@ export class MaintenanceTaskDefinitionService {
 
   private createOrUpdateRoomTask(taskToCreateOrUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
     if (taskToCreateOrUpdate.taskId == null)
-      return this.createRoomMaintainenceTask(taskToCreateOrUpdate);
+      return this.createRoomMaintenanceTask(taskToCreateOrUpdate);
     else
-      return this.updateRoomMaintainenceTask(taskToCreateOrUpdate);
+      return this.updateRoomMaintenanceTask(taskToCreateOrUpdate);
 
 
   }
 
-  createRoomMaintainenceTask(taskToCreate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
+  createRoomMaintenanceTask(taskToCreate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
     let originalData = this.roomTasks.getValue();
     //TODO: remove of() with http request
     return this.http.post<MaintenanceTaskDefinition>(environment.endpoints.ROOM_MAINTENANCE_DEFINITION, taskToCreate).pipe(
@@ -66,7 +66,7 @@ export class MaintenanceTaskDefinitionService {
 
   }
 
-  updateRoomMaintainenceTask(taskToUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
+  updateRoomMaintenanceTask(taskToUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
 
     let originalData = this.roomTasks.getValue();
     //TODO: remove of() with http request
@@ -85,13 +85,13 @@ export class MaintenanceTaskDefinitionService {
 
   private createOrUpdateGlobalTask(taskToCreateOrUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
     if (taskToCreateOrUpdate.taskId == null)
-      return this.createGlobalMaintainenceTask(taskToCreateOrUpdate);
+      return this.createGlobalMaintenanceTask(taskToCreateOrUpdate);
     else
-      return this.updateGlobalMaintainenceTask(taskToCreateOrUpdate);
+      return this.updateGlobalMaintenanceTask(taskToCreateOrUpdate);
 
   }
 
-  createGlobalMaintainenceTask(taskToCreate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
+  createGlobalMaintenanceTask(taskToCreate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
     let originalData = this.globalTasks.getValue();
     //TODO: remove of() with http request
     return this.http.post<MaintenanceTaskDefinition>(environment.endpoints.GLOBAL_MAINTENANCE_DEFINITION, taskToCreate).pipe(
@@ -104,7 +104,7 @@ export class MaintenanceTaskDefinitionService {
 
   }
 
-  updateGlobalMaintainenceTask(taskToUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
+  updateGlobalMaintenanceTask(taskToUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
 
     let originalData = this.globalTasks.getValue();
     //TODO: remove of() with http request

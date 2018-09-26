@@ -24,7 +24,7 @@ export class AdminTaskViewComponent implements OnInit {
   ngOnInit() {
 
     if (this.useGlobalTasks) {
-      this.maintenanceTaskDefinitionService.loadGlobalMaintainenceTasks().pipe(
+      this.maintenanceTaskDefinitionService.loadGlobalMaintenanceTasks().pipe(
         tap(t => {
           this.maintenanceTaskDefinitionService.globalTasks.subscribe(data => {
             //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
@@ -34,7 +34,7 @@ export class AdminTaskViewComponent implements OnInit {
       ).subscribe();
 
     } else {
-      this.maintenanceTaskDefinitionService.loadRoomMaintainenceTasks().pipe(
+      this.maintenanceTaskDefinitionService.loadRoomMaintenanceTasks().pipe(
         tap(t => {
           this.maintenanceTaskDefinitionService.roomTasks.subscribe(data => {
             //we do a deep clone so that any edits in the table don't reflect in our roomtasks in the service
