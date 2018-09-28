@@ -16,7 +16,7 @@ import { SpeciesService } from '../../../shared/api-services/species.service';
 })
 export class AdminSpeciesComponent implements OnInit {
 
-  displayedColumns = ['originalName', 'currentName', 'commonName', 'actionsColumn'];
+  displayedColumns = ['originalName', 'commonName', 'currentName', 'actionsColumn'];
   dataSource: TableDataSource<Species>;
 
   constructor(private speciesService: SpeciesService, private dialogService : DialogService) { }

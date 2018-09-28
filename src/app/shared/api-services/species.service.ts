@@ -11,8 +11,8 @@ export class SpeciesService {
  
     speciesList: BehaviorSubject<Species[]> = new BehaviorSubject<Species[]>(
     [
-    { id: 0, originalName: 'Mark', commonName: 'MarkC', currentName: 'Marc' },
-    { id: 1, originalName: 'Brad', commonName: 'BradC', currentName: 'Bard' }
+    { id: 1, originalName: 'Fish1', commonName: 'Brazillian ram', currentName: 'Mikrogeophagus ramirezi' },
+    { id: 2, originalName: 'Fish2', commonName: 'Rainbow cichlid', currentName: 'Herotilapia multispinosa' }
     ]
  );
  /**
