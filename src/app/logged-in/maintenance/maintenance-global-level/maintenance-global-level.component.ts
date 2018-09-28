@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TableDataSource } from 'angular4-material-table';
+import { TableDataSource, TableElement } from 'angular4-material-table';
 import { Maintenance } from '../../../shared/models/maintenance';
 import { cloneDeep } from 'lodash';
 import { MaintenanceGlobalService } from '../../../shared/api-services/maintenance-global.service';
+import { Observable } from 'rxjs';
+import { DialogService } from '../../../shared/dialogs.service';
 
 @Component({
   selector: 'app-maintenance-global-level',
@@ -11,7 +13,7 @@ import { MaintenanceGlobalService } from '../../../shared/api-services/maintenan
 })
 export class MaintenanceGlobalLevelComponent implements OnInit {
 
-  constructor(private maintenanceGlobalService: MaintenanceGlobalService) { }
+  constructor(private dialogService: DialogService, private maintenanceGlobalService: MaintenanceGlobalService) { }
 
   displayedColumns = ['task', 'user', 'date', 'toggle'];
   dataSource: TableDataSource<Maintenance>;
@@ -24,6 +26,25 @@ export class MaintenanceGlobalLevelComponent implements OnInit {
         this.dataSource = new TableDataSource<Maintenance>(clone, Maintenance);
       });
 
+    
+  }
+  changeStatus(row: TableElement<Maintenance>, disabled: boolean, event) {
+    event.preventDefault();
+    if(!disabled)
+    {
+      this.openDialog().subscribe(userConfirmed => {
+        if (userConfirmed) {
+          console.log(row);
+          row.currentData.status = true;
+          this.maintenanceGlobalService.updateRowInformation(row.currentData).subscribe(maintenanceList => console.log("Success"));
+        }
+      });
+    }
+    
   }
 
+  openDialog(): Observable<boolean> {
+    return this.dialogService
+      .confirm('Confirm Dialog', 'Are you sure you want to do this?');
+  }
 }

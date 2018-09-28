@@ -1,6 +1,7 @@
 export class Maintenance {
     taskId: number;
-    name: string;
-    date: string;
+    taskName: string;
+    lastUpdateUserName: string;
+    lastUpdateTimeStamp: string;
     status: boolean;
   }

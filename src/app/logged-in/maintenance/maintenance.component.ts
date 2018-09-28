@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
+import { MaintenanceRoomService } from '../../shared/api-services/maintenance-room.service';
 
 @Component({
   selector: 'app-maintenance',
@@ -8,9 +9,9 @@ import { MatTabChangeEvent } from '@angular/material';
 })
 export class MaintenanceComponent implements OnInit {
 
-   rooms = ["119", '121', '123'];
 
-  constructor() { }
+  
+  constructor(private maintenanceRoomService: MaintenanceRoomService) { }
 
   ngOnInit() {
   }

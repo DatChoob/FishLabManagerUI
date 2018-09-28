@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { TableDataSource } from 'angular4-material-table';
+import { Component, OnInit, Input } from '@angular/core';
+import { TableDataSource, TableElement } from 'angular4-material-table';
 import { cloneDeep } from 'lodash';
 import { MaintenanceRoomService } from '../../../shared/api-services/maintenance-room.service';
 import { Maintenance } from '../../../shared/models/maintenance';
+import { DialogService } from '../../../shared/dialogs.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-maintenance-room-level',
@@ -11,9 +13,11 @@ import { Maintenance } from '../../../shared/models/maintenance';
 })
 export class MaintenanceRoomLevelComponent implements OnInit {
 
-  constructor(private maintenanceRoomService: MaintenanceRoomService) { }
+  @Input() roomId;
+  
+  constructor(private dialogService: DialogService, private maintenanceRoomService: MaintenanceRoomService) { }
 
-  displayedColumns = ['task', 'user', 'date', 'toggle'];
+  displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: TableDataSource<Maintenance>;
 
   ngOnInit() {
@@ -25,12 +29,18 @@ export class MaintenanceRoomLevelComponent implements OnInit {
       });
 
   }
-  changeStatus(row){
-    row.currentData.status = !row.currentData.status;
-    console.log(row);
-    row.currentData.name = "hi";
-    
-    row.currentData.date = "dog";
-    console.log(row);
+  changeStatus(row: TableElement<Maintenance>) {
+    this.openDialog().subscribe(userConfirmed => {
+      if (userConfirmed) {
+        console.log(row);
+        row.currentData.status = true;
+        this.maintenanceRoomService.updateRowInformation(row.currentData).subscribe(maintenanceList => console.log("Success"));
+      }
+    });
+  }
+
+  openDialog(): Observable<boolean> {
+    return this.dialogService
+      .confirm('Confirm Dialog', 'Are you sure you want to do this?');
   }
 }

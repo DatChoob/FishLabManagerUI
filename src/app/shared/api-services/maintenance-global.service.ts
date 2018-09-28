@@ -12,8 +12,25 @@ export class MaintenanceGlobalService {
 
   globalTasks: BehaviorSubject<Maintenance[]> = new BehaviorSubject<Maintenance[]>(
     [
-      { taskId: 1, name: "Clean up", date: "", status:false },
+      { taskId: 1, taskName:"Clean the tanks", lastUpdateUserName:"" , lastUpdateTimeStamp: "", status:false },
     ]
   );
   constructor(private http: HttpClient) { }
+
+  updateRowInformation(maintenance: Maintenance): Observable<Maintenance[]>{
+    console.log(maintenance);
+    maintenance.lastUpdateUserName = "Rob";
+    maintenance.lastUpdateTimeStamp = "1/2/90"
+    return of(maintenance).pipe(
+      map(maintenanceFromApi => { 
+        let indexToUpdate = this.globalTasks.value.findIndex(globalMaintenanceTask => globalMaintenanceTask.taskId == maintenanceFromApi.taskId);
+        this.globalTasks.value[indexToUpdate] = maintenanceFromApi;
+    
+        this.globalTasks.next(this.globalTasks.value);
+        return this.globalTasks.value;
+       })
+    );
+    
+    
+  }
 }

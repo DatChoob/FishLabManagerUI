@@ -4,8 +4,10 @@
   </mat-tab>
   <mat-tab label= "Room Level"> 
       <mat-tab-group>
-        <mat-tab *ngFor="let room of rooms" label={{room}}>
-          <app-maintenance-room-level> </app-maintenance-room-level>
+        <mat-tab *ngFor="let room of maintenanceRoomService.roomInfo$ | async" [label]= "room.building + ' ' + room.roomNumber">
+          <ng-template matTabContent>
+                <app-maintenance-room-level [roomId]="room.roomId"></app-maintenance-room-level>
+          </ng-template>
         </mat-tab>
       </mat-tab-group>
   </mat-tab>
