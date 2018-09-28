@@ -17,7 +17,7 @@ export class LoggedInComponent implements OnInit {
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private authService:AuthService) { }
+  constructor(private breakpointObserver: BreakpointObserver, public authService:AuthService) { }
 
   ngOnInit() {
   }
