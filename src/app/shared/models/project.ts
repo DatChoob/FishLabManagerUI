@@ -1,7 +1,6 @@
-import { FormControl } from '@angular/forms';
-
 export class Project {
-    id: number;
-    project: string;
-    tankList: string[];
-  }
+  projectId: number;
+  name: string;
+  tanks: number[];
+  startDate: string | Date;
+}

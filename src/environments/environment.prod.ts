@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   endpoints: {
     LOGIN: "/api/login",
-    ROOM: "/api/room"
+    ROOM: "/api/room",
+    PROJECT: "/api/project"
   }
 };
