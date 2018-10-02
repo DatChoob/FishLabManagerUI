@@ -29,7 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
                                 if(this.router.url != "/login"){
                                     this.authService.logout();
                                     return throwError("You have been logged out.")
-                                    //break;
                                 }
                             default:
                                 return throwError(error);
