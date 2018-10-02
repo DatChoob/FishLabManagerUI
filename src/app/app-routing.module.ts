@@ -9,6 +9,8 @@ import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
 import { LogoutComponent } from './logout/logout.component';
+import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
+import { MaintenanceGlobalLevelComponent } from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
@@ -44,8 +46,15 @@ const routes: Routes = [
       },
       {
         path: 'maintenance', 
-        component: MaintenanceComponent
+        component: MaintenanceComponent,
+        children:[
+          {
+            path:':roomId',
+            component: MaintenanceRoomLevelComponent
+          }
+        ]
       }
+      
     ]
   },
   {

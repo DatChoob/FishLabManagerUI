@@ -47,6 +47,7 @@ import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
 import {MaintenanceGlobalLevelComponent} from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
+import { RouterTabModule } from '@zerohouse/router-tab';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import {MaintenanceGlobalLevelComponent} from './logged-in/maintenance/maintenan
     MatSortModule,
     MatDialogModule,
     LayoutModule,
-    MatIconModule
+    MatIconModule,
+    RouterTabModule
   ],
   providers: [
     {

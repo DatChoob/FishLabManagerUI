@@ -29,14 +29,18 @@ export class MaintenanceRoomLevelComponent implements OnInit {
       });
 
   }
-  changeStatus(row: TableElement<Maintenance>) {
-    this.openDialog().subscribe(userConfirmed => {
-      if (userConfirmed) {
-        console.log(row);
-        row.currentData.status = true;
-        this.maintenanceRoomService.updateRowInformation(row.currentData).subscribe(maintenanceList => console.log("Success"));
-      }
-    });
+  changeStatus(row: TableElement<Maintenance>, disabled:boolean, event) {
+    event.preventDefault();
+    if(!disabled)
+    {
+      this.openDialog().subscribe(userConfirmed => {
+        if (userConfirmed) {
+          console.log(row);
+          row.currentData.status = true;
+          this.maintenanceRoomService.updateRowInformation(row.currentData).subscribe(maintenanceList => console.log("Success"));
+        }
+      });
+    }
   }
 
   openDialog(): Observable<boolean> {
