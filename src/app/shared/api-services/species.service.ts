@@ -23,7 +23,7 @@ export class SpeciesService {
 
  createOrUpdate(speciesToCreateOrUpdate: Species) {
     console.log(speciesToCreateOrUpdate)
-    if (speciesToCreateOrUpdate.id) {
+    if (speciesToCreateOrUpdate.speciesId) {
       //this is an update. find the index by id and replace the item at the index with our updated one
       return this.updateSpecies(speciesToCreateOrUpdate);
     } else {
@@ -34,13 +34,12 @@ export class SpeciesService {
 
 
  loadSpecies(): Observable<Species[]> {
-    return this.http.get(environment.endpoints.SPECIES).
-      pipe(
-        map((allSpecies: Species[]) => {
+     this.http.get<Species[]>(environment.endpoints.SPECIES)
+    .subscribe(allSpecies => {
           this.species.next(allSpecies)
           return this.species.value;
-        })
-      );
+    });
+    return this.species.asObservable();
   }
  
   createSpecies(speciesToCreate : Species): Observable<Species[]> {
@@ -58,8 +57,8 @@ export class SpeciesService {
 
 updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
     console.log(speciesToUpdate);
-    let indexToUpdate = this.species.value.findIndex(currentSpecies => currentSpecies.id == speciesToUpdate.id);
-    return this.http.put(environment.endpoints.SPECIES, speciesToUpdate).pipe(
+    let indexToUpdate = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToUpdate.speciesId);
+    return this.http.put(environment.endpoints.SPECIES + "/" + speciesToUpdate.speciesId, speciesToUpdate).pipe(
         map((updatedSpecies: Species) => {
           console.log("updated species" + updatedSpecies);
           this.species.value[indexToUpdate] = updatedSpecies;
@@ -70,8 +69,8 @@ updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
   }
 
   deleteSpecies(speciesToDelete: Species) {
-    let indexToDelete = this.species.value.findIndex(currentSpecies => currentSpecies.id == speciesToDelete.id);
-    return this.http.delete(environment.endpoints.SPECIES).pipe(
+    let indexToDelete = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToDelete.speciesId);
+    return this.http.delete(environment.endpoints.SPECIES + "/" + speciesToDelete.speciesId).pipe(
         map((deletedSpecies: Species) => {
           console.log("deleted species" + deletedSpecies);
           this.species.value.splice(indexToDelete, 1)
