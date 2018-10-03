@@ -12,7 +12,7 @@ export class MaintenanceComponent implements OnInit {
 
 
   
-  constructor(private maintenanceRoomService: MaintenanceRoomService) { }
+  constructor(public maintenanceRoomService: MaintenanceRoomService) { }
 
   ngOnInit() {
     this.maintenanceRoomService.getRoomList().subscribe(rooms=>{
