@@ -3,24 +3,20 @@
   <!-- this the the welcome part -->
   <h1>Welcome {{authService.getLoggedInUserName()}}</h1>
   <p>
-    <br /> Fish Status = {{fishfeed.status}}
+    <br /> Today's Fish Status - {{fishfeed.status}}
     <br />
     <br /> Last Fed by {{fishfeed.participantCode}} 
-    <br /> {{fishfeed.dateTimeUpdated}}
-    <br />
-    <br /> Was fish fed by you today?
+    <br /> {{fishfeed.dateTimeUpdated | date :'medium' : 'GMT'}}
   </p>
-  <!-- ////////////////////////////////////////////// this is for fish fed options      -->
-  <form (ngSubmit) = "onSubmit(form)" #form = "ngForm">
-    <mat-form-field *ngIf="true">
-      <!-- if fish status is not complted -->
+  <form (ngSubmit) = "onSubmit(form)" #form = "ngForm" *ngIf="fishfeed.status != 'Completed'">
+    <p>Was fish fed by you today?</p>
+    <mat-form-field >
       <mat-select name="status" placeholder="Fish Fed" required ngModel>
         <mat-option value="Not Fed">Fish have not been fed</mat-option>
         <mat-option value="On the way">Going to feed fish</mat-option>
         <mat-option value="Completed">Fish have been Fed</mat-option>
       </mat-select>
     </mat-form-field>
-    <!-- ///////////////////////////////////////////////////////////////////////           -->
     <button  type="submit"> <h4>Submit</h4></button>
   </form>
 </div>
