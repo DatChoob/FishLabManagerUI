@@ -7,8 +7,13 @@
 
 export const environment = {
   production: false,
-  endpoints:{
-    LOGIN: host+"/login",
+  endpoints: {
+    LOGIN: host + "/login",
+    ROOM: host + "/room",
+    PROJECT: host + "/project",
+    GLOBAL_MAINTENANCE_DEFINITION: host + "/global-task-definition",
+    ROOM_MAINTENANCE_DEFINITION: host + "/room-task-definition",
+    SPECIES: host + "/species",
     FISH_FEED: host+"/fish-feed" 
   }
 

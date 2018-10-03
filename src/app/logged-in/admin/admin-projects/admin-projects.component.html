@@ -1,3 +1,54 @@
-<p>
-  admin-projects works!
-</p>
+<!-- Projects Table -->
+<mat-table class="table-margin-bottom" [dataSource]="dataSource">
+  <ng-container matColumnDef="project">
+    <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput placeholder="Project" [(ngModel)]="row.currentData.name" required [disabled]="!row.editing">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="tankList">
+    <mat-header-cell *matHeaderCellDef> Tank List </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field>
+        <mat-select  matInput placeholder="Tanks" [(ngModel)]='row.currentData.tanks' required [disabled]="!row.editing" multiple>
+            <mat-select-trigger>
+                {{row.currentData.tanks ? 'Tank Id: ' + row.currentData.tanks[0] : ''}}
+                <span *ngIf="row.currentData.tanks?.length > 1" class="example-additional-selection">
+                  (+{{row.currentData.tanks.length - 1}} {{row.currentData.tanks?.length === 2 ? 'other' : 'others'}})
+                </span>
+              </mat-select-trigger>
+          <mat-optgroup *ngFor="let room of roomService.rooms | async" [label]="room.building+ ' ' + room.roomNumber">
+            <mat-option *ngFor="let tank of room.tanks" [value]="tank.tankId">
+             TankId {{tank.tankId}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+        <!-- <mat-select matInput placeholder="Tanks" [(ngModel)]='row.currentData.tankList' required [disabled]="!row.editing"
+          multiple>
+          <mat-option *ngFor="let tank of allTanks" [value]="room">{{tank | json}}</mat-option>
+        </mat-select> -->
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actionsColumn">
+    <mat-header-cell *matHeaderCellDef>
+      <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i></button>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+        <i class="fa fa-pencil mat-icon"></i>
+      </button>
+      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
+        <i class="fa fa-check mat-icon"></i>
+      </button>
+      <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
+        <i class="fa fa-times mat-icon"></i>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

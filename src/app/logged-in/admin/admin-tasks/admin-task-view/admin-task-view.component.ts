@@ -2,9 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
 import { Observable } from 'rxjs';
 import { DialogService } from '../../../../shared/dialogs.service';
-import { TaskService } from '../../../../shared/api-services/task.service';
-import { Task } from '../../../../shared/models/task';
+import { MaintenanceTaskDefinitionService } from '../../../../shared/api-services/maintenance-task-definition.service';
+import { MaintenanceTaskDefinition } from '../../../../shared/models/mantenance-task-definition';
 import { cloneDeep } from 'lodash';
+import { tap } from 'rxjs/operators';
 @Component({
   selector: 'app-admin-task-view',
   templateUrl: './admin-task-view.component.html',
@@ -16,31 +17,38 @@ export class AdminTaskViewComponent implements OnInit {
   @Input() useGlobalTasks: boolean = false;
 
   displayedColumns = ['name', 'actionsColumn'];
-  dataSource: TableDataSource<Task>;
+  dataSource: TableDataSource<MaintenanceTaskDefinition>;
 
-  constructor(private dialogService: DialogService, private taskService: TaskService) { }
+  constructor(private dialogService: DialogService, private maintenanceTaskDefinitionService: MaintenanceTaskDefinitionService) { }
 
   ngOnInit() {
 
-    if(this.useGlobalTasks){
-      this.taskService.globalTasks.subscribe(data => {
-        //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
-        let clone: Task[] = cloneDeep(data);
-        this.dataSource = new TableDataSource<Task>(clone, Task);
-      });
-    }else{
-      this.taskService.roomTasks.subscribe(data => {
-        //we do a deep clone so that any edits in the table don't reflect in our roomtasks in the service
-        let clone: Task[] = cloneDeep(data);
-        this.dataSource = new TableDataSource<Task>(clone, Task);
-      });
+    if (this.useGlobalTasks) {
+      this.maintenanceTaskDefinitionService.loadGlobalMaintenanceTasks().pipe(
+        tap(t => {
+          this.maintenanceTaskDefinitionService.globalTasks.subscribe(data => {
+            //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
+            this.dataSource = new TableDataSource<MaintenanceTaskDefinition>(cloneDeep(data), MaintenanceTaskDefinition);
+          });
+        })
+      ).subscribe();
+
+    } else {
+      this.maintenanceTaskDefinitionService.loadRoomMaintenanceTasks().pipe(
+        tap(t => {
+          this.maintenanceTaskDefinitionService.roomTasks.subscribe(data => {
+            //we do a deep clone so that any edits in the table don't reflect in our roomtasks in the service
+            this.dataSource = new TableDataSource<MaintenanceTaskDefinition>(cloneDeep(data), MaintenanceTaskDefinition);
+          });
+        })
+      ).subscribe();
     }
-   
+
   }
 
-  confirmSave(row: TableElement<Task>) {
-    if (row.validator.valid &&  !!row.currentData.name && !!row.currentData.name.trim()) {
-      this.taskService.createOrUpdate(row.currentData, this.useGlobalTasks)
+  confirmSave(row: TableElement<MaintenanceTaskDefinition>) {
+    if (row.validator.valid && !!row.currentData.description && !!row.currentData.description.trim()) {
+      this.maintenanceTaskDefinitionService.createOrUpdate(row.currentData, this.useGlobalTasks)
         .subscribe(
           allTasks => {
             row.confirmEditCreate();
@@ -48,13 +56,13 @@ export class AdminTaskViewComponent implements OnInit {
     }
   }
 
-  cancelOrDelete(row: TableElement<Task>) {
+  cancelOrDelete(row: TableElement<MaintenanceTaskDefinition>) {
     if (!row.editing) {
       //means row was in not edit mode and we are deleting entry
       //delete row from database
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
-          this.taskService.deleteTask(row.currentData, this.useGlobalTasks).subscribe(resonse => { });
+          this.maintenanceTaskDefinitionService.deleteTask(row.currentData, this.useGlobalTasks).subscribe(resonse => { });
         }
       });
     } else {

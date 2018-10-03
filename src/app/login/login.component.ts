@@ -15,6 +15,9 @@ export class LoginComponent implements OnInit {
   incorrectLoginCredentials:boolean = false;
   
   ngOnInit() {
+    if(this.authService.isLoggedIn){
+      this.router.navigate(['']);
+    }
   }
 
   onSubmit(form: NgForm) { 
@@ -29,7 +32,6 @@ export class LoginComponent implements OnInit {
           console.log(err);
           this.incorrectLoginCredentials = true;
         });
-      console.log(form);
     }
   }
 

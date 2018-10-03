@@ -1,9 +1,9 @@
 <mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [readonly]="!row.editing" placeholder="Name" [(ngModel)]="row.currentData.name" [disabled]="!row.editing" required [minlength]="2">
+        <input matInput [readonly]="!row.editing" placeholder="Description" [(ngModel)]="row.currentData.description" [disabled]="!row.editing" required [minlength]="2">
       </mat-form-field>
     </mat-cell>
   </ng-container>

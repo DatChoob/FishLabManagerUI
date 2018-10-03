@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,7 +12,6 @@ import { AdminComponent } from './logged-in/admin/admin.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthInterceptor } from './shared/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,11 +36,17 @@ import { AdminTasksComponent } from './logged-in/admin/admin-tasks/admin-tasks.c
 import { AdminProjectsComponent } from './logged-in/admin/admin-projects/admin-projects.component';
 import { AdminSpeciesComponent } from './logged-in/admin/admin-species/admin-species.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
-import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
+import { AdminAccountsComponent } from './logged-in/admin/admin-accounts/admin-accounts.component';
+import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
+import { MatSortModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatIconModule } from '@angular/material';
 
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { AdminTaskViewComponent } from './logged-in/admin/admin-tasks/admin-task-view/admin-task-view.component';
+import { LogoutComponent } from './logout/logout.component';
+import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
+import {MaintenanceGlobalLevelComponent} from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 
 @NgModule({
   declarations: [
@@ -56,10 +61,14 @@ import { MatIconModule } from '@angular/material';
     AdminTasksComponent,
     AdminProjectsComponent,
     AdminSpeciesComponent,
+    AdminAccountsComponent,
+    AdminAccountDetailComponent,
     ConfirmDialogComponent,
     AdminTaskViewComponent,
-    
-    LoggedInComponent
+    LoggedInComponent,
+    LogoutComponent,
+    MaintenanceGlobalLevelComponent,
+    MaintenanceRoomLevelComponent
   ],
   imports: [
     BrowserModule,
@@ -85,6 +94,7 @@ import { MatIconModule } from '@angular/material';
     MatTableModule,
     ReactiveFormsModule,
     FormsModule,
+    MatSortModule,
     MatDialogModule,
     LayoutModule,
     MatIconModule
