@@ -3,18 +3,14 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { Species } from '../models/species';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
  providedIn: 'root'
 })
 export class SpeciesService {
  
-    speciesList: BehaviorSubject<Species[]> = new BehaviorSubject<Species[]>(
-    [
-    { id: 0, originalName: 'Mark', commonName: 'MarkC', currentName: 'Marc' },
-    { id: 1, originalName: 'Brad', commonName: 'BradC', currentName: 'Bard' }
-    ]
- );
+    species: BehaviorSubject<Species[]> = new BehaviorSubject<Species[]>([]);
  /**
   * This method will call the api to either add a new row or update existing.
   * the api will respond back with the update/new object.
@@ -22,40 +18,64 @@ export class SpeciesService {
   * @param data data to add to database
   */
  
-  
-
 
  constructor(private http: HttpClient) { }
- createOrUpdate(speciesToCreateOrUpdate: Species): Observable<Species[]> {
-    return this.createOrUpdateSpecies(speciesToCreateOrUpdate);
+
+ createOrUpdate(speciesToCreateOrUpdate: Species) {
+    console.log(speciesToCreateOrUpdate)
+    if (speciesToCreateOrUpdate.speciesId) {
+      //this is an update. find the index by id and replace the item at the index with our updated one
+      return this.updateSpecies(speciesToCreateOrUpdate);
+    } else {
+      //This is a create. In real api call, the roomResponse will already have the id. we assigning one for now
+      return this.createSpecies(speciesToCreateOrUpdate);
+    }
   }
 
- private createOrUpdateSpecies(speciesToCreateOrUpdate: Species){
-     let originalData = this.speciesList.value;
-     return of(speciesToCreateOrUpdate).pipe(
-         map(species => {
-             if(speciesToCreateOrUpdate.id == null){
-                 species.id = 21;
-                 originalData.push(species);
-             } else{
-                 let indexToUpdate = this.speciesList.value.findIndex(speciesList => speciesList.id == speciesToCreateOrUpdate.id);
-                 originalData[indexToUpdate] = speciesToCreateOrUpdate;
-             }
-             this.speciesList.next(originalData);
-             return this.speciesList.value;
-         })
-     );
- }
 
- deleteSpecies(speciesToDelete: Species) {
-    return this.deleteSelectedSpecies(speciesToDelete);
+ loadSpecies(): Observable<Species[]> {
+     this.http.get<Species[]>(environment.endpoints.SPECIES)
+    .subscribe(allSpecies => {
+          this.species.next(allSpecies)
+          return this.species.value;
+    });
+    return this.species.asObservable();
+  }
  
+  createSpecies(speciesToCreate : Species): Observable<Species[]> {
+    let originalData = this.species.getValue()
+    return this.http.post(environment.endpoints.SPECIES, speciesToCreate).pipe(
+      map((createdSpecies: Species) => {
+        console.log("created species" + createdSpecies);  
+        originalData.push(createdSpecies);
+        this.species.next(originalData);
+        return this.species.value;
+      })
+    )
   }
- private deleteSelectedSpecies(speciesToDelete){
-    let indexToDelete = this.speciesList.value.findIndex(speciesList => speciesList.id == speciesToDelete.id);
-    this.speciesList.value.splice(indexToDelete, 1);
-    this.speciesList.next(this.speciesList.value);
-    return of(true);
 
- }
+
+updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
+    console.log(speciesToUpdate);
+    let indexToUpdate = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToUpdate.speciesId);
+    return this.http.put(environment.endpoints.SPECIES + "/" + speciesToUpdate.speciesId, speciesToUpdate).pipe(
+        map((updatedSpecies: Species) => {
+          console.log("updated species" + updatedSpecies);
+          this.species.value[indexToUpdate] = updatedSpecies;
+          this.species.next(this.species.value);
+          return this.species.value;
+        })
+      );
+  }
+
+  deleteSpecies(speciesToDelete: Species) {
+    let indexToDelete = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToDelete.speciesId);
+    return this.http.delete(environment.endpoints.SPECIES + "/" + speciesToDelete.speciesId).pipe(
+        map((deletedSpecies: Species) => {
+          console.log("deleted species" + deletedSpecies);
+          this.species.value.splice(indexToDelete, 1)
+          this.species.next(this.species.value)
+        })
+      );
+  }
 }

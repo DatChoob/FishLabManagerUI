@@ -11,7 +11,7 @@
         <a mat-list-item routerLink ="" (click)="toggleDrawerIfMobile(drawer)">Home</a>
         <a mat-list-item routerLink ="/maintenance" (click)="toggleDrawerIfMobile(drawer)">Maintenance</a>
         <a mat-list-item routerLink ="/tank-management" (click)="toggleDrawerIfMobile(drawer)">Tank Management</a>
-        <a mat-list-item routerLink ="/admin" (click)="toggleDrawerIfMobile(drawer)">Admin</a>
+        <a *ngIf="authService.userIsAdmin()" mat-list-item routerLink ="/admin" (click)="toggleDrawerIfMobile(drawer)">Admin</a>
         <a mat-list-item routerLink ="/logout">Logout</a>
       </mat-nav-list>
     </mat-sidenav>

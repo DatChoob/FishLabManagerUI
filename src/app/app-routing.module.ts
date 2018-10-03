@@ -6,9 +6,10 @@ import { HomeComponent } from './logged-in/home/home.component';
 import { MaintenanceComponent } from './logged-in/maintenance/maintenance.component';
 import { TankManagementComponent } from './logged-in/tank-management/tank-management.component';
 import { LoggedInComponent } from './logged-in/logged-in.component';
-import { AuthGuardService } from './shared/auth-guard.service';
+import { AuthGuardService } from './shared/auth.guard';
 import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
 import { LogoutComponent } from './logout/logout.component';
+import { AdminGuard } from './shared/admin.guard';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
@@ -29,14 +30,17 @@ const routes: Routes = [
       {
         path: 'admin', 
         component: AdminComponent,
+        canActivate: [AdminGuard],
       },
       {
         path: 'admin/account/details/:id', 
-        component: AdminAccountDetailComponent
+        component: AdminAccountDetailComponent,
+        canActivate: [AdminGuard],
       },
       {
         path: 'admin/account/details', 
-        component: AdminAccountDetailComponent
+        component: AdminAccountDetailComponent,
+        canActivate: [AdminGuard],
       },
       {
         path: 'tank-management', 
