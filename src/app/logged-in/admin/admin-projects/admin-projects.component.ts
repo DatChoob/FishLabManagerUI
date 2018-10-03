@@ -1,10 +1,11 @@
 import { Project } from './../../../shared/models/project';
 import { Observable } from 'rxjs';
 import { DialogService } from '../../../shared/dialogs.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
 import { ProjectService } from '../../../shared/api-services/project.service';
 import { cloneDeep } from 'lodash';
+import { RoomService } from '../../../shared/api-services/room.service';
 
 @Component({
   selector: 'app-admin-projects',
@@ -15,41 +16,39 @@ export class AdminProjectsComponent implements OnInit {
   dataSource: TableDataSource<Project>;
 
   displayedColumns = ['project', 'tankList', 'actionsColumn'];
-  tankList = ['Tank 1','Tank 2', 'Tank 3']
-  constructor(private dialogService: DialogService, private projectService: ProjectService) { }
+  constructor(private dialogService: DialogService, public roomService: RoomService, private projectService: ProjectService) { }
 
   ngOnInit() {
-    this.projectService.getProjects().subscribe(projects => {
-      this.projectService.projects.subscribe(newProjects => {
-        let clone: Project[] = cloneDeep(newProjects);
-        this.dataSource = new TableDataSource<Project>(clone);
-      })
+
+    this.roomService.loadRooms().subscribe();
+    this.projectService.getProjects().subscribe((projects: Project[]) => {
+      if (projects && projects.length > 0) {
+        this.dataSource = new TableDataSource<Project>(cloneDeep(projects));
+      }
     });
   }
 
   confirmSave(row: TableElement<Project>) {
-    if (row.validator.valid) 
+    if (row.validator.valid)
       this.projectService.createOrUpdate(row.currentData)
-      .subscribe(
-        allRooms => {
-          row.confirmEditCreate();
-        },
-        err => console.log(err));        
-    }
-
+        .subscribe(
+          allRooms => {
+            row.confirmEditCreate();
+          },
+          err => console.log(err));
+  }
 
   cancelOrDelete(row: TableElement<Project>) {
     if (!row.editing) {
-      //means row was in not edit mode and we are deleting entry
+      //means row was not edit mode and we are deleting entry
       //delete row from database
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
-          this.projectService.deleteProject(row.currentData).subscribe(response => {});
+          this.projectService.deleteProject(row.currentData).subscribe(response => { });
         }
       });
     } else {
       row.cancelOrDelete();
-
     }
   }
 

@@ -32,21 +32,23 @@ export class RoomService {
     }
   }
 
-  loadRooms(): Observable<Room[]> {
-    return this.http.get(environment.endpoints.ROOM).
-      pipe(
-        map((allRooms: Room[]) => {
-          this.rooms.next(allRooms)
-          return this.rooms.value;
-        })
-      );
+  loadRooms(getLatest?: boolean): Observable<Room[]> {
+    if (this.rooms.value.length == 0 || getLatest)
+      return this.http.get(environment.endpoints.ROOM).
+        pipe(
+          map((allRooms: Room[]) => {
+            this.rooms.next(allRooms)
+            return this.rooms.value;
+          })
+        );
+    else return this.rooms.asObservable();
   }
 
-  createRoom(roomToCreate : Room): Observable<Room[]> {
+  createRoom(roomToCreate: Room): Observable<Room[]> {
     let originalData = this.rooms.getValue()
     return this.http.post(environment.endpoints.ROOM, roomToCreate).pipe(
       map((createdRoom: Room) => {
-        console.log("created room" + createdRoom);  
+        console.log("created room" + createdRoom);
         originalData.push(createdRoom);
         this.rooms.next(originalData);
         return this.rooms.value;
@@ -54,7 +56,7 @@ export class RoomService {
     )
   }
 
-  updateRoom(roomToUpdate : Room): Observable<Room[]> {
+  updateRoom(roomToUpdate: Room): Observable<Room[]> {
     console.log(roomToUpdate);
     let indexToUpdate = this.rooms.value.findIndex(currentRoom => currentRoom.roomId == roomToUpdate.roomId);
     return this.http.put(environment.endpoints.ROOM + "/" + roomToUpdate.roomId, roomToUpdate).
