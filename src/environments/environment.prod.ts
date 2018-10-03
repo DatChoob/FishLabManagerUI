@@ -3,6 +3,7 @@ export const environment = {
   endpoints: {
     LOGIN: "/api/login",
     ROOM: "/api/room",
+    PROJECT: "/api/project",
     GLOBAL_MAINTENANCE_DEFINITION:"/api/global-task-definition",
     ROOM_MAINTENANCE_DEFINITION:"/api/room-task-definition",
     SPECIES: "/api/species"

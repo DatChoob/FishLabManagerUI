@@ -2,51 +2,71 @@ import { Project } from './../models/project';
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-  projects: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>(
-    [
-      { id: 1, project: 'Project1', tankList: ['Tank 1', 'Tank 2', 'Tank 3']},
-      { id: 2, project: 'Project2', tankList: ['Tank 1', 'Tank 2', 'Tank 3']}
-    ]
-  );
+  projects: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>([]);
 
-  getProjects(): Observable<Project[]>{
+  constructor(private http: HttpClient) { }
+
+
+  getProjects(): Observable<Project[]> {
+    this.http.get<Project[]>(environment.endpoints.PROJECT)
+      .subscribe((projects: Project[]) => {
+        this.projects.next(projects);
+      });
     return this.projects.asObservable();
   }
+  createProject(projectToCreate: Project): Observable<Project[]> {
 
-  createOrUpdate(projectToCreateOrUpdate: Project): Observable<Project[]> {
     let originalData = this.projects.getValue();
-    //TODO: remove of() with http request
-    return of(projectToCreateOrUpdate).pipe(
-      map(projectResponse => {
-        if (projectToCreateOrUpdate.id == null) {
-          //This is a create. In real api call, the projectResponse will already have the id. we assigning one for now
-          projectResponse.id = 21;
-          originalData.push(projectResponse);
-        } else {
-          //this is an update. find the index by id and replace the item at the index with our updated one
-          let indexToUpdate = this.projects.value.findIndex(currentProject => currentProject.id == projectToCreateOrUpdate.id);
-          originalData[indexToUpdate] = projectToCreateOrUpdate;
-        }
-
+    return this.http.post<Project>(environment.endpoints.PROJECT, projectToCreate).pipe(
+      map(createdProject => {
+        originalData.push(createdProject);
         this.projects.next(originalData);
         return this.projects.value;
       })
     );
   }
 
-  deleteProject(projectToDelete: Project) {
-    //TODO replace this with a real http request to delete by id.
-    let indexToDelete = this.projects.value.findIndex(currentProject => currentProject.id == projectToDelete.id);
-    this.projects.value.splice(indexToDelete, 1);
-    this.projects.next(this.projects.value);
-    return of(true);
+  updateProject(projectToUpdate: Project): Observable<Project[]> {
+    let originalData = this.projects.getValue();
+    return this.http.put<Project>(`${environment.endpoints.PROJECT}/${projectToUpdate.projectId}`, projectToUpdate).pipe(
+      map(updatedProject => {
+        //this is an update. find the index by id and replace the item at the index with our updated one
+        let indexToUpdate = this.projects.value.findIndex(currentProject => currentProject.projectId == updatedProject.projectId);
+        originalData[indexToUpdate] = updatedProject;
+        this.projects.next(originalData);
+        return this.projects.value;
+      })
+    );
+  }
+
+  createOrUpdate(projectToCreateOrUpdate: Project): Observable<Project[]> {
+    if (projectToCreateOrUpdate.projectId) {
+      return this.updateProject(projectToCreateOrUpdate);
+    } else {
+      return this.createProject(projectToCreateOrUpdate);
+    }
+
+  }
+
+  deleteProject(projectToDelete: Project): Observable<Project> {
+    let indexToDelete = this.projects.value.findIndex(currentProject => currentProject.projectId == projectToDelete.projectId);
+    return this.http.delete(`${environment.endpoints.PROJECT}/${projectToDelete.projectId}`).pipe(
+      map(
+        (deletedProject: Project) => {
+          //TODO replace this with a real http request to delete by id.
+          this.projects.value.splice(indexToDelete, 1);
+          this.projects.next(this.projects.value);
+          return deletedProject;
+        })
+    );
   }
 
 
