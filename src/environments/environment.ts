@@ -10,6 +10,8 @@ export const environment = {
   endpoints: {
     LOGIN: host + "/login",
     ROOM: host + "/room",
+    GLOBAL_MAINTENANCE_DEFINITION: host + "/global-task-definition",
+    ROOM_MAINTENANCE_DEFINITION: host + "/room-task-definition",
     SPECIES: host + "/species"
   }
 };
