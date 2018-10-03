@@ -53,4 +53,9 @@ export class AuthService {
     return moment(expiresAt);
   }
 
+  getLoggedInUserName(){
+    const decodedAccessToken:any = JWT(localStorage.getItem("access_token"));
+    return decodedAccessToken.identity.userData.name;
+  
+  }
 }

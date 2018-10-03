@@ -1,32 +1,74 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output,  } from '@angular/core';
 import { names } from '../../shared/models/names';
- 
 
+// to import things from service
+import { HomepageService } from '../../shared/api-services/homepage.service';
+import { FishFeed } from '../../shared/models/fish-feed';
+import { AuthService } from '../../shared/auth.service';
+import { NgForm } from '@angular/forms';
+import { cloneDeep, update } from "lodash";
+import { updateLocale } from 'moment';
+import { CLIENT_RENEG_LIMIT } from 'tls';
+import { emit } from 'cluster';
+import { OutputType } from '@angular/core/src/view';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
+
+
 })
+
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private homepageService: HomepageService, public authService: AuthService) { }
 
+  fishfeed: FishFeed;
   ngOnInit() {
+    //ng onit where initlization is done
+    this.homepageService.getLatestStatus()
+      .subscribe(newFishFeed => {
+        console.log(newFishFeed);
+        this.fishfeed = cloneDeep(newFishFeed)
+
+      }
+      );
+
   }
 
-  names = [
-    new names(1, 'Junaid'),
-    new names(13, 'Sason'),
-    new names(15, 'Chris'),
-    new names(20, 'Keevan Chansoriano'),
-    new names(13, 'Fed'),
-    new names(15, 'Not Fed'),
-  ];
+  onSubmit(form: NgForm) {
+    //if form is vaild take the status from value and 
+    // update my local fish feed wiht status
+    
+    console.log(form);
+    //form.status.update;
+    //form Status: {{ NgForm.status}}
+    //update.form;
+     if (form.valid) 
+     {
+       this.fishfeed.status=form.value.status
+        this.homepageService.updateStatus(this.fishfeed)
+        .subscribe(newFishFeed => {
+        console.log(newFishFeed);
+        this.fishfeed = cloneDeep(newFishFeed)
+        
+       //bindingUpdated
+       //form.value.status.update;
+       // this.fishfeed.value.updateStatus; 
+       //FishFeed.arguments.update
+      
+      }
+      );
+        //status.replace
+        //Output
+      }
+        
 
-  myName = this.names[2];
-  fedBy = this.names[3];
-  Fstatus = this.names[4];
 
+  }
 
- 
+  updateStatus(status: FishFeed ){
+    this.homepageService.getLatestStatus
+  }
+
 }

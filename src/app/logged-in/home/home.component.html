@@ -1,32 +1,26 @@
-<div class="lol">
-
+<div *ngIf ="fishfeed" class="lol">
 
   <!-- this the the welcome part -->
-  <h1>Welcome {{myName.name}}</h1>
+  <h1>Welcome {{authService.getLoggedInUserName()}}</h1>
   <p>
-    <br /> Fish Status = {{Fstatus.name}}
+    <br /> Fish Status = {{fishfeed.status}}
     <br />
-
-    <!-- <svg width="100" height="100">
-        <circle cx="25" cy="25" r="15"  fill="green" />
-    </svg> -->
-
-    <br /> Last Fed by {{fedBy.name}} 
-    <br /> At 8:30AM Date: 09/12/2018
+    <br /> Last Fed by {{fishfeed.participantCode}} 
+    <br /> {{fishfeed.dateTimeUpdated}}
     <br />
     <br /> Was fish fed by you today?
   </p>
-
   <!-- ////////////////////////////////////////////// this is for fish fed options      -->
-  <mat-form-field>
-    <mat-select placeholder="Fish Fed" disableRipple>
-      <mat-option value="1">Fed</mat-option>
-      <mat-option value="2">In progress</mat-option>
-      <mat-option value="3">Not Fed</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <!-- ///////////////////////////////////////////////////////////////////////           -->
-
-  <button> <h4>Submit</h4></button>
-
+  <form (ngSubmit) = "onSubmit(form)" #form = "ngForm">
+    <mat-form-field *ngIf="true">
+      <!-- if fish status is not complted -->
+      <mat-select name="status" placeholder="Fish Fed" required ngModel>
+        <mat-option value="Not Fed">Fish have not been fed</mat-option>
+        <mat-option value="On the way">Going to feed fish</mat-option>
+        <mat-option value="Completed">Fish have been Fed</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- ///////////////////////////////////////////////////////////////////////           -->
+    <button  type="submit"> <h4>Submit</h4></button>
+  </form>
 </div>
