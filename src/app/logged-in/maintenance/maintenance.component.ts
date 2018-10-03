@@ -15,6 +15,12 @@ export class MaintenanceComponent implements OnInit {
   constructor(private maintenanceRoomService: MaintenanceRoomService) { }
 
   ngOnInit() {
+    this.maintenanceRoomService.getRoomList().subscribe(rooms=>{
+      this.maintenanceRoomService.roomTasks.subscribe(data => {
+        //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
+      });
+
+    })
   }
   onLinkClick(event: MatTabChangeEvent){
     console.log('event => ', event);
