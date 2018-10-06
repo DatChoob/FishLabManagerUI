@@ -1,8 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { AdminAccountsDataSource } from './admin-accounts-datasource';
-import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
 import { Participant } from "src/app/shared/models/participant";
 
@@ -16,27 +14,31 @@ import { Participant } from "src/app/shared/models/participant";
 export class AdminAccountsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<Participant>;
+  dataSource: MatTableDataSource<Participant> = new MatTableDataSource([])
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['participantCode','name','role'];
 
-  selectedRowIndex = 1;
+  selectedRowIndex = 0;
 
   constructor(private readonly router: Router,
     private readonly route: ActivatedRoute, private participantService: ParticipantService) {
   }
 
   ngOnInit() {
+
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
     this.participantService.loadParticipants().subscribe(participants => {
       if(participants.length > 0) {
-        this.selectedRowIndex = 1;
-        this.dataSource = new MatTableDataSource([])
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.selectedRowIndex = 0;
+        this.dataSource.data = participants
       }
     });
   }
+
+
 
   highlightSelectedRow(index) {
     this.selectedRowIndex = index;
@@ -48,6 +50,11 @@ export class AdminAccountsComponent implements OnInit {
 
   modifyRow() {
     if(!!this.dataSource)
-    this.router.navigate([`./account/details/${this.dataSource.data[this.selectedRowIndex]}`], { relativeTo: this.route });
+      this.router.navigate([`./account/details/${this.dataSource.data[this.selectedRowIndex].participantCode}`], { relativeTo: this.route });
+  }
+
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
