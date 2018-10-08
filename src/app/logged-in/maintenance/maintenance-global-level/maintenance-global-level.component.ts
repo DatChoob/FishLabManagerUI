@@ -16,13 +16,14 @@ export class MaintenanceGlobalLevelComponent implements OnInit {
 
   constructor(private dialogService: DialogService, private maintenanceGlobalService: MaintenanceGlobalService) { }
 
-  displayedColumns = ['task', 'user', 'date', 'toggle'];
+  displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<GlobalMaintenance>;
 
   ngOnInit() {
 
     this.maintenanceGlobalService.getGlobalMaintenanceTasks().subscribe(a=>{
       this.maintenanceGlobalService.globalTasks.subscribe(data => {
+        console.log(data)
         //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
         let clone: GlobalMaintenance[] = cloneDeep(data);
         this.dataSource = new MatTableDataSource<GlobalMaintenance>(clone);

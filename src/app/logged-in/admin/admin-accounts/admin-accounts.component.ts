@@ -30,7 +30,7 @@ export class AdminAccountsComponent implements OnInit {
   highlightSelectedRow(row) {
     this.selectedRowIndex = row.id;
   }
-
+  
   addRow(){
     this.router.navigate([`./account/details`],{relativeTo:this.route});
   }
