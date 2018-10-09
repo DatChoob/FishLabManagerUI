@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { Tank } from '../shared/models/tank'
-import { Room } from './models/room';
+import { Tank } from '../models/tank'
+import { Room } from '../models/room';
 
 @Injectable({
   providedIn: 'root'

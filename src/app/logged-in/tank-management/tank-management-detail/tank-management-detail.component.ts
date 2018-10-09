@@ -3,7 +3,7 @@ import { TableElement } from 'angular4-material-table';
 // import { MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Tank } from '../../../shared/models/tank';
-import { TankManagementService } from '../../../shared/tank-management.service'
+import { TankManagementService } from '../../../shared/api-services/tank-management.service'
 import { DialogService } from '../../../shared/dialogs.service'
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';

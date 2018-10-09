@@ -3,7 +3,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Tank } from '../../../shared/models/tank';
-import { TankManagementService } from '../../../shared/tank-management.service';
+import { TankManagementService } from '../../../shared/api-services/tank-management.service';
 import { Room } from '../../../shared/models/room';
 
 @Component({
