@@ -26,14 +26,16 @@
     [ngClass]="{'highlight': selectedRowIndex == i}"
     (click)="highlightSelectedRow(i)"></tr>
   </table>
-  <mat-spinner *ngIf="!dataSource?.data?.length"
-    class="example-margin"
-    color="primary"
-    mode="indeterminate">
-  </mat-spinner>
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="dataSource.data.length == 0">
+    <mat-spinner 
+      class="example-margin"
+      color="primary"
+      mode="indeterminate">
+    </mat-spinner>
+  </div>
 
   <mat-paginator #paginator
-    [length]="dataSource?.data?.length"
+    [length]="dataSource.data.length"
     [pageIndex]="0"
     [pageSize]="5"
     [pageSizeOptions]="[5, 10, 20, 40]">
