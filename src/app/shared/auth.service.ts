@@ -17,7 +17,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
   }
 
-  login(username: string, password: string):Observable<any> {
+  login(username: string, password: string): Observable<any> {
     return this.http.post<User>(environment.endpoints.LOGIN, { username, password })
       .pipe(
         tap(this.setSession),
@@ -26,7 +26,6 @@ export class AuthService {
           console.log("error occured during loggin. throwing error")
           return throwError(err);
         })
-        
       );
   }
 
@@ -53,10 +52,26 @@ export class AuthService {
     return !this.isLoggedIn();
   }
 
+  userIsAdmin(): boolean {
+    let access_token: any = JWT(localStorage.getItem("access_token"))
+    try {
+      return access_token.identity.userData.role == "admin";
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+
+  }
+
   getExpiration() {
     const expiration = localStorage.getItem("expires_at");
     const expiresAt = JSON.parse(expiration);
     return moment(expiresAt);
   }
 
+  getLoggedInUserName(){
+    const decodedAccessToken:any = JWT(localStorage.getItem("access_token"));
+    return decodedAccessToken.identity.userData.name;
+  
+  }
 }

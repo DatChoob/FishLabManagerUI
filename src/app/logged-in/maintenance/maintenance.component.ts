@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
+import { MaintenanceRoomService } from '../../shared/api-services/maintenance-room.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-maintenance',
@@ -8,11 +10,17 @@ import { MatTabChangeEvent } from '@angular/material';
 })
 export class MaintenanceComponent implements OnInit {
 
-   rooms = ["119", '121', '123'];
 
-  constructor() { }
+  
+  constructor(public maintenanceRoomService: MaintenanceRoomService) { }
 
   ngOnInit() {
+    this.maintenanceRoomService.getRoomList().subscribe(rooms=>{
+      this.maintenanceRoomService.roomTasks.subscribe(data => {
+        //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
+      });
+
+    })
   }
   onLinkClick(event: MatTabChangeEvent){
     console.log('event => ', event);

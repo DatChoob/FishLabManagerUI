@@ -35,7 +35,7 @@ export class AdminRoomsComponent implements OnInit {
           row.confirmEditCreate();
         },
         err => console.log(err));        
-    }
+    } 
 
 
   cancelOrDelete(row: TableElement<Room>) {

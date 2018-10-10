@@ -1,19 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, BehaviorSubject } from 'rxjs';
-import { Task } from '../models/task';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Maintenance } from '../models/maintenance';
+import { map, tap } from 'rxjs/operators';
+import { GlobalMaintenance } from '../models/globalMaintenance';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MaintenanceGlobalService {
 
-  globalTasks: BehaviorSubject<Maintenance[]> = new BehaviorSubject<Maintenance[]>(
-    [
-      { taskId: 1, name: "Clean up", date: "", status:false },
-    ]
-  );
+  globalTasks: BehaviorSubject<GlobalMaintenance[]> = new BehaviorSubject<GlobalMaintenance[]>([]);
   constructor(private http: HttpClient) { }
+
+  getGlobalMaintenanceTasks(){
+    return this.http.get<GlobalMaintenance[]>(`${environment.endpoints.GLOBAL_TASK}`).pipe(
+      tap(roomMaintenancesList => {
+        this.globalTasks.next(roomMaintenancesList)
+      })
+    )
+  }
+
+  updateRowInformation(globalMaintenance: GlobalMaintenance): Observable<GlobalMaintenance[]>{
+    return this.http.put<GlobalMaintenance>(`${environment.endpoints.GLOBAL_TASK}/${globalMaintenance.globalTaskCompletedId}`, globalMaintenance).pipe(
+      map(globalMaintenanceFromApi => { 
+        let indexToUpdate = this.globalTasks.value.findIndex(globalMaintenanceTask => globalMaintenanceTask.globalTaskCompletedId == globalMaintenance.globalTaskCompletedId);
+        this.globalTasks.value[indexToUpdate] = globalMaintenanceFromApi;
+        this.globalTasks.next(this.globalTasks.value);
+        return this.globalTasks.value;
+       })
+    );
+  }
 }

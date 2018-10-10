@@ -16,21 +16,21 @@ import { SpeciesService } from '../../../shared/api-services/species.service';
 })
 export class AdminSpeciesComponent implements OnInit {
 
-  displayedColumns = ['originalName', 'currentName', 'commonName', 'actionsColumn'];
+  displayedColumns = ['originalName', 'commonName', 'currentName', 'actionsColumn'];
   dataSource: TableDataSource<Species>;
 
   constructor(private speciesService: SpeciesService, private dialogService : DialogService) { }
 
 ngOnInit(){
- this.speciesService.speciesList.subscribe(data => {
+
+ this.speciesService.loadSpecies().subscribe(data => {
    let clone: Species[] = cloneDeep(data);
-   this.dataSource = new TableDataSource(clone);
+   this.dataSource = new TableDataSource(clone, Species);
  })
 }
 
-  
 confirmSave(row: TableElement<Species>){
- if(row.validator.valid && !!row.currentData.id){
+ if(row.validator.valid){
    this.speciesService.createOrUpdate(row.currentData).subscribe(
      allSpecies => {
        row.confirmEditCreate();

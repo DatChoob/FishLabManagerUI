@@ -101,6 +101,7 @@ import { RouterTabModule } from '@zerohouse/router-tab';
     MatDialogModule,
     LayoutModule,
     MatSortModule,
+    MatIconModule,
     RouterTabModule
   ],
   providers: [
