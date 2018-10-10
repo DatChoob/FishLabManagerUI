@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { Tank } from '../models/tank'
 import { Room } from '../models/room';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,43 +13,32 @@ import { Room } from '../models/room';
 
 export class TankManagementService {
 
-  //this will be removed. we will only store data for 1 room only. grab data from databse every time a new room is selected
-  private tankList: BehaviorSubject<Tank[]> = new BehaviorSubject<Tank[]>(
-    [
-      { tankId: 101, projID: 201, UID: 301, roomId: 1, status: 'Pregnant', speciesNames: 'Cool Fish' },
-      { tankId: 102, projID: 202, UID: 302, roomId: 1, status: 'Dead', speciesNames: 'Bad Fish' },
-      { tankId: 103, projID: 203, UID: 303, roomId: 1, status: 'Crispy Fries', speciesNames: 'Dumb Fish' },
-      { tankId: 104, projID: 204, UID: 304, roomId: 1, status: 'Setup', speciesNames: 'Best Fish' },
-    ]
-  );
+  constructor(private http: HttpClient) { }
+  
+  roomList: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>([]);
+  
+  tankList: BehaviorSubject<Tank[]> = new BehaviorSubject<Tank[]>([]);
+  
+  roomTanks$: Observable<Room[]> = this.roomList.asObservable();
 
-  private roomTanks: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>(
-    [
-      {
-        roomId: 1, building: "Humboldt", roomNumber: 215
-      },
-      {
-        roomId: 2, building: "Humboldt", roomNumber: 219
-      },
-      {
-        roomId: 3, building: "Humboldt", roomNumber: 220
-      },
-      {
-        roomId: 4, building: "Humboldt", roomNumber: 221
-      }
-    ]
-  );
-
-
-  roomTanks$: Observable<Room[]> = this.roomTanks.asObservable();
-
-  getTankList(): Observable<Room[]> {
-    return this.roomTanks;
+  getRoomList(): Observable<Room[]> {
+    return this.http.get(environment.endpoints.ROOM).
+      pipe(
+        map((allRooms: Room[]) => {
+          this.roomList.next(allRooms)
+          return this.roomList.value;
+        })
+      );
   }
 
   getTankListByRoomId(roomId: number): Observable<Tank[]> {
     //replace this with a http request
-    return of(<Tank[]>this.tankList.value);
+    this.http.get<Tank[]>(`${environment.endpoints.TANK}/${roomId}`)
+      .subscribe(roomTanksList => {
+        this.tankList.next(roomTanksList)
+      })
+      return this.tankList.asObservable()
+    //return of(<Tank[]>this.tankList.value);
   }
 
   getTankByProperty(tankId) {

@@ -4,6 +4,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Tank } from '../../shared/models/tank';
 import { TankManagementService } from '../../shared/api-services/tank-management.service'
 import { Observable } from 'rxjs';
+import { subscribeOn } from 'rxjs/operators';
 @Component({
   selector: 'app-tank-management',
   templateUrl: './tank-management.component.html',
@@ -18,7 +19,8 @@ export class TankManagementComponent implements OnInit {
   constructor(private tankManagementService: TankManagementService, private router: ActivatedRoute) { }
 
   ngOnInit() {
-
+    this.tankManagementService.getRoomList().subscribe(rooms =>{
+    })
   }
 
 }
