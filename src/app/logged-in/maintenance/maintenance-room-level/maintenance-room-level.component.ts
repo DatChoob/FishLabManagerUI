@@ -33,7 +33,6 @@ export class MaintenanceRoomLevelComponent implements OnInit {
       if (this.roomId) {
         this.maintenanceRoomService.getRoomTasksByRoomId(this.roomId).subscribe(
           tasksForSelectedRoom => {
-            console.log(tasksForSelectedRoom)
             this.dataSource = new MatTableDataSource(tasksForSelectedRoom);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;

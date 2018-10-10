@@ -53,7 +53,15 @@ const routes: Routes = [
         component: MaintenanceComponent,
         children:[
           {
-            path:':roomId',
+            path:'global',
+            component: MaintenanceGlobalLevelComponent
+          },
+          {
+            path:'room/:roomId',
+            component: MaintenanceRoomLevelComponent
+          },
+          {
+            path:'room',
             component: MaintenanceRoomLevelComponent
           }
         ]

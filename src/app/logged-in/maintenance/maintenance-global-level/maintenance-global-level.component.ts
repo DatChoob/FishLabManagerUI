@@ -23,7 +23,6 @@ export class MaintenanceGlobalLevelComponent implements OnInit {
 
     this.maintenanceGlobalService.getGlobalMaintenanceTasks().subscribe(a=>{
       this.maintenanceGlobalService.globalTasks.subscribe(data => {
-        console.log(data)
         //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
         let clone: GlobalMaintenance[] = cloneDeep(data);
         this.dataSource = new MatTableDataSource<GlobalMaintenance>(clone);
