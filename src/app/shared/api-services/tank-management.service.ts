@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { Tank } from '../shared/models/tank'
-import { Room } from './models/room';
-import { map } from 'rxjs/operators';
+import { Tank } from '../models/tank'
+import { Room } from '../models/room';
 
 @Injectable({
   providedIn: 'root'
@@ -64,19 +63,19 @@ export class TankManagementService {
     console.log("Updating tank : " + tankToUpdate);
     let originalData = this.tankList.getValue();
     // TODO: Remove of() with HTTP request
-    return of(tankToUpdate).pipe(
-      map(tank => {
-        if (tankToUpdate.tankId == null) {
-          tank.tankId = 21;
-          originalData.push(tank);
-        } else {
-          let indexToUpdate = this.tankList.value.findIndex(tank => tank.tankId == tankToUpdate.tankId);
-          originalData[indexToUpdate] = tankToUpdate;
-        }
-        this.tankList.next(originalData);
-        return this.tankList.value;
-      })
-    );
+    // return of(tankToUpdate).pipe(
+    //   map(tank => {
+    //     if (tankToUpdate.tankId == null) {
+    //       tank.tankId = 21;
+    //       originalData.push(tank);
+    //     } else {
+    //       let indexToUpdate = this.tankList.value.findIndex(tank => tank.tankId == tankToUpdate.tankId);
+    //       originalData[indexToUpdate] = tankToUpdate;
+    //     }
+    //     this.tankList.next(originalData);
+    //     return this.tankList.value;
+    //   })
+    // );
   }
 
   deleteTank(tankToDelete: Tank) {

@@ -3,7 +3,7 @@ import { TableElement } from 'angular4-material-table';
 // import { MatTableDataSource } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tank } from '../../../shared/models/tank';
-import { TankManagementService } from '../../../shared/tank-management.service'
+import { TankManagementService } from '../../../shared/api-services/tank-management.service'
 import { DialogService } from '../../../shared/dialogs.service'
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
@@ -58,7 +58,7 @@ export class TankManagementDetailComponent implements OnInit {
       .subscribe(
         userConfirmed => {
           if (userConfirmed) {
-            this.tankManagementService.createOrUpdateTank(row).subscribe(response => { });
+            // this.tankManagementService.createOrUpdateTank(row).subscribe(response => { });
             this.router.navigate(['../../'], { relativeTo: this.route });
           }
         });
