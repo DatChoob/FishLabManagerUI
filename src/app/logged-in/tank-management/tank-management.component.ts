@@ -11,14 +11,14 @@ import { Observable } from 'rxjs';
 })
 
 export class TankManagementComponent implements OnInit {
- 
- 
+
+
   tankListArray: Tank[];
-  
-  constructor(private tankManagementService: TankManagementService, private router:ActivatedRoute) {}
+
+  constructor(private tankManagementService: TankManagementService, private router: ActivatedRoute) { }
 
   ngOnInit() {
-    
+
   }
 
 }

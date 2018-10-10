@@ -1,4 +1,15 @@
 <p>Tank Information</p>
+<!-- 
+    ngModel on inputs, change row to tank, 
+    show who's (single person, 3 letter username) assigned to the tank, 
+    drop-down with species and number of that species, 
+    user can't change project ID/tank ID/user assigned (make it a label, not a input if it's a user), 
+    display project name not ID,
+    change room the tank is in,
+    trial codes on initial page (ask Ron if he cares)
+    NTH: SnackBar 
+  -->
+
 <form>
   <div fxLayout="column">
     <!-- If modify, get row from datasource with id in route (?) and fill values of form accordingly -->
@@ -12,16 +23,25 @@
       <input matInput type="text" placeholder="User ID" value="{{ row.UID }}" name="UID" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" placeholder="Tank Status" value="{{ row.status }}" name="status" required>
+      <!-- 
+        If tank has no status: placeholder='Tank Status', 
+        else: Placeholder='row.status' 
+      -->
+      <mat-select matInput placeholder="Tank Status" name="status" [value]='row.status' required>
+        <mat-option selected *ngFor='let status of statusList' value="{{ status.value }}">
+          {{status.value}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" placeholder="Species Names" value="{{ row.speciesNames }}" name="speciesNames" required>
+      <input matInput type="text" placeholder="Species Names" value="{{ row.speciesNames }}" name="speciesNames"
+        required>
     </mat-form-field>
   </div>
 </form>
 
 
-<p><button mat-raised-button (click)="confirmSave(row)">Save</button>
-<button mat-raised-button (click)="confirmDelete(row)">Delete</button></p>
-
-
+<p>
+  <button mat-raised-button (click)="confirmSave(row)">Save</button>
+  <button mat-raised-button (click)="confirmDelete(row)">Delete</button>
+</p>

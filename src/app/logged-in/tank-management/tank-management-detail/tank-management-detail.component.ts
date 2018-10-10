@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TableElement } from 'angular4-material-table';
 // import { MatTableDataSource } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Tank } from '../../../shared/models/tank';
 import { TankManagementService } from '../../../shared/tank-management.service'
 import { DialogService } from '../../../shared/dialogs.service'
@@ -21,15 +21,23 @@ export class TankManagementDetailComponent implements OnInit {
   // dataSource: MatTableDataSource<Tank>;
 
   constructor(private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private tankManagementService: TankManagementService,
     private dialogService: DialogService) {
   }
 
   tankList: Tank[] = [
-    { tankId: 1, projID: 2, UID: 123, status: 'Cool', speciesNames: 'Cool Fish' },
-    { tankId: 2, projID: 3, UID: 555, status: 'Bad', speciesNames: 'Bad Fish' },
-    { tankId: 3, projID: 4, UID: 666, status: 'Dumb', speciesNames: 'Dumb Fish' },
+    { tankId: 1, projID: 2, UID: 123, status: 'Pregnant', speciesNames: 'Cool Fish' },
+    { tankId: 2, projID: 3, UID: 555, status: 'Crispy Fries', speciesNames: 'Bad Fish' },
+    { tankId: 3, projID: 4, UID: 666, status: 'Dead', speciesNames: 'Dumb Fish' },
   ];
+
+  statusList = [
+    {value: 'Pregnant'},
+    {value: 'Crispy Fries'},
+    {value: 'Dead'},
+    {value: 'Setup'}
+  ]
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -46,6 +54,14 @@ export class TankManagementDetailComponent implements OnInit {
 
   confirmSave(row: Tank) {
     // TODO: implement
+    this.openDialog()
+      .subscribe(
+        userConfirmed => {
+          if (userConfirmed) {
+            this.tankManagementService.createOrUpdateTank(row).subscribe(response => { });
+            this.router.navigate(['../../'], { relativeTo: this.route });
+          }
+        });
   }
 
   confirmDelete(row: Tank) {
@@ -53,6 +69,7 @@ export class TankManagementDetailComponent implements OnInit {
     this.openDialog().subscribe(userConfirmed => {
       if (userConfirmed) {
         this.tankManagementService.deleteTank(row).subscribe(response => { });
+        this.router.navigate(['../../'], { relativeTo: this.route });
       }
     });
   }
