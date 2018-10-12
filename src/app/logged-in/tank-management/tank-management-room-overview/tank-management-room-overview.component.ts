@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, Input, OnChanges } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Tank } from '../../../shared/models/tank';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TankManagementService } from '../../../shared/api-services/tank-management.service';
 
@@ -15,33 +16,37 @@ export class TankManagementRoomOverviewComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns: string[] = ['id', 'projID', 'UID', 'trialCode', 'status', 'speciesNames'];
+  displayedColumns: string[] = ['tankId', 'trialCode', 'status', 'maintainer_participantCode'];
   selectedRowIndex = 0;
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<Tank>;
 
   constructor(private readonly router: Router,
     private readonly route: ActivatedRoute,
     private tankManagementService: TankManagementService) { }
 
   roomId: number;
+  
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       //triggered every time the url changes
       // (+) before `params.get()` turns the string into a number
       this.roomId = +params.get("roomId");
       if (this.roomId) {
+        console.log(this.roomId)
         this.selectedRowIndex = 0;
         //get the tanks for this room
         this.tankManagementService.getTankListByRoomId(this.roomId).subscribe(
           tanksForSelectedRoom => {
             //ignore this error. it still works
             this.dataSource = new MatTableDataSource(tanksForSelectedRoom);
+            // console.log(this.dataSource)
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
+            // console.log(this.dataSource)
           }
         )
       }
-    })
+    })    
   }
 
   applyFilter(filterValue: string) {

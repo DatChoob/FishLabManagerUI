@@ -6,23 +6,12 @@
   <table mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
     
     <!-- Tank ID Column -->
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="tankId">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Tank ID</th>
       <td mat-cell *matCellDef="let row">{{row.tankId}}</td>
     </ng-container>
 
-    <!-- Project ID Column -->
-    <ng-container matColumnDef="projID">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Project ID</th>
-      <td mat-cell *matCellDef="let row">{{row.projID}}</td>
-    </ng-container>
-
     <!-- User ID Column -->
-    <ng-container matColumnDef="UID">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>User ID</th>
-      <td mat-cell *matCellDef="let row">{{row.UID}}</td>
-    </ng-container>
-
     <ng-container matColumnDef="trialCode">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Trial Code</th>
       <td mat-cell *matCellDef="let row">{{row.trialCode}}</td>
@@ -35,9 +24,9 @@
     </ng-container>
 
     <!-- Species Names Column -->
-    <ng-container matColumnDef="speciesNames">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Number of Species</th>
-      <td mat-cell *matCellDef="let row">{{row.speciesNames}}</td>
+    <ng-container matColumnDef="maintainer_participantCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Person who this tank is assigned to</th>
+      <td mat-cell *matCellDef="let row">{{row.maintainer_participantCode}}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

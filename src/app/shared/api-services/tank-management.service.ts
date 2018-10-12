@@ -36,10 +36,29 @@ export class TankManagementService {
     this.http.get<Tank[]>(`${environment.endpoints.TANK}/${roomId}`)
       .subscribe(roomTanksList => {
         this.tankList.next(roomTanksList)
+        return this.tankList.value;
       })
       return this.tankList.asObservable()
-    //return of(<Tank[]>this.tankList.value);
   }
+
+//   loadSpecies(): Observable<Species[]> {
+//     this.http.get<Species[]>(environment.endpoints.SPECIES)
+//    .subscribe(allSpecies => {
+//          this.species.next(allSpecies)
+//          return this.species.value;
+//    });
+//    return this.species.asObservable();
+//  }
+
+  // getTankListByRoomId(roomId: number): Observable<Tank[]> {
+  //   //replace this with a http request
+  //   this.http.get<Tank[]>(`${environment.endpoints.TANK}/${roomId}`)
+  //     .subscribe(roomTanksList => {
+  //       this.tankList.next(roomTanksList)
+  //     })
+  //     return this.tankList.asObservable()
+  //   //return of(<Tank[]>this.tankList.value);
+  // }
 
   getTankByProperty(tankId) {
     let tankIndex = this.tankList.value.findIndex(tank => tank.tankId == tankId);

@@ -25,9 +25,9 @@ export class TankManagementDetailComponent implements OnInit {
   }
 
   tankList: Tank[] = [
-    { tankId: 1, projID: 2, UID: 123, trialCode: 'Alpha', status: 'Pregnant', speciesNames: 'Cool Fish' },
-    { tankId: 2, projID: 3, UID: 555, trialCode: 'Bravo', status: 'Crispy Fries', speciesNames: 'Bad Fish' },
-    { tankId: 3, projID: 4, UID: 666, trialCode: 'Charlie', status: 'Dead', speciesNames: 'Dumb Fish' },
+    { tankId: 1, roomId: 2, trialCode: '123', status: 'Pregnant', maintainer_participantCode: 'Cool Fish' },
+    { tankId: 2, roomId: 3, trialCode: '555', status: 'Crispy Fries', maintainer_participantCode: 'Bad Fish' },
+    { tankId: 3, roomId: 4, trialCode: '666', status: 'Dead', maintainer_participantCode: 'Dumb Fish' },
   ];
 
   statusList = [
@@ -41,7 +41,7 @@ export class TankManagementDetailComponent implements OnInit {
     this.tankForm = this.formBuilder.group({
       tankId: ['', Validators.required],
       projID: ['', Validators.required],
-      UID: ['', Validators.required],
+      maintainer_participantCode: ['', Validators.required],
       trialCode: ['', Validators.required],
       status: ['', Validators.required],
       speciesNames: ['']
@@ -53,7 +53,7 @@ export class TankManagementDetailComponent implements OnInit {
       if (this.id) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankByProperty(this.id));
         this.tankForm.patchValue(this.currentTank);
-        console.log("Current Tank: " + this.currentTank);
+        console.log(this.currentTank);
       }
     });
   }
