@@ -10,38 +10,39 @@
     NTH: SnackBar 
   -->
 
-<form>
+<form [formGroup]="tankForm">
   <div fxLayout="column">
-    <!-- If modify, get row from datasource with id in route (?) and fill values of form accordingly -->
     <mat-form-field>
-      <input matInput type="text" placeholder="Tank ID" value="{{ row.tankId }}" name="tankID" required>
+      <input matInput type="number" id="tankId" placeholder="Tank ID" formControlName="tankId" required />
     </mat-form-field>
+
     <mat-form-field>
-      <input matInput type="text" placeholder="Project ID" value="{{ row.projID }}" name="projID" required>
+      <input matInput type="number" id="projID" placeholder="Project ID" formControlName="projID" required />
     </mat-form-field>
+
     <mat-form-field>
-      <input matInput type="text" placeholder="User ID" value="{{ row.UID }}" name="UID" required>
+      <input matInput type="number" id="UID" placeholder="User ID" formControlName="UID" required />
     </mat-form-field>
+
     <mat-form-field>
-      <!-- 
-        If tank has no status: placeholder='Tank Status', 
-        else: Placeholder='row.status' 
-      -->
-      <mat-select matInput placeholder="Tank Status" name="status" [value]='row.status' required>
-        <mat-option selected *ngFor='let status of statusList' value="{{ status.value }}">
-          {{status.value}}
+      <input matInput type="text" id="trialCode" placeholder="Trial Code" formControlName="trialCode" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select matInput placeholder="Tank Status" name="status" formControlName="status" required>
+        <mat-option *ngFor='let status of statusList' [value]='status.value'>
+          {{ status.value }}
         </mat-option>
       </mat-select>
     </mat-form-field>
+
     <mat-form-field>
-      <input matInput type="text" placeholder="Species Names" value="{{ row.speciesNames }}" name="speciesNames"
-        required>
+      <input matInput type="text" id="speciesNames" placeholder="Species Names" formControlName="speciesNames" />
     </mat-form-field>
   </div>
 </form>
 
-
 <p>
-  <button mat-raised-button (click)="confirmSave(row)">Save</button>
-  <button mat-raised-button (click)="confirmDelete(row)">Delete</button>
+  <button mat-raised-button (click)="confirmSave(tankForm)">Save</button>
+  <button mat-raised-button (click)="confirmDelete(tankForm)">Delete</button>
 </p>

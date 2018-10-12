@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewChild, Input, OnChanges } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Tank } from '../../../shared/models/tank';
 import { TankManagementService } from '../../../shared/api-services/tank-management.service';
-import { Room } from '../../../shared/models/room';
 
 
 @Component({
@@ -18,7 +15,7 @@ export class TankManagementRoomOverviewComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns: string[] = ['id', 'projID', 'UID', 'status', 'speciesNames'];
+  displayedColumns: string[] = ['id', 'projID', 'UID', 'trialCode', 'status', 'speciesNames'];
   selectedRowIndex = 0;
   dataSource: MatTableDataSource<any>;
 
@@ -56,7 +53,6 @@ export class TankManagementRoomOverviewComponent implements OnInit {
 
   highlightSelectedRow(index) {
     this.selectedRowIndex = index;
-    console.log("Selected row with index #" + index); //TODO DELETE
   }
 
   addRow() {
