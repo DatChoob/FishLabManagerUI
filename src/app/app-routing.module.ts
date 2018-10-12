@@ -35,7 +35,7 @@ const routes: Routes = [
         canActivate: [AdminGuard],
       },
       {
-        path: 'admin/account/details/:id', 
+        path: 'admin/account/details/:participantCode', 
         component: AdminAccountDetailComponent,
         canActivate: [AdminGuard],
       },

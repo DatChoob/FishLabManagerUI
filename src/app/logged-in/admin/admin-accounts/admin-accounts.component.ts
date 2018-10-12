@@ -49,7 +49,6 @@ export class AdminAccountsComponent implements OnInit {
   }
 
   modifyRow() {
-    if(!!this.dataSource)
       this.router.navigate([`./account/details/${this.dataSource.data[this.selectedRowIndex].participantCode}`], { relativeTo: this.route });
   }
 
