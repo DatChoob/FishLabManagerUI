@@ -5,6 +5,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
 import { RoomService } from '../../../shared/api-services/room.service';
 import { cloneDeep } from 'lodash';
+import {MatSnackBar} from '@angular/material';
+import { duration, isDuration } from 'moment';
 @Component({
   selector: 'app-admin-rooms',
   templateUrl: './admin-rooms.component.html',
@@ -15,7 +17,7 @@ export class AdminRoomsComponent implements OnInit {
 
   displayedColumns = ['building', 'roomNumber', 'actionsColumn'];
 
-  constructor(private dialogService: DialogService, private roomService: RoomService) { }
+  constructor(private dialogService: DialogService, public snackBar: MatSnackBar, private roomService: RoomService) { }
 
   ngOnInit() {
     this.roomService.loadRooms().subscribe(rooms => {
@@ -33,6 +35,7 @@ export class AdminRoomsComponent implements OnInit {
       .subscribe(
         allRooms => {
           row.confirmEditCreate();
+          this.snackBar.open("Saved", "", {duration:1000});
         },
         err => console.log(err));        
     } 
@@ -45,6 +48,7 @@ export class AdminRoomsComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           this.roomService.deleteRoom(row.currentData).subscribe(response => {});
+          this.snackBar.open("Room", "DELETED", {duration:1000});
         }
       });
     } else {
@@ -58,4 +62,9 @@ export class AdminRoomsComponent implements OnInit {
       .confirm('Confirm Dialog', 'Are you sure you want to do this?');
   }
 
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+     });
+  }
 }

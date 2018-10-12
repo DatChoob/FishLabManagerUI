@@ -11,6 +11,9 @@ import { updateLocale } from 'moment';
 import { CLIENT_RENEG_LIMIT } from 'tls';
 import { emit } from 'cluster';
 import { OutputType } from '@angular/core/src/view';
+
+import {MatSnackBar} from '@angular/material';
+import { duration, isDuration } from 'moment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -21,7 +24,7 @@ import { OutputType } from '@angular/core/src/view';
 
 export class HomeComponent implements OnInit {
 
-  constructor(private homepageService: HomepageService, public authService: AuthService) { }
+  constructor(private homepageService: HomepageService, public snackBar: MatSnackBar, public authService: AuthService) { }
 
   fishfeed: FishFeed;
   ngOnInit() {
@@ -30,7 +33,7 @@ export class HomeComponent implements OnInit {
       .subscribe(newFishFeed => {
         console.log(newFishFeed);
         this.fishfeed = cloneDeep(newFishFeed)
-
+        //this.snackBar.open("Saved", "", {duration:1000});
       }
       );
 
@@ -51,7 +54,7 @@ export class HomeComponent implements OnInit {
         .subscribe(newFishFeed => {
         console.log(newFishFeed);
         this.fishfeed = cloneDeep(newFishFeed)
-        
+        this.snackBar.open("Saved", "", {duration:1000});
        //bindingUpdated
        //form.value.status.update;
        // this.fishfeed.value.updateStatus; 
@@ -69,6 +72,12 @@ export class HomeComponent implements OnInit {
 
   updateStatus(status: FishFeed ){
     this.homepageService.getLatestStatus
+    
   }
 
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+     });
+  }
 }

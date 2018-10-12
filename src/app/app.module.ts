@@ -48,7 +48,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
 import {MaintenanceGlobalLevelComponent} from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 import { RouterTabModule } from '@zerohouse/router-tab';
-
+import { MatSnackBarModule} from '@angular/material/snack-bar'
 @NgModule({
   declarations: [
     AppComponent,
@@ -99,11 +99,12 @@ import { RouterTabModule } from '@zerohouse/router-tab';
     MatDialogModule,
     LayoutModule,
     MatIconModule,
-    RouterTabModule
+    RouterTabModule,
+    MatSnackBarModule
   ],
   providers: [
     {
-      provide: HTTP_INTERCEPTORS,
+      provide: HTTP_INTERCEPTORS, 
       useClass: AuthInterceptor,
       multi: true
     }
