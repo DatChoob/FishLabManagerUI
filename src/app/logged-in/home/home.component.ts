@@ -21,14 +21,10 @@ export class HomeComponent implements OnInit {
 
   fishfeed: FishFeed;
   ngOnInit() {
-    //ng onit where initlization is done
-    this.homepageService.getLatestStatus()
-      .subscribe(newFishFeed => {
-        console.log(newFishFeed);
-        this.fishfeed = cloneDeep(newFishFeed)
-
-      }
-      );
+    this.homepageService.getLatestStatus().subscribe(newFishFeed => {
+      console.log(newFishFeed);
+      this.fishfeed = cloneDeep(newFishFeed)
+    });
 
   }
 

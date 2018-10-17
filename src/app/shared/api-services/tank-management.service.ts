@@ -32,7 +32,6 @@ export class TankManagementService {
   }
 
   getTankListByRoomId(roomId: number): Observable<Tank[]> {
-    //replace this with a http request
     this.http.get<Tank[]>(`${environment.endpoints.TANK}/room/${roomId}`)
       .subscribe(roomTanksList => {
         this.tankList.next(roomTanksList)
@@ -40,7 +39,7 @@ export class TankManagementService {
       })
     return this.tankList.asObservable()
   }
-  
+
   getTankById(tankId) {
     let tankIndex = this.tankList.value.findIndex(tank => tank.tankId == tankId);
     return this.tankList.value[tankIndex];
@@ -48,7 +47,6 @@ export class TankManagementService {
 
   createTank(newTank: Tank): Observable<Tank[]> {
     let originalData = this.tankList.getValue();
-    // TODO: Remove of() with HTTP request
     return this.http.post<Tank>(`${environment.endpoints.TANK}/${newTank.roomId}`, newTank).pipe(
       map(tank => {
         let indexToUpdate = this.tankList.value.findIndex(tank => tank.tankId == newTank.tankId);
@@ -64,8 +62,6 @@ export class TankManagementService {
   modifyTank(unmodifiedTank: Tank, newTank: Tank): Observable<Tank[]> {
     console.log(newTank);
     let originalData = this.tankList.getValue();
-    // TODO: Remove of() with HTTP request
-    // this.http.get<Tank[]>(`${environment.endpoints.TANK}/${roomId}`)
     return this.http.put<Tank>(`${environment.endpoints.TANK}/${unmodifiedTank.tankId}`, newTank).pipe(
       map(tank => {
         let indexToUpdate = this.tankList.value.findIndex(tank => tank.tankId == unmodifiedTank.tankId);
@@ -78,13 +74,12 @@ export class TankManagementService {
 
   deleteTank(unmodifiedTank: Tank, tankToDelete: Tank): Observable<Tank[]> {
     return this.http.delete<Tank>(`${environment.endpoints.TANK}/${unmodifiedTank.tankId}`).pipe(
-      map(
-        (deletedTank: Tank) => {
-          let indexToDelete = this.tankList.value.findIndex(tank => tank.tankId == deletedTank.tankId);
-          this.tankList.value.splice(indexToDelete, 1);
-          this.tankList.next(this.tankList.value);
-          return this.tankList.value;
-        })
+      map((deletedTank: Tank) => {
+        let indexToDelete = this.tankList.value.findIndex(tank => tank.tankId == deletedTank.tankId);
+        this.tankList.value.splice(indexToDelete, 1);
+        this.tankList.next(this.tankList.value);
+        return this.tankList.value;
+      })
     )
 
   }

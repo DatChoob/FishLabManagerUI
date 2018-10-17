@@ -57,7 +57,6 @@ const routes: Routes = [
         component: TankManagementComponent,
         children:[
           {
-            //tank-mangagement/:roomId
             path:":roomId",
             component: TankManagementRoomOverviewComponent
           }
