@@ -6,6 +6,8 @@ import { TableDataSource, TableElement } from 'angular4-material-table';
 import { ProjectService } from '../../../shared/api-services/project.service';
 import { cloneDeep } from 'lodash';
 import { RoomService } from '../../../shared/api-services/room.service';
+import {MatSnackBar} from '@angular/material';
+import { duration, isDuration } from 'moment';
 
 @Component({
   selector: 'app-admin-projects',
@@ -16,7 +18,14 @@ export class AdminProjectsComponent implements OnInit {
   dataSource: TableDataSource<Project>;
 
   displayedColumns = ['project', 'tankList', 'actionsColumn'];
-  constructor(private dialogService: DialogService, public roomService: RoomService, private projectService: ProjectService) { }
+  // constructor(private dialogService: DialogService, public roomService: RoomService,  
+  //   private projectService: ProjectService) { }
+    constructor(private dialogService: DialogService, public roomService: RoomService, public snackBar: MatSnackBar, 
+      private projectService: ProjectService) { }
+
+
+     
+
 
   ngOnInit() {
 
@@ -28,14 +37,27 @@ export class AdminProjectsComponent implements OnInit {
     });
   }
 
+
   confirmSave(row: TableElement<Project>) {
     if (row.validator.valid)
       this.projectService.createOrUpdate(row.currentData)
         .subscribe(
           allRooms => {
             row.confirmEditCreate();
+            //open snackbar
+            this.snackBar.open("Saved!", "", {duration: 1000});
+            
+            
+            
+              
+
           },
+      
           err => console.log(err));
+            
+            //this.snackBar.open("ERROR", "Not saved", {duration:1000});
+            
+          
   }
 
   cancelOrDelete(row: TableElement<Project>) {
@@ -44,7 +66,12 @@ export class AdminProjectsComponent implements OnInit {
       //delete row from database
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
-          this.projectService.deleteProject(row.currentData).subscribe(response => { });
+          this.projectService.deleteProject(row.currentData).subscribe(response => { 
+            // here for delete
+            this.snackBar.open("Project", "DELETED", {duration:1000});
+            
+
+          });
         }
       });
     } else {
@@ -56,5 +83,11 @@ export class AdminProjectsComponent implements OnInit {
     return this.dialogService
       .confirm('Confirm Dialog', 'Are you sure you want to do this?');
   }
-
-}
+  
+   //this.snackBar.open("Deleted");
+   openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+     });
+  }
+  }

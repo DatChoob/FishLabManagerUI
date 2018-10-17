@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { DialogService } from '../../../shared/dialogs.service';
 import { SpeciesService } from '../../../shared/api-services/species.service';
-
+import {MatSnackBar} from '@angular/material';
+import { duration, isDuration } from 'moment';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class AdminSpeciesComponent implements OnInit {
   displayedColumns = ['originalName', 'commonName', 'currentName', 'actionsColumn'];
   dataSource: TableDataSource<Species>;
 
-  constructor(private speciesService: SpeciesService, private dialogService : DialogService) { }
+  constructor(private speciesService: SpeciesService, public snackBar: MatSnackBar, private dialogService : DialogService) { }
 
 ngOnInit(){
 
@@ -34,6 +35,7 @@ confirmSave(row: TableElement<Species>){
    this.speciesService.createOrUpdate(row.currentData).subscribe(
      allSpecies => {
        row.confirmEditCreate();
+       this.snackBar.open("Saved", "", {duration:1000});
      }, err => console.log(err));
  }
 }
@@ -43,6 +45,7 @@ cancelOrDelete(row: TableElement<Species>){
     this.openDialog().subscribe(userConfirmed =>{
       if(userConfirmed){
         this.speciesService.deleteSpecies(row.currentData).subscribe(resonse => {});
+        this.snackBar.open("Species", "DELETED", {duration:1000});
       }
     });
   }else{
@@ -52,6 +55,12 @@ cancelOrDelete(row: TableElement<Species>){
 
 openDialog(): Observable<boolean>{
   return this.dialogService.confirm('Confirm Dialog', 'Are you sure you want to do this?')
+}
+
+openSnackBar(message: string, action: string) {
+  this.snackBar.open(message, action, {
+    duration: 2000,
+   });
 }
 
 }

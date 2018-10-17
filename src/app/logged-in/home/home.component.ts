@@ -6,7 +6,7 @@ import { FishFeed } from '../../shared/models/fish-feed';
 import { AuthService } from '../../shared/auth.service';
 import { NgForm } from '@angular/forms';
 import { cloneDeep } from "lodash";
-
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -17,7 +17,7 @@ import { cloneDeep } from "lodash";
 
 export class HomeComponent implements OnInit {
 
-  constructor(private homepageService: HomepageService, public authService: AuthService) { }
+  constructor(private homepageService: HomepageService, public snackBar: MatSnackBar, public authService: AuthService) { }
 
   fishfeed: FishFeed;
   ngOnInit() {
@@ -34,8 +34,14 @@ export class HomeComponent implements OnInit {
       this.homepageService.updateStatus(this.fishfeed).subscribe(newFishFeed => {
         console.log(newFishFeed);
         this.fishfeed = cloneDeep(newFishFeed)
+        this.snackBar.open("Saved", "", { duration: 1000 });
       });
     }
   }
-
+  
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
 }

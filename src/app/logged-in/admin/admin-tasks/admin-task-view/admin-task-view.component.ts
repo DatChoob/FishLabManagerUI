@@ -6,6 +6,9 @@ import { MaintenanceTaskDefinitionService } from '../../../../shared/api-service
 import { MaintenanceTaskDefinition } from '../../../../shared/models/mantenance-task-definition';
 import { cloneDeep } from 'lodash';
 import { tap } from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material';
+import { duration, isDuration } from 'moment';
+
 @Component({
   selector: 'app-admin-task-view',
   templateUrl: './admin-task-view.component.html',
@@ -19,7 +22,7 @@ export class AdminTaskViewComponent implements OnInit {
   displayedColumns = ['name', 'actionsColumn'];
   dataSource: TableDataSource<MaintenanceTaskDefinition>;
 
-  constructor(private dialogService: DialogService, private maintenanceTaskDefinitionService: MaintenanceTaskDefinitionService) { }
+  constructor(private dialogService: DialogService, public snackBar: MatSnackBar, private maintenanceTaskDefinitionService: MaintenanceTaskDefinitionService) { }
 
   ngOnInit() {
 
@@ -52,6 +55,7 @@ export class AdminTaskViewComponent implements OnInit {
         .subscribe(
           allTasks => {
             row.confirmEditCreate();
+            this.snackBar.open("Saved!", "", {duration: 1000});
           }, err => console.log(err));
     }
   }
@@ -63,6 +67,7 @@ export class AdminTaskViewComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           this.maintenanceTaskDefinitionService.deleteTask(row.currentData, this.useGlobalTasks).subscribe(resonse => { });
+          this.snackBar.open("Task", "DELETED", {duration:1000});
         }
       });
     } else {
@@ -78,4 +83,9 @@ export class AdminTaskViewComponent implements OnInit {
 
   }
 
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+     });
+  }
 }

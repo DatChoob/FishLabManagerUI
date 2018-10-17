@@ -48,6 +48,7 @@ import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenan
 import { MaintenanceGlobalLevelComponent } from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 import { TankManagementRoomOverviewComponent } from './logged-in/tank-management/tank-management-room-overview/tank-management-room-overview.component';
 import { RouterTabModule } from '@zerohouse/router-tab';
+import { MatSnackBarModule} from '@angular/material/snack-bar'
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,11 +103,12 @@ import { RouterTabModule } from '@zerohouse/router-tab';
     LayoutModule,
     MatSortModule,
     MatIconModule,
-    RouterTabModule
+    RouterTabModule,
+    MatSnackBarModule
   ],
   providers: [
     {
-      provide: HTTP_INTERCEPTORS,
+      provide: HTTP_INTERCEPTORS, 
       useClass: AuthInterceptor,
       multi: true
     }
