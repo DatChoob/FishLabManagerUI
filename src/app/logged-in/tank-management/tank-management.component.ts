@@ -1,10 +1,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
 import { Tank } from '../../shared/models/tank';
 import { TankManagementService } from '../../shared/api-services/tank-management.service'
-import { Observable } from 'rxjs';
-import { subscribeOn } from 'rxjs/operators';
+
 @Component({
   selector: 'app-tank-management',
   templateUrl: './tank-management.component.html',
@@ -21,6 +19,10 @@ export class TankManagementComponent implements OnInit {
   ngOnInit() {
     this.tankManagementService.getRoomList().subscribe(rooms =>{
     })
+
+    
+
+
   }
 
 }

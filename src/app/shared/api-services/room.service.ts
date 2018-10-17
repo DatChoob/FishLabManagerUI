@@ -33,15 +33,12 @@ export class RoomService {
   }
 
   loadRooms(getLatest?: boolean): Observable<Room[]> {
-    if (this.rooms.value.length == 0 || getLatest)
-      return this.http.get(environment.endpoints.ROOM).
-        pipe(
-          map((allRooms: Room[]) => {
-            this.rooms.next(allRooms)
-            return this.rooms.value;
-          })
-        );
-    else return this.rooms.asObservable();
+    if (this.rooms.value.length == 0 || getLatest){
+      this.http.get(environment.endpoints.ROOM).subscribe((allRooms: Room[]) => {
+          this.rooms.next(allRooms)
+      });
+    }
+    return this.rooms.asObservable();
   }
 
   createRoom(roomToCreate: Room): Observable<Room[]> {

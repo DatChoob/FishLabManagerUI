@@ -41,7 +41,7 @@ export class TankManagementService {
     return this.tankList.asObservable()
   }
   
-  getTankByProperty(tankId) {
+  getTankById(tankId) {
     let tankIndex = this.tankList.value.findIndex(tank => tank.tankId == tankId);
     return this.tankList.value[tankIndex];
   }

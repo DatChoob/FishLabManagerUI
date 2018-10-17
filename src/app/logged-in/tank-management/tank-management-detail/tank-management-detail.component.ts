@@ -7,6 +7,8 @@ import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/auth.service'
+import { RoomService } from 'src/app/shared/api-services/room.service';
+import { ParticipantService } from 'src/app/shared/api-services/participant.service';
 
 @Component({
   selector: 'app-tank-management-detail',
@@ -14,48 +16,47 @@ import { AuthService } from '../../../shared/auth.service'
   styleUrls: ['./tank-management-detail.component.css']
 })
 export class TankManagementDetailComponent implements OnInit {
-  id: string;
+  tankId: string;
   currentTank: Tank;
   tankForm: FormGroup;
-
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
     private tankManagementService: TankManagementService,
+    public roomService:RoomService,
+    public participantService: ParticipantService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder,
     public authService: AuthService) {
   }
 
-  tankList: Tank[] = [
-    { tankId: 1, roomId: 2, trialCode: '123', status: 'Pregnant', maintainer_participantCode: 'Cool Fish' },
-    { tankId: 2, roomId: 3, trialCode: '555', status: 'Crispy Fries', maintainer_participantCode: 'Bad Fish' },
-    { tankId: 3, roomId: 4, trialCode: '666', status: 'Dead', maintainer_participantCode: 'Dumb Fish' },
-  ];
-
   statusList = [
-    { value: 'Pregnant' },
-    { value: 'Crispy Fries' },
+    { value: 'Eggs' },
+    { value: 'Wrigglers' },
+    { value: 'Fry' },
+    { value: 'Watch' },
+    { value: 'No Fish' },
     { value: 'Dead' },
-    { value: 'Setup' }
+    { value: 'Other' }
   ];
 
   ngOnInit() {
     //projedctId cannot be updated here. it will be update on the admin page
     //need dropdown of all people for participantCode/ for now just be a textfield
     this.tankForm = this.formBuilder.group({
-      tankId: [{value: '', disabled: !this.authService.userIsAdmin()}, Validators.required],
-      projID: [{value: '', disabled: true}, Validators.required],
-      maintainer_participantCode: [{value: '', disabled: !this.authService.userIsAdmin()}, Validators.required],
-      trialCode: [{value: '', disabled: !this.authService.userIsAdmin()}, Validators.required],
+      roomId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
+      tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
+      projID: [{ value: '', disabled: true }],
+      maintainer_participantCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
+      trialCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
       status: ['', Validators.required],
-      speciesNames: ['', Validators.required]
+      speciesNames: ['']
     });
 
     this.route.paramMap.subscribe(params => {
-      this.id = params.get("id");
-      console.log(this.id);
-      if (this.id) {
-        this.currentTank = cloneDeep(this.tankManagementService.getTankByProperty(this.id));
+      this.tankId = params.get("tankId");
+      console.log(this.tankId);
+      if (this.tankId) {
+        this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));
         this.tankForm.patchValue(this.currentTank);
         console.log(this.currentTank);
       }
@@ -64,40 +65,42 @@ export class TankManagementDetailComponent implements OnInit {
 
 
   confirmAdd(tankForm) {
-    this.openDialog()
-      .subscribe(
-        userConfirmed => {
-          if (userConfirmed) {
-            this.tankManagementService.createTank(tankForm.value).subscribe(Response => { 
-              this.router.navigate(['../../'], {relativeTo: this.route });
+    if (tankForm.valid)
+      this.openDialog()
+        .subscribe(
+          userConfirmed => {
+            if (userConfirmed) {
+              this.tankManagementService.createTank(tankForm.value).subscribe(Response => {
+                this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
 
-            });
+              });
+            }
           }
-        }
-      )
+        )
   }
 
   confirmSave(tankForm) {
-    this.openDialog().subscribe(userConfirmed => {
-          if (userConfirmed) {
-            this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
-              this.router.navigate(['../../'], { relativeTo: this.route });
+    if (tankForm.valid)
+      this.openDialog().subscribe(userConfirmed => {
+        if (userConfirmed) {
+          this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
+            this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
 
-             });
-          }
-        });
+          });
+        }
+      });
   }
 
   confirmDelete(tankForm) {
-    // TODO: Route back to initial tank management page after delete
-    this.openDialog().subscribe(userConfirmed => {
-      if (userConfirmed) {
-        this.tankManagementService.deleteTank(this.currentTank, tankForm.value).subscribe(response => {
-          this.router.navigate(['../../'], { relativeTo: this.route });
+    if (tankForm.valid)
+      this.openDialog().subscribe(userConfirmed => {
+        if (userConfirmed) {
+          this.tankManagementService.deleteTank(this.currentTank, tankForm.value).subscribe(response => {
+            this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
 
-         });
-      }
-    });
+          });
+        }
+      });
   }
 
   openDialog(): Observable<boolean> {

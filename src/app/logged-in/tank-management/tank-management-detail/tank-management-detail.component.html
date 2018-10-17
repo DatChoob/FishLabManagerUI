@@ -13,19 +13,15 @@
 <form [formGroup]="tankForm">
   <div fxLayout="column">
     <mat-form-field>
-      <input matInput type="number" id="tankId" placeholder="Tank ID" formControlName="tankId" required />
+      <input matInput type="number" placeholder="Tank Number" formControlName="tankId" required />
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="text" id="projID" placeholder="Project ID" formControlName="projID" required />
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput type="text"   placeholder="User ID" formControlName="maintainer_participantCode" required />
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput type="text" id="trialCode" placeholder="Trial Code" formControlName="trialCode" required />
+      <mat-select matInput placeholder="Room Number" formControlName="roomId" required>
+        <mat-option *ngFor="let room of roomService.loadRooms() | async" [value]="room.roomId">
+          {{room.building}} {{room.roomNumber}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field>
@@ -37,7 +33,23 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="text" id="speciesNames" placeholder="Species Names" formControlName="speciesNames" />
+      <mat-select matInput placeholder="User ID" formControlName="maintainer_participantCode">
+        <mat-option *ngFor="let participant of participantService.loadParticipants() | async" [value]="participant.participantCode">
+          {{participant.name}} - {{participant.participantCode}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="Project ID" formControlName="projID" />
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="Trial Code" formControlName="trialCode" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Species Names" formControlName="speciesNames" />
     </mat-form-field>
   </div>
 </form>

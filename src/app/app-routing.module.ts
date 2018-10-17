@@ -42,10 +42,7 @@ const routes: Routes = [
         canActivate: [AdminGuard],
       },
       {
-        path: 'maintenance', component: MaintenanceComponent
-      },
-      {
-        path: 'tank-management/:roomId/details/:id', component: TankManagementDetailComponent
+        path: 'tank-management/:roomId/details/:tankId', component: TankManagementDetailComponent
       },
       {
         path: 'tank-management/:roomId/details', component: TankManagementDetailComponent

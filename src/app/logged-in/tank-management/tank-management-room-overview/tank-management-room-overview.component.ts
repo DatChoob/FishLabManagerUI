@@ -43,6 +43,8 @@ export class TankManagementRoomOverviewComponent implements OnInit {
               this.dataSource = new MatTableDataSource(tanksForSelectedRoom);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
+            }else{
+              this.dataSource = new MatTableDataSource([]);
             }
           }
         )
