@@ -1,39 +1,35 @@
-
 <p>User Information</p>
-    <form [formGroup]="participantForm">
-  <div fxLayout="column">
- <!-- <label for="uname"><b>Username</b></label> --> 
-     <mat-form-field>
-        <input matInput type="text" placeholder= "Participant Code" formControlName="participantCode">
-      </mat-form-field>
-      <mat-form-field>
-          <input matInput type="text" placeholder= "Name" formControlName="name">
+<form [formGroup]="participantForm">
+    <div fxLayout="column">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Participant Code" formControlName="participantCode">
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" placeholder= "Password" formControlName="password">
-          </mat-form-field>
+            <input matInput type="text" placeholder="Name" formControlName="name">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="password" placeholder="Password" formControlName="password">
+        </mat-form-field>
 
-  <mat-form-field>
-      <mat-select placeholder="Permission Level" formControlName="role">
-          <mat-option value="admin">Admin</mat-option>
-          <mat-option value="user">User</mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Permission Level" formControlName="role">
+                <mat-option value="admin">Admin</mat-option>
+                <mat-option value="user">User</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-        <mat-select placeholder="Status" formControlName="status">
-            <mat-option value="N">Non Active</mat-option>
-            <mat-option value="Y">Active</mat-option>
-        </mat-select>
-      </mat-form-field> 
+        <mat-form-field>
+            <mat-select placeholder="Status" formControlName="status">
+                <mat-option value="N">Non Active</mat-option>
+                <mat-option value="Y">Active</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-  </div>
-  
+    </div>
+
 </form>
 
 
-<p><button mat-raised-button (click)="confirmSave()">Save</button>
-<p><button mat-raised-button (click)="confirmAdd()">Add</button>
-<p><button mat-raised-button (click)="confirmDelete()">Delete</button>
-
-
+<button *ngIf="participantCode" mat-raised-button (click)="confirmSave()">Save</button>
+<button *ngIf="participantCode" mat-raised-button (click)="confirmDelete()">Delete</button>
+<button *ngIf="!participantCode" mat-raised-button (click)="confirmAdd()">Add</button>
