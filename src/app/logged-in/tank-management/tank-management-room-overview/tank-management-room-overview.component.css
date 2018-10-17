@@ -1,0 +1,11 @@
+table { 
+    width: 100%
+}
+
+.highlight {
+    background: #42A948; /* green */
+}
+
+.mat-form-field{
+    width:100%
+}

@@ -15,8 +15,8 @@ export class MaintenanceGlobalService {
 
   getGlobalMaintenanceTasks(){
     return this.http.get<GlobalMaintenance[]>(`${environment.endpoints.GLOBAL_TASK}`).pipe(
-      tap(roomMaintenancesList => {
-        this.globalTasks.next(roomMaintenancesList)
+      tap(globalMaintenancesList => {
+        this.globalTasks.next(globalMaintenancesList)
       })
     )
   }

@@ -1,3 +1,5 @@
+import { MaintenanceTaskDefinition } from "./mantenance-task-definition";
+
 export class RoomMaintenance {
     roomTaskCompletedId: number;
     roomId: number;
@@ -6,5 +8,5 @@ export class RoomMaintenance {
     date: string;
     lastUpdateId: string;
     lastUpdateTimestamp: Date ;
-    
+    maintenanceTaskDefinition: MaintenanceTaskDefinition;
   }

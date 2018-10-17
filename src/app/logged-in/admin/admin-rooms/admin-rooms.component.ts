@@ -21,10 +21,8 @@ export class AdminRoomsComponent implements OnInit {
 
   ngOnInit() {
     this.roomService.loadRooms().subscribe(rooms => {
-      this.roomService.rooms.subscribe(newRooms => {
-        let clone: Room[] = cloneDeep(newRooms);
-        this.dataSource = new TableDataSource<Room>(clone);
-      })
+      if(rooms.length > 0)
+        this.dataSource = new TableDataSource<Room>(cloneDeep(rooms));
     });
 
   }
