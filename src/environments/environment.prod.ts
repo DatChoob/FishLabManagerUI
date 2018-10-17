@@ -10,6 +10,6 @@ export const environment = {
     ROOM_MAINTENANCE_DEFINITION:"/api/room-task-definition",
     SPECIES: "/api/species",
     FISH_FEED: "/api/fish-feed",
-    ACCOUNT: "/account"  
+    ACCOUNT: "/api/account"  
   }
 };
