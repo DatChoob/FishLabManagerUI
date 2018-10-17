@@ -19,5 +19,5 @@ export class DialogService {
     dialogRef.componentInstance.message = message;
 
     return dialogRef.afterClosed();
-}
+  }
 }

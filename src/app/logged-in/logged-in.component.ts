@@ -13,21 +13,18 @@ import { AuthService } from '../shared/auth.service';
 export class LoggedInComponent implements OnInit {
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+    .pipe(map(result => result.matches));
 
   constructor(private breakpointObserver: BreakpointObserver, public authService:AuthService) { }
 
   ngOnInit() {
   }
 
-
   toggleDrawerIfMobile(drawer: MatSidenav) {
     this.isHandset$.subscribe(isHandset => {
       if (isHandset)
         drawer.toggle();
-    });
+    }).unsubscribe();
 
   }
 }

@@ -9,6 +9,8 @@ import { LoggedInComponent } from './logged-in/logged-in.component';
 import { AuthGuardService } from './shared/auth.guard';
 import { AdminAccountDetailComponent } from './logged-in/admin/admin-accounts/admin-account-detail/admin-account-detail.component';
 import { LogoutComponent } from './logout/logout.component';
+import { TankManagementDetailComponent } from './logged-in/tank-management/tank-management-detail/tank-management-detail.component';
+import { TankManagementRoomOverviewComponent } from './logged-in/tank-management/tank-management-room-overview/tank-management-room-overview.component';
 import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
 import { MaintenanceGlobalLevelComponent } from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 import { AdminGuard } from './shared/admin.guard';
@@ -40,13 +42,25 @@ const routes: Routes = [
         canActivate: [AdminGuard],
       },
       {
+        path: 'tank-management/:roomId/details/:tankId', component: TankManagementDetailComponent
+      },
+      {
+        path: 'tank-management/:roomId/details', component: TankManagementDetailComponent
+      },
+      {
         path: 'admin/account/details', 
         component: AdminAccountDetailComponent,
         canActivate: [AdminGuard],
       },
       {
         path: 'tank-management', 
-        component: TankManagementComponent
+        component: TankManagementComponent,
+        children:[
+          {
+            path:":roomId",
+            component: TankManagementRoomOverviewComponent
+          }
+        ]
       },
       {
         path: 'maintenance', 

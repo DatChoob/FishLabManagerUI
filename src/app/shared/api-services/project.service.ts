@@ -15,9 +15,9 @@ export class ProjectService {
   constructor(private http: HttpClient) { }
 
 
-  getProjects(): Observable<Project[]> {
-    this.http.get<Project[]>(environment.endpoints.PROJECT)
-      .subscribe((projects: Project[]) => {
+  getProjects(getLatest?: boolean): Observable<Project[]> {
+    if (this.projects.value.length == 0 || getLatest)
+      this.http.get<Project[]>(environment.endpoints.PROJECT).subscribe((projects: Project[]) => {
         this.projects.next(projects);
       });
     return this.projects.asObservable();

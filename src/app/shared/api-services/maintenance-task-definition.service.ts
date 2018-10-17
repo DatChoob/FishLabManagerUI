@@ -55,7 +55,6 @@ export class MaintenanceTaskDefinitionService {
 
   createRoomMaintenanceTask(taskToCreate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
     let originalData = this.roomTasks.getValue();
-    //TODO: remove of() with http request
     return this.http.post<MaintenanceTaskDefinition>(environment.endpoints.ROOM_MAINTENANCE_DEFINITION, taskToCreate).pipe(
       map(createdTask => {
         originalData.push(createdTask);
@@ -69,10 +68,8 @@ export class MaintenanceTaskDefinitionService {
   updateRoomMaintenanceTask(taskToUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
 
     let originalData = this.roomTasks.getValue();
-    //TODO: remove of() with http request
     return this.http.put<MaintenanceTaskDefinition>(environment.endpoints.ROOM_MAINTENANCE_DEFINITION + "/" + taskToUpdate.taskId, taskToUpdate).pipe(
       map(updatedTask => {
-        //this is an update. find the index by id and replace the item at the index with our updated one
         let indexToUpdate = this.roomTasks.value.findIndex(roomTask => roomTask.taskId == taskToUpdate.taskId);
         originalData[indexToUpdate] = updatedTask;
 
@@ -107,10 +104,8 @@ export class MaintenanceTaskDefinitionService {
   updateGlobalMaintenanceTask(taskToUpdate: MaintenanceTaskDefinition) : Observable<MaintenanceTaskDefinition[]> {
 
     let originalData = this.globalTasks.getValue();
-    //TODO: remove of() with http request
     return this.http.put<MaintenanceTaskDefinition>(environment.endpoints.GLOBAL_MAINTENANCE_DEFINITION + '/' + taskToUpdate.taskId, taskToUpdate).pipe(
       map(updatedTask => {
-        //this is an update. find the index by id and replace the item at the index with our updated one
         let indexToUpdate = this.globalTasks.value.findIndex(globalTask => globalTask.taskId == taskToUpdate.taskId);
         originalData[indexToUpdate] = updatedTask;
 

@@ -1,0 +1,61 @@
+<p>Tank Information</p>
+<!-- 
+    ngModel on inputs, change row to tank, 
+    show who's (single person, 3 letter username) assigned to the tank, 
+    drop-down with species and number of that species, 
+    user can't change project ID/tank ID/user assigned (make it a label, not a input if it's a user), 
+    display project name not ID,
+    change room the tank is in,
+    trial codes on initial page (ask Ron if he cares)
+    NTH: SnackBar 
+  -->
+
+<form [formGroup]="tankForm">
+  <div fxLayout="column">
+    <mat-form-field>
+      <input matInput type="number" placeholder="Tank Number" formControlName="tankId" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select matInput placeholder="Room Number" formControlName="roomId" required>
+        <mat-option *ngFor="let room of roomService.loadRooms() | async" [value]="room.roomId">
+          {{room.building}} {{room.roomNumber}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select matInput placeholder="Tank Status" name="status" formControlName="status" required>
+        <mat-option *ngFor='let status of statusList' [value]='status.value'>
+          {{ status.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select matInput placeholder="User ID" formControlName="maintainer_participantCode">
+        <mat-option *ngFor="let participant of participantService.loadParticipants() | async" [value]="participant.participantCode">
+          {{participant.name}} - {{participant.participantCode}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="Project ID" formControlName="projID"/>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="Trial Code" formControlName="trialCode" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Species Names" formControlName="speciesNames" />
+    </mat-form-field>
+  </div>
+</form>
+
+<p>
+  <button mat-raised-button *ngIf="!tankId" (click)="confirmAdd(tankForm)">Add</button>
+  <button mat-raised-button *ngIf="tankId" (click)="confirmSave(tankForm)">Save</button>
+  <button mat-raised-button *ngIf="tankId" (click)="confirmDelete(tankForm)">Delete</button>
+</p>
