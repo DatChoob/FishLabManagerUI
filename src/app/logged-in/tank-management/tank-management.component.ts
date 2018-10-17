@@ -14,7 +14,7 @@ export class TankManagementComponent implements OnInit {
 
   tankListArray: Tank[];
 
-  constructor(private tankManagementService: TankManagementService, private router: ActivatedRoute) { }
+  constructor(public tankManagementService: TankManagementService, private router: ActivatedRoute) { }
 
   ngOnInit() {
     this.tankManagementService.getRoomList().subscribe(rooms =>{
