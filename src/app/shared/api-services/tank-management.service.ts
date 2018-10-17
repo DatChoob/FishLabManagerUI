@@ -14,11 +14,11 @@ import { environment } from 'src/environments/environment';
 export class TankManagementService {
 
   constructor(private http: HttpClient) { }
-  
+
   roomList: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>([]);
-  
+
   tankList: BehaviorSubject<Tank[]> = new BehaviorSubject<Tank[]>([]);
-  
+
   roomTanks$: Observable<Room[]> = this.roomList.asObservable();
 
   getRoomList(): Observable<Room[]> {
@@ -33,42 +33,23 @@ export class TankManagementService {
 
   getTankListByRoomId(roomId: number): Observable<Tank[]> {
     //replace this with a http request
-    this.http.get<Tank[]>(`${environment.endpoints.TANK}/${roomId}`)
+    this.http.get<Tank[]>(`${environment.endpoints.TANK}/room/${roomId}`)
       .subscribe(roomTanksList => {
         this.tankList.next(roomTanksList)
         return this.tankList.value;
       })
-      return this.tankList.asObservable()
+    return this.tankList.asObservable()
   }
-
-//   loadSpecies(): Observable<Species[]> {
-//     this.http.get<Species[]>(environment.endpoints.SPECIES)
-//    .subscribe(allSpecies => {
-//          this.species.next(allSpecies)
-//          return this.species.value;
-//    });
-//    return this.species.asObservable();
-//  }
-
-  // getTankListByRoomId(roomId: number): Observable<Tank[]> {
-  //   //replace this with a http request
-  //   this.http.get<Tank[]>(`${environment.endpoints.TANK}/${roomId}`)
-  //     .subscribe(roomTanksList => {
-  //       this.tankList.next(roomTanksList)
-  //     })
-  //     return this.tankList.asObservable()
-  //   //return of(<Tank[]>this.tankList.value);
-  // }
-
+  
   getTankByProperty(tankId) {
     let tankIndex = this.tankList.value.findIndex(tank => tank.tankId == tankId);
     return this.tankList.value[tankIndex];
   }
 
-  createTank(newTank: Tank) {
+  createTank(newTank: Tank): Observable<Tank[]> {
     let originalData = this.tankList.getValue();
     // TODO: Remove of() with HTTP request
-    return of(newTank).pipe(
+    return this.http.post<Tank>(`${environment.endpoints.TANK}/${newTank.roomId}`, newTank).pipe(
       map(tank => {
         let indexToUpdate = this.tankList.value.findIndex(tank => tank.tankId == newTank.tankId);
         if (indexToUpdate == -1) {
@@ -80,24 +61,32 @@ export class TankManagementService {
     );
   }
 
-  modifyTank(unmodifiedTank: Tank, newTank: Tank) {
+  modifyTank(unmodifiedTank: Tank, newTank: Tank): Observable<Tank[]> {
+    console.log(newTank);
     let originalData = this.tankList.getValue();
     // TODO: Remove of() with HTTP request
-    return of(newTank).pipe(
+    // this.http.get<Tank[]>(`${environment.endpoints.TANK}/${roomId}`)
+    return this.http.put<Tank>(`${environment.endpoints.TANK}/${unmodifiedTank.tankId}`, newTank).pipe(
       map(tank => {
         let indexToUpdate = this.tankList.value.findIndex(tank => tank.tankId == unmodifiedTank.tankId);
-        originalData[indexToUpdate] = newTank;
+        originalData[indexToUpdate] = tank;
         this.tankList.next(originalData);
         return this.tankList.value;
       })
     );
   }
 
-  deleteTank(unmodifiedTank: Tank, tankToDelete: Tank) {
-    let indexToDelete = this.tankList.value.findIndex(tank => tank.tankId == unmodifiedTank.tankId);
-    this.tankList.value.splice(indexToDelete, 1);
-    this.tankList.next(this.tankList.value);
-    return of(tankToDelete);
+  deleteTank(unmodifiedTank: Tank, tankToDelete: Tank): Observable<Tank[]> {
+    return this.http.delete<Tank>(`${environment.endpoints.TANK}/${unmodifiedTank.tankId}`).pipe(
+      map(
+        (deletedTank: Tank) => {
+          let indexToDelete = this.tankList.value.findIndex(tank => tank.tankId == deletedTank.tankId);
+          this.tankList.value.splice(indexToDelete, 1);
+          this.tankList.next(this.tankList.value);
+          return this.tankList.value;
+        })
+    )
+
   }
 
 }

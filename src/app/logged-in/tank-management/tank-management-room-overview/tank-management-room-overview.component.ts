@@ -27,7 +27,7 @@ export class TankManagementRoomOverviewComponent implements OnInit {
     public authService: AuthService) { }
 
   roomId: number;
-  
+
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       //triggered every time the url changes
@@ -39,16 +39,15 @@ export class TankManagementRoomOverviewComponent implements OnInit {
         //get the tanks for this room
         this.tankManagementService.getTankListByRoomId(this.roomId).subscribe(
           tanksForSelectedRoom => {
-            //ignore this error. it still works
-            this.dataSource = new MatTableDataSource(tanksForSelectedRoom);
-            // console.log(this.dataSource)
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-            // console.log(this.dataSource)
+            if (tanksForSelectedRoom.length > 0) {
+              this.dataSource = new MatTableDataSource(tanksForSelectedRoom);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            }
           }
         )
       }
-    })    
+    })
   }
 
   applyFilter(filterValue: string) {

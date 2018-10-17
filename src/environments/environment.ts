@@ -16,8 +16,8 @@ export const environment = {
     GLOBAL_MAINTENANCE_DEFINITION: host + "/global-task-definition",
     ROOM_MAINTENANCE_DEFINITION: host + "/room-task-definition",
     SPECIES: host + "/species",
-    FISH_FEED: host+"/fish-feed",
-    TANK: host+"/tank-management"
+    FISH_FEED: host + "/fish-feed",
+    TANK: host + "/tank"
   }
 
 };

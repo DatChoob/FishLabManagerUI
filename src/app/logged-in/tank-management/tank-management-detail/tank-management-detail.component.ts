@@ -40,11 +40,13 @@ export class TankManagementDetailComponent implements OnInit {
   ];
 
   ngOnInit() {
+    //projedctId cannot be updated here. it will be update on the admin page
+    //need dropdown of all people for participantCode/ for now just be a textfield
     this.tankForm = this.formBuilder.group({
-      tankId: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
-      projID: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
-      maintainer_participantCode: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
-      trialCode: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
+      tankId: [{value: '', disabled: !this.authService.userIsAdmin()}, Validators.required],
+      projID: [{value: '', disabled: true}, Validators.required],
+      maintainer_participantCode: [{value: '', disabled: !this.authService.userIsAdmin()}, Validators.required],
+      trialCode: [{value: '', disabled: !this.authService.userIsAdmin()}, Validators.required],
       status: ['', Validators.required],
       speciesNames: ['', Validators.required]
     });
@@ -66,20 +68,22 @@ export class TankManagementDetailComponent implements OnInit {
       .subscribe(
         userConfirmed => {
           if (userConfirmed) {
-            this.tankManagementService.createTank(tankForm.value).subscribe(Response => { });
-            this.router.navigate(['../../'], {relativeTo: this.route });
+            this.tankManagementService.createTank(tankForm.value).subscribe(Response => { 
+              this.router.navigate(['../../'], {relativeTo: this.route });
+
+            });
           }
         }
       )
   }
 
   confirmSave(tankForm) {
-    this.openDialog()
-      .subscribe(
-        userConfirmed => {
+    this.openDialog().subscribe(userConfirmed => {
           if (userConfirmed) {
-            this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => { });
-            this.router.navigate(['../../'], { relativeTo: this.route });
+            this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
+              this.router.navigate(['../../'], { relativeTo: this.route });
+
+             });
           }
         });
   }
@@ -88,8 +92,10 @@ export class TankManagementDetailComponent implements OnInit {
     // TODO: Route back to initial tank management page after delete
     this.openDialog().subscribe(userConfirmed => {
       if (userConfirmed) {
-        this.tankManagementService.deleteTank(this.currentTank, tankForm.value).subscribe(response => { });
-        this.router.navigate(['../../'], { relativeTo: this.route });
+        this.tankManagementService.deleteTank(this.currentTank, tankForm.value).subscribe(response => {
+          this.router.navigate(['../../'], { relativeTo: this.route });
+
+         });
       }
     });
   }
