@@ -43,6 +43,7 @@
 </form>
 
 <p>
-  <button mat-raised-button (click)="confirmSave(tankForm)">Save</button>
-  <button mat-raised-button (click)="confirmDelete(tankForm)">Delete</button>
+  <button mat-raised-button *ngIf="!id" (click)="confirmAdd(tankForm)">Add</button>
+  <button mat-raised-button *ngIf="id" (click)="confirmSave(tankForm)">Save</button>
+  <button mat-raised-button *ngIf="id" (click)="confirmDelete(tankForm)">Delete</button>
 </p>

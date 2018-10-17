@@ -22,7 +22,6 @@ export class LoggedInComponent implements OnInit {
   ngOnInit() {
   }
 
-
   toggleDrawerIfMobile(drawer: MatSidenav) {
     this.isHandset$.subscribe(isHandset => {
       if (isHandset)

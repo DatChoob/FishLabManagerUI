@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Tank } from '../../../shared/models/tank';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TankManagementService } from '../../../shared/api-services/tank-management.service';
+import { AuthService } from 'src/app/shared/auth.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class TankManagementRoomOverviewComponent implements OnInit {
 
   constructor(private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private tankManagementService: TankManagementService) { }
+    private tankManagementService: TankManagementService,
+    public authService: AuthService) { }
 
   roomId: number;
   

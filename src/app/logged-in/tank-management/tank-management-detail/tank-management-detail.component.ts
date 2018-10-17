@@ -6,6 +6,7 @@ import { DialogService } from '../../../shared/dialogs.service'
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../shared/auth.service'
 
 @Component({
   selector: 'app-tank-management-detail',
@@ -21,7 +22,8 @@ export class TankManagementDetailComponent implements OnInit {
     private readonly router: Router,
     private tankManagementService: TankManagementService,
     private dialogService: DialogService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    public authService: AuthService) {
   }
 
   tankList: Tank[] = [
@@ -35,16 +37,16 @@ export class TankManagementDetailComponent implements OnInit {
     { value: 'Crispy Fries' },
     { value: 'Dead' },
     { value: 'Setup' }
-  ]
+  ];
 
   ngOnInit() {
     this.tankForm = this.formBuilder.group({
-      tankId: ['', Validators.required],
-      projID: ['', Validators.required],
-      maintainer_participantCode: ['', Validators.required],
-      trialCode: ['', Validators.required],
+      tankId: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
+      projID: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
+      maintainer_participantCode: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
+      trialCode: [{value: '', disabled: this.authService.userIsAdmin()}, Validators.required],
       status: ['', Validators.required],
-      speciesNames: ['']
+      speciesNames: ['', Validators.required]
     });
 
     this.route.paramMap.subscribe(params => {
@@ -58,12 +60,25 @@ export class TankManagementDetailComponent implements OnInit {
     });
   }
 
+
+  confirmAdd(tankForm) {
+    this.openDialog()
+      .subscribe(
+        userConfirmed => {
+          if (userConfirmed) {
+            this.tankManagementService.createTank(tankForm.value).subscribe(Response => { });
+            this.router.navigate(['../../'], {relativeTo: this.route });
+          }
+        }
+      )
+  }
+
   confirmSave(tankForm) {
     this.openDialog()
       .subscribe(
         userConfirmed => {
           if (userConfirmed) {
-            this.tankManagementService.createOrUpdateTank(this.currentTank, tankForm.value).subscribe(response => { });
+            this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => { });
             this.router.navigate(['../../'], { relativeTo: this.route });
           }
         });

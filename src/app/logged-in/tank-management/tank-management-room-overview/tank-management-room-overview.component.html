@@ -43,6 +43,6 @@
     [pageSizeOptions]="[5, 10, 25, 50, 100, 250]">
   </mat-paginator>
 
-  <button mat-raised-button (click)="addRow()">Add</button>
+  <button *ngIf="authService.userIsAdmin()" mat-raised-button (click)="addRow()">Add</button>
   <button mat-raised-button (click)="modifyRow()">Modify</button>
 </div>
