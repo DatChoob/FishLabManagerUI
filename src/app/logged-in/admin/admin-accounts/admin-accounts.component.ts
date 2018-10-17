@@ -38,8 +38,6 @@ export class AdminAccountsComponent implements OnInit {
     });
   }
 
-
-
   highlightSelectedRow(selectedParticipant) {
     console.log(selectedParticipant);
     this.selectedParticipant = selectedParticipant;
