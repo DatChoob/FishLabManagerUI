@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/auth.service'
 import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
+import { ProjectService } from 'src/app/shared/api-services/project.service';
 
 @Component({
   selector: 'app-tank-management-detail',
@@ -24,6 +25,7 @@ export class TankManagementDetailComponent implements OnInit {
     private tankManagementService: TankManagementService,
     public roomService:RoomService,
     public participantService: ParticipantService,
+    public projectService: ProjectService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder,
     public authService: AuthService) {
@@ -58,6 +60,11 @@ export class TankManagementDetailComponent implements OnInit {
       if (this.tankId) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));
         this.tankForm.patchValue(this.currentTank);
+        let projectNames =  []
+        this.currentTank.projects.forEach(project=>
+          projectNames.push(project.name)
+        )
+        this.tankForm.patchValue({"projID":projectNames.join(", ")});
         console.log(this.currentTank);
       }
     });
