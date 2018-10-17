@@ -1,8 +1,4 @@
 <mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
-
-
-
-
   <ng-container matColumnDef="currentName">
     <mat-header-cell *matHeaderCellDef> Current Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
@@ -53,3 +49,10 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+
+<div fxLayout="row" fxLayoutAlign="center" *ngIf="dataSource?.data?.length == 0">
+  <mat-spinner 
+    color="primary"
+    mode="indeterminate">
+  </mat-spinner>
+</div>
