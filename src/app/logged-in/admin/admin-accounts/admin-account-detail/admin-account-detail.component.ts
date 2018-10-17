@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { TableDataSource, TableElement } from 'angular4-material-table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
+import { ParticipantService } from '../../../../shared/api-services/participant.service';
+import { Participant } from '../../../../shared/models/participant';
+import { NgForm, FormControl, FormGroup } from '@angular/forms';
+import { DialogService } from 'src/app/shared/dialogs.service';
 
-export interface Food {
-  value: string;
-  status: string;
-
-}
 
 @Component({
   selector: 'app-admin-account-detail',
@@ -14,63 +14,101 @@ export interface Food {
   styleUrls: ['./admin-account-detail.component.css']
 })
 export class AdminAccountDetailComponent implements OnInit {
+  @ViewChild('f')
+  subscription: Subscription;
+  participantInfo: Participant;
+  participantForm: FormGroup;
+  editedItem: Participant;
 
-  id : string;
-  constructor(private readonly route: ActivatedRoute) {
-    this.id = route.snapshot.paramMap.get('id');
-    console.log(this.id);
+  participantCode: string;
+  name: string;
+  constructor(private readonly route: ActivatedRoute, private accountDetails: ParticipantService, private router: Router,
+    private dialogService: DialogService) {
+
   }
-  displayedColumns = ['projectName', 'status', 'actionsColumn'];
 
-  @Input() taskList:Person[] = [
-    { index: 0, projectName: 'Mark', status: 15 },
-    { index: 1, projectName: 'Brad', status: 50 },
-  ];
-
-  foods: Food[] = [
-    {value: 'steak', status: 'OK'},
-    {value: 'pizza', status: 'OK'},
-    {value: 'tacos', status: 'No'}
-  ];
-
-  dataSource: TableDataSource<Person>;
   ngOnInit() {
-    this.dataSource = new TableDataSource<any>(this.taskList, Person);
-
-    this.dataSource.datasourceSubject.subscribe(taskList => {
-      console.log(taskList);
-
+    this.participantForm = new FormGroup({
+      name: new FormControl(''),
+      participantCode: new FormControl(''),
+      password: new FormControl(''),
+      role: new FormControl(''),
+      status: new FormControl(''),
     });
-  }
-
-  confirmSave(row: TableElement<any>) {
-    console.log(this.taskList);
-    console.log(row);
-    if (row.id == -1) {
-      row.currentData.index=this.taskList.length;
-      
-      // we are creating a new row
-    } else {
-      //we are editing a row
+    this.participantCode = this.route.snapshot.paramMap.get('participantCode');
+    if (this.participantCode != null) {
+      this.participantInfo = this.accountDetails.getParticipant(this.participantCode);
+      if (this.participantInfo == null) {
+        this.router.navigate(["/"])
+        return;
+      }
+      console.log(this.participantCode);
+      this.participantForm.patchValue(this.participantInfo);
     }
-    row.confirmEditCreate();
+
   }
 
-  cancelOrDelete(row: TableElement<any>) {
-    console.log(row);
-    if (!row.editing) {
+  confirmSave() {
+    console.log(this.participantForm);
+    if(this.participantForm.valid){
+      console.log(this.participantForm.value);
+      let updatedParticipant:Participant = this.participantForm.value; 
+      this.openDialog().subscribe(
+        (confirmed:boolean) => {
+          if(confirmed){
+            this.accountDetails.saveParticipant(this.participantInfo.participantCode,updatedParticipant)
+            .subscribe( (apiParticipant) => 
+              this.router.navigate(["/admin"],{ relativeTo: this.route })
+            );
+          }
+        }
+      )
+    
+    }
+  }
+
+  confirmDelete() {
+    console.log(this.participantForm);
+    if(this.participantForm.valid){
+      console.log(this.participantForm.value);
+      let deletedParticipant:Participant = this.participantForm.value;
+      this.openDialog().subscribe(
+        (confirmed:boolean) => {
+          if(confirmed){
+            this.accountDetails.deleteParticipant(deletedParticipant)
+            .subscribe( (apiDeleteParticipant) =>
+            this.router.navigate(["/admin"], {relativeTo: this.route})
+            )
+          }
+        }
+      )
+    }
       //means row was in not edit mode and we are deleting entry
       //delete row from database
-    }
-    row.cancelOrDelete();
+   
   }
-  
-}
 
-class Person {
-  index:number;
-  projectName: string;
-  status: number;
+  confirmAdd(){
+    console.log(this.participantForm);
+    if(this.participantForm.valid){
+      console.log(this.participantForm.value);
+      let newParticipant:Participant = this.participantForm.value;
+      this.openDialog().subscribe(
+        (confirmed:boolean) => {
+          if(confirmed){
+            this.accountDetails.addParticipant(newParticipant)
+            .subscribe((apiNewParticipant) =>
+            this.router.navigate(["/admin"]))
+          }
+        }
+      )
+    }
+  }
+
+  openDialog(): Observable<boolean>{
+    return this.dialogService.confirm('Confirm Dialog', 'Are you sure you want to do this?')
+  }
+
 }
 
 

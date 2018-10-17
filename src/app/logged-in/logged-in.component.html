@@ -9,7 +9,7 @@
       <mat-toolbar color="primary">Menu</mat-toolbar>
       <mat-nav-list>
         <a mat-list-item routerLink ="" (click)="toggleDrawerIfMobile(drawer)">Home</a>
-        <a mat-list-item routerLink ="/maintenance" (click)="toggleDrawerIfMobile(drawer)">Maintenance</a>
+        <a mat-list-item routerLink ="/maintenance/global" (click)="toggleDrawerIfMobile(drawer)">Maintenance</a>
         <a mat-list-item routerLink ="/tank-management" (click)="toggleDrawerIfMobile(drawer)">Tank Management</a>
         <a *ngIf="authService.userIsAdmin()" mat-list-item routerLink ="/admin" (click)="toggleDrawerIfMobile(drawer)">Admin</a>
         <a mat-list-item routerLink ="/logout">Logout</a>

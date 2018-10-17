@@ -25,10 +25,6 @@
             </mat-option>
           </mat-optgroup>
         </mat-select>
-        <!-- <mat-select matInput placeholder="Tanks" [(ngModel)]='row.currentData.tankList' required [disabled]="!row.editing"
-          multiple>
-          <mat-option *ngFor="let tank of allTanks" [value]="room">{{tank | json}}</mat-option>
-        </mat-select> -->
       </mat-form-field>
     </mat-cell>
   </ng-container>
@@ -52,3 +48,9 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+<div fxLayout="row" fxLayoutAlign="center" *ngIf="dataSource == null">
+  <mat-spinner 
+  color="primary"
+  mode="indeterminate">
+  </mat-spinner>
+</div>

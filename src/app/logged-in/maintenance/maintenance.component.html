@@ -1,12 +1,12 @@
-<mat-tab-group >
-  <mat-tab label="Global Level">
+<mat-tab-group routerTabs>
+  <mat-tab label="Global Level" routerLink="global">
     <app-maintenance-global-level></app-maintenance-global-level>
   </mat-tab>
-  <mat-tab label= "Room Level"> 
+  <mat-tab label= "Room Level" routerLink="room"> 
       <mat-tab-group routerTabs>  
         <mat-tab [label]= "room.building + ' ' + room.roomNumber" 
         *ngFor="let room of maintenanceRoomService.roomInfo$ | async" 
-        [routerLink]="room.roomId">
+        [routerLink]="buildRoomUrl(room.roomId)">
         </mat-tab>
       </mat-tab-group>
       <router-outlet></router-outlet>

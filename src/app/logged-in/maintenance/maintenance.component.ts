@@ -16,15 +16,11 @@ export class MaintenanceComponent implements OnInit {
 
   ngOnInit() {
     this.maintenanceRoomService.getRoomList().subscribe(rooms=>{
-      this.maintenanceRoomService.roomTasks.subscribe(data => {
         //we do a deep clone so that any edits in the table don't reflect in our globalTasks in the service
-      });
 
     })
   }
-  onLinkClick(event: MatTabChangeEvent){
-    console.log('event => ', event);
-    console.log('index => ', event.index);
-    console.log('tab => ', event.tab);
+  buildRoomUrl(roomId){
+    return "room/" + roomId
   }
 }

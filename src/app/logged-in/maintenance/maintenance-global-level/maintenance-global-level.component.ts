@@ -16,7 +16,7 @@ export class MaintenanceGlobalLevelComponent implements OnInit {
 
   constructor(private dialogService: DialogService, private maintenanceGlobalService: MaintenanceGlobalService) { }
 
-  displayedColumns = ['task', 'user', 'date', 'toggle'];
+  displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<GlobalMaintenance>;
 
   ngOnInit() {

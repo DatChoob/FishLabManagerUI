@@ -37,7 +37,7 @@ const routes: Routes = [
         canActivate: [AdminGuard],
       },
       {
-        path: 'admin/account/details/:id', 
+        path: 'admin/account/details/:participantCode', 
         component: AdminAccountDetailComponent,
         canActivate: [AdminGuard],
       },
@@ -71,7 +71,15 @@ const routes: Routes = [
         component: MaintenanceComponent,
         children:[
           {
-            path:':roomId',
+            path:'global',
+            component: MaintenanceGlobalLevelComponent
+          },
+          {
+            path:'room/:roomId',
+            component: MaintenanceRoomLevelComponent
+          },
+          {
+            path:'room',
             component: MaintenanceRoomLevelComponent
           }
         ]
