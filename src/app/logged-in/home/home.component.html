@@ -6,7 +6,7 @@
     <br /> Today's Fish Status - {{fishfeed.status}}
     <br />
     <br /> Last Fed by {{fishfeed.participantCode}} 
-    <br /> {{fishfeed.dateTimeUpdated | date :'medium' : 'GMT'}}
+    <br /> {{fishfeed.dateTimeUpdated | date:'MMM d, y, h:mm a'}}
   </p>
   <form (ngSubmit) = "onSubmit(form)" #form = "ngForm" *ngIf="fishfeed.status != 'Completed'">
     <p>Was fish fed by you today?</p>
