@@ -19,7 +19,7 @@ export class AdminAccountsComponent implements OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['participantCode','name','role'];
 
-  selectedRowIndex = 0;
+  selectedParticipant:Participant;
 
   constructor(private readonly router: Router,
     private readonly route: ActivatedRoute, private participantService: ParticipantService) {
@@ -32,7 +32,7 @@ export class AdminAccountsComponent implements OnInit {
 
     this.participantService.loadParticipants().subscribe(participants => {
       if(participants.length > 0) {
-        this.selectedRowIndex = 0;
+        this.selectedParticipant = participants[0];
         this.dataSource.data = participants
       }
     });
@@ -40,8 +40,9 @@ export class AdminAccountsComponent implements OnInit {
 
 
 
-  highlightSelectedRow(index) {
-    this.selectedRowIndex = index;
+  highlightSelectedRow(selectedParticipant) {
+    console.log(selectedParticipant);
+    this.selectedParticipant = selectedParticipant;
   }
 
   addRow() {
@@ -49,10 +50,9 @@ export class AdminAccountsComponent implements OnInit {
   }
 
   modifyRow() {
-      this.router.navigate([`./account/details/${this.dataSource.data[this.selectedRowIndex].participantCode}`], { relativeTo: this.route });
+      this.router.navigate([`./account/details/${this.selectedParticipant.participantCode}`], { relativeTo: this.route });
   }
-
-
+  
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
