@@ -3,10 +3,10 @@
   <!-- this the the welcome part -->
   <h1>Welcome {{authService.getLoggedInUserName()}}</h1>
   <p>Today's Fish Feeding Status - {{fishfeed.status}}</p>
-  
+
   <p *ngIf="fishfeed.status != 'On the way'">Last Fed by {{fishfeed.participantCode}}</p>
   <p *ngIf="fishfeed.status == 'On the way'">{{fishfeed.participantCode}} is on the way</p>
-  <p>{{fishfeed.dateTimeUpdated | date:'MMM d, y, h:mm a'}}</p>
+  <p>{{fishfeed.dateTimeUpdated | date:'MMM d, y, h:mm a':'+0000'}}</p>
   <br />
 
   <form (ngSubmit)="onSubmit(form)" #form="ngForm" *ngIf="fishfeed.status != 'Completed'">
