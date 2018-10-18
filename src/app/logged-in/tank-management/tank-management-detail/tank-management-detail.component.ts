@@ -32,12 +32,12 @@ export class TankManagementDetailComponent implements OnInit {
   }
 
   statusList = [
+    { value: 'No Fish' },
     { value: 'Eggs' },
     { value: 'Wrigglers' },
     { value: 'Fry' },
-    { value: 'Watch' },
-    { value: 'No Fish' },
     { value: 'Dead' },
+    { value: 'Watch' },
     { value: 'Other' }
   ];
 
@@ -47,9 +47,9 @@ export class TankManagementDetailComponent implements OnInit {
     this.tankForm = this.formBuilder.group({
       roomId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
       tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
-      projID: [{ value: '', disabled: true }],
+      projNames: [{ value: '', disabled: true }],
       maintainer_participantCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
-      trialCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
+      trialCode: [{ value: '' }],
       status: ['', Validators.required],
       speciesNames: ['']
     });
@@ -64,7 +64,7 @@ export class TankManagementDetailComponent implements OnInit {
         this.currentTank.projects.forEach(project=>
           projectNames.push(project.name)
         )
-        this.tankForm.patchValue({"projID":projectNames.join(", ")});
+        this.tankForm.patchValue({"projNames":projectNames.join(", ")});
         console.log(this.currentTank);
       }
     });
