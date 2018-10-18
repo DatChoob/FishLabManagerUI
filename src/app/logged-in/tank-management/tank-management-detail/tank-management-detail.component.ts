@@ -49,7 +49,7 @@ export class TankManagementDetailComponent implements OnInit {
       tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
       projNames: [{ value: '', disabled: true }],
       maintainer_participantCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
-      trialCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
+      trialCode: [{ value: '' }],
       status: ['', Validators.required],
       speciesNames: ['']
     });
