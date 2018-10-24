@@ -9,7 +9,7 @@
   <p>{{fishfeed.dateTimeUpdated | date:'MMM d, y, h:mm a':'+0000'}}</p>
   <br />
 
-  <form (ngSubmit)="onSubmit(form)" #form="ngForm" *ngIf="fishfeed.status != 'Completed'">
+  <form (ngSubmit)="onSubmit(form)" #form="ngForm" *ngIf="fishfeed.status != 'Completed' && !authService.userIsViewOnly()">
     <p>Change fish feeding status</p>
     <mat-form-field>
       <mat-select name="status" placeholder="Fish Fed" required ngModel>

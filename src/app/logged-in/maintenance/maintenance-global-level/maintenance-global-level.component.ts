@@ -6,6 +6,7 @@ import { DialogService } from '../../../shared/dialogs.service';
 import { GlobalMaintenance } from '../../../shared/models/globalMaintenance';
 import { MaintenanceGlobalService } from '../../../shared/api-services/maintenance-global.service';
 import { MatTableDataSource } from '@angular/material';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-maintenance-global-level',
@@ -14,7 +15,7 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class MaintenanceGlobalLevelComponent implements OnInit {
 
-  constructor(private dialogService: DialogService, private maintenanceGlobalService: MaintenanceGlobalService) { }
+  constructor(private dialogService: DialogService, private maintenanceGlobalService: MaintenanceGlobalService, public authService:AuthService) { }
 
   displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<GlobalMaintenance>;

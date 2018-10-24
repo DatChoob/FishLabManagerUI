@@ -60,7 +60,16 @@ export class AuthService {
       console.error(err);
       return false;
     }
+  }
 
+  userIsViewOnly(): boolean {
+    let access_token: any = JWT(localStorage.getItem("access_token"))
+    try {
+      return access_token.identity.userData.role == "view";
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
   }
 
   getExpiration() {

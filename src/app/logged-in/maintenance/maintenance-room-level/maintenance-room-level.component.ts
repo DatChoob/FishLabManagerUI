@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { RoomMaintenance } from '../../../shared/models/roomMaintenance';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-maintenance-room-level',
@@ -20,7 +21,7 @@ export class MaintenanceRoomLevelComponent implements OnInit {
   @Input() roomId;
   
   constructor(private readonly route: ActivatedRoute, private dialogService: DialogService, 
-    private maintenanceRoomService: MaintenanceRoomService) { }
+    private maintenanceRoomService: MaintenanceRoomService, public authService:AuthService) { }
 
   displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<RoomMaintenance>;
