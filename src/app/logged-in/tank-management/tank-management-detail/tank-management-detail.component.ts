@@ -16,6 +16,7 @@ import { ProjectService } from 'src/app/shared/api-services/project.service';
   templateUrl: './tank-management-detail.component.html',
   styleUrls: ['./tank-management-detail.component.css']
 })
+
 export class TankManagementDetailComponent implements OnInit {
   tankId: string;
   currentTank: Tank;
@@ -57,8 +58,10 @@ export class TankManagementDetailComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.tankId = params.get("tankId");
       console.log(this.tankId);
+      this.tankForm.patchValue({"roomId": +(params.get("roomId"))});
       if (this.tankId) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));
+        this.currentTank.roomId = +(params.get("roomId"));
         this.tankForm.patchValue(this.currentTank);
         let projectNames =  []
         this.currentTank.projects.forEach(project=>

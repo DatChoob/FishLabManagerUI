@@ -18,7 +18,8 @@ export class TankManagementRoomOverviewComponent implements OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns: string[] = ['tankId', 'trialCode', 'status', 'maintainer_participantCode'];
-  selectedRowIndex = 0;
+  selectedTankId = 0;
+
   dataSource: MatTableDataSource<Tank>;
 
   constructor(private readonly router: Router,
@@ -35,7 +36,6 @@ export class TankManagementRoomOverviewComponent implements OnInit {
       this.roomId = +params.get("roomId");
       if (this.roomId) {
         console.log(this.roomId)
-        this.selectedRowIndex = 0;
         //get the tanks for this room
         this.tankManagementService.getTankListByRoomId(this.roomId).subscribe(
           tanksForSelectedRoom => {
@@ -59,8 +59,8 @@ export class TankManagementRoomOverviewComponent implements OnInit {
     }
   }
 
-  highlightSelectedRow(index) {
-    this.selectedRowIndex = index;
+  highlightSelectedRow(tankId) {
+    this.selectedTankId = tankId;
   }
 
   addRow() {
@@ -68,7 +68,7 @@ export class TankManagementRoomOverviewComponent implements OnInit {
   }
 
   modifyRow() {
-    this.router.navigate(['details/' + this.dataSource.data[this.selectedRowIndex].tankId], { relativeTo: this.route });
+    this.router.navigate(['details/' + this.selectedTankId], { relativeTo: this.route });
   }
 
 }
