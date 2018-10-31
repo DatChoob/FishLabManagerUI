@@ -1,4 +1,8 @@
-<mat-tab-group routerTabs>
+<h3 fxLayout="row" fxLayoutAlign = "center"> 
+  Week of {{dateSunday() | date }} &mdash; {{dateSaturday() | date}}  
+</h3>
+
+<mat-tab-group routerTabs> 
   <mat-tab label="Global Level" routerLink="global">
     <app-maintenance-global-level></app-maintenance-global-level>
   </mat-tab>

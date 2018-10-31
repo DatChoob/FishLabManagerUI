@@ -31,8 +31,8 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index"
-      [ngClass]="{'highlight': selectedRowIndex == i}"
-      (click)="highlightSelectedRow(i)">
+      [ngClass]="{'highlight': selectedTankId == row.tankId}"
+      (click)="highlightSelectedRow(row.tankId)"> 
     </tr>
   </table>
 

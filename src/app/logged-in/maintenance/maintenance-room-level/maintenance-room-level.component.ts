@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { TableDataSource, TableElement } from 'angular4-material-table';
-import { cloneDeep } from 'lodash';
 import { MaintenanceRoomService } from '../../../shared/api-services/maintenance-room.service';
 import { DialogService } from '../../../shared/dialogs.service';
 import { Observable } from 'rxjs';
@@ -9,6 +7,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service';
 
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-maintenance-room-level',
   templateUrl: './maintenance-room-level.component.html',
@@ -21,7 +20,7 @@ export class MaintenanceRoomLevelComponent implements OnInit {
   @Input() roomId;
   
   constructor(private readonly route: ActivatedRoute, private dialogService: DialogService, 
-    private maintenanceRoomService: MaintenanceRoomService, public authService:AuthService) { }
+    private maintenanceRoomService: MaintenanceRoomService, public authService:AuthService, private snackBar: MatSnackBar,) { }
 
   displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<RoomMaintenance>;
@@ -50,6 +49,7 @@ export class MaintenanceRoomLevelComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           row.status = 'Completed'
+          this.snackBar.open(" Task Saved", "", { duration: 1000 });
           this.maintenanceRoomService.updateRowInformation(row)
           .subscribe(maintenanceList => console.log(maintenanceList))
         }
@@ -62,5 +62,9 @@ export class MaintenanceRoomLevelComponent implements OnInit {
     return this.dialogService
       .confirm('Confirm Dialog', 'Are you sure you want to do this?');
   }
-
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
 }
