@@ -11,8 +11,9 @@ import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
 import { ProjectService } from 'src/app/shared/api-services/project.service';
 import { SpeciesService } from '../../../shared/api-services/species.service';
-import { Species } from '../../../shared/models/species';
+import { SpeciesInTank } from '../../../shared/models/species-in-tank';
 import { TableDataSource } from 'angular4-material-table';
+import { Species } from 'src/app/shared/models/species';
 
 @Component({
   selector: 'app-tank-management-detail',
@@ -23,7 +24,7 @@ export class TankManagementDetailComponent implements OnInit {
   tankId: string;
   currentTank: Tank;
   tankForm: FormGroup;
-  dataSource: TableDataSource<Species>;
+  dataSource: TableDataSource<SpeciesInTank>;
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
     private tankManagementService: TankManagementService,
@@ -71,6 +72,9 @@ export class TankManagementDetailComponent implements OnInit {
           if (project.name != null)
             projectNames.push(project.name)
         })
+        
+        
+        
         console.log(projectNames);
         this.tankForm.patchValue({ "projNames": projectNames.join(", ") });
         console.log(this.currentTank);
@@ -79,7 +83,14 @@ export class TankManagementDetailComponent implements OnInit {
 
     this.speciesService.loadSpecies().subscribe(data => {
       this.speciesList = data;
-    });
+    //   this.currentTank.speciesInTank.forEach(speciesInTank => {
+    //     // if speciesInTank.speciesId = species.speciesId{
+    //     //   speciesInTank.currentName = species.currentName;
+    //     // }
+    //     // })
+     });
+     let clone: SpeciesInTank[ = cloneDeep(data);]
+     this.dataSource = new TableDataSource(clone, SpeciesInTank);
   }
 
 

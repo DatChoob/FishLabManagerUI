@@ -41,7 +41,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="text" placeholder="Project Name" formControlName="projNames"/>
+      <input matInput type="text" placeholder="Project Name" formControlName="projNames" />
     </mat-form-field>
 
 
@@ -49,17 +49,45 @@
       <input matInput type="text" placeholder="Trial Code" formControlName="trialCode" />
     </mat-form-field>
 
+
     <!--a table with list of species with this tank-->
+    <mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
+      <ng-container matColumnDef="currentName">
+        <mat-header-cell *matHeaderCellDef> Current Name </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+            <input matInput [readonly]="!row.editing" placeholder="Current Name" [(ngModel)]="row.currentData.currentName"
+              required [disabled]="!row.editing">
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actionsColumn">
+        <mat-cell *matCellDef="let row">
+          <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+            <i class="fa fa-pencil mat-icon"></i>
+          </button>
+          <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="confirmSave(row)">
+            <i class="fa fa-check mat-icon"></i>
+          </button>
+          <button mat-icon-button color="primary" focusable="false" (click)="cancelOrDelete(row)">
+            <i class="fa fa-times mat-icon"></i>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
 
     <mat-form-field>
-        <mat-select placeholder="Species Names">
-            <mat-option *ngFor="let species of speciesList">
-              {{ species.currentName }}
-            </mat-option>
-          </mat-select>
+      <mat-select placeholder="Species Names">
+        <mat-option *ngFor="let species of speciesList">
+          {{ species.currentName }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
+    <button mat-raised-button> Click me </button>
 
-    
 
   </div>
 </form>
