@@ -34,7 +34,6 @@ export class TankManagementRoomOverviewComponent implements OnInit {
       // (+) before `params.get()` turns the string into a number
       this.roomId = +params.get("roomId");
       if (this.roomId) {
-        console.log(this.roomId)
         this.selectedRowIndex = 0;
         //get the tanks for this room
         this.tankManagementService.getTankListByRoomId(this.roomId).subscribe(

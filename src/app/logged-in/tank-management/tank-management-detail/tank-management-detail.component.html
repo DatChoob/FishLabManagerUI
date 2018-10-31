@@ -48,9 +48,19 @@
     <mat-form-field>
       <input matInput type="text" placeholder="Trial Code" formControlName="trialCode" />
     </mat-form-field>
+
+    <!--a table with list of species with this tank-->
+
     <mat-form-field>
-      <input matInput type="text" placeholder="Species Names" formControlName="speciesNames" />
+        <mat-select placeholder="Species Names">
+            <mat-option *ngFor="let species of speciesList">
+              {{ species.currentName }}
+            </mat-option>
+          </mat-select>
     </mat-form-field>
+
+    
+
   </div>
 </form>
 

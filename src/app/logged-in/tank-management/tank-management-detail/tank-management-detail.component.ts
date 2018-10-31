@@ -10,6 +10,9 @@ import { AuthService } from '../../../shared/auth.service'
 import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
 import { ProjectService } from 'src/app/shared/api-services/project.service';
+import { SpeciesService } from '../../../shared/api-services/species.service';
+import { Species } from '../../../shared/models/species';
+import { TableDataSource } from 'angular4-material-table';
 
 @Component({
   selector: 'app-tank-management-detail',
@@ -20,17 +23,19 @@ export class TankManagementDetailComponent implements OnInit {
   tankId: string;
   currentTank: Tank;
   tankForm: FormGroup;
+  dataSource: TableDataSource<Species>;
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
     private tankManagementService: TankManagementService,
-    public roomService:RoomService,
+    public roomService: RoomService,
     public participantService: ParticipantService,
+    public speciesService: SpeciesService,
     public projectService: ProjectService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder,
     public authService: AuthService) {
   }
-
+  speciesList = []
   statusList = [
     { value: 'No Fish' },
     { value: 'Eggs' },
@@ -44,31 +49,39 @@ export class TankManagementDetailComponent implements OnInit {
   ngOnInit() {
     //projedctId cannot be updated here. it will be update on the admin page
     //need dropdown of all people for participantCode/ for now just be a textfield
+
+
     this.tankForm = this.formBuilder.group({
       roomId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
       tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
       projNames: [{ value: '', disabled: true }],
       maintainer_participantCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
-      trialCode: [{ value: '' }],
+      trialCode: [''],
       status: ['', Validators.required],
       speciesNames: ['']
     });
 
     this.route.paramMap.subscribe(params => {
       this.tankId = params.get("tankId");
-      console.log(this.tankId);
       if (this.tankId) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));
         this.tankForm.patchValue(this.currentTank);
-        let projectNames =  []
-        this.currentTank.projects.forEach(project=>
-          projectNames.push(project.name)
-        )
-        this.tankForm.patchValue({"projNames":projectNames.join(", ")});
+        let projectNames = []
+        this.currentTank.projects.forEach(project => {
+          if (project.name != null)
+            projectNames.push(project.name)
+        })
+        console.log(projectNames);
+        this.tankForm.patchValue({ "projNames": projectNames.join(", ") });
         console.log(this.currentTank);
       }
     });
+
+    this.speciesService.loadSpecies().subscribe(data => {
+      this.speciesList = data;
+    });
   }
+
 
 
   confirmAdd(tankForm) {
