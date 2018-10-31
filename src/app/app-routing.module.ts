@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppResolver } from './shared/api-services/resolver.service'
+import { ManagementResolver } from './shared/api-services/resolver.service'
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './logged-in/admin/admin.component';
 import { HomeComponent } from './logged-in/home/home.component';
@@ -63,7 +63,7 @@ const routes: Routes = [
             path:'',
             component: TankManagementRoomOverviewComponent,
             resolve: {
-              cres : AppResolver
+              cres : ManagementResolver
             }
 
           },

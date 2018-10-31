@@ -4,7 +4,7 @@ import { MaintenanceRoomService } from '../../shared/api-services/maintenance-ro
 import { Room } from '../models/room';
 
 @Injectable({providedIn: 'root'})
-export class AppResolver implements Resolve<any> {
+export class ManagementResolver implements Resolve<any> {
     constructor( private router : Router, private maintenanceRoomService : MaintenanceRoomService, private route : ActivatedRoute) {
     }
     resolve(route: ActivatedRouteSnapshot, rstate: RouterStateSnapshot) {
