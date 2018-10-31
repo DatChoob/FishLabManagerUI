@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute } from '@angular/router';
-import { MaintenanceRoomService } from '../../shared/api-services/maintenance-room.service'
 import { Room } from '../models/room';
+import { MaintenanceRoomService } from 'src/app/shared/api-services/maintenance-room.service';
 
 @Injectable({providedIn: 'root'})
-export class AppResolver implements Resolve<any> {
+export class RoomResolver implements Resolve<any> {
     constructor( private router : Router, private maintenanceRoomService : MaintenanceRoomService, private route : ActivatedRoute) {
     }
     resolve(route: ActivatedRouteSnapshot, rstate: RouterStateSnapshot) {
@@ -14,7 +14,7 @@ export class AppResolver implements Resolve<any> {
  */
         this.maintenanceRoomService.getRoomList().subscribe((rooms:Room[])=>{
             if(rooms.length > 0){
-                this.router.navigate([`./tank-management/${rooms[0].roomId}`], {relativeTo: this.route})
+                this.router.navigate([`./maintenance/room/${rooms[0].roomId}`], {relativeTo: this.route})
             }
         })
 

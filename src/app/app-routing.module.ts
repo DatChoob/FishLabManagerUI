@@ -15,6 +15,8 @@ import { TankManagementRoomOverviewComponent } from './logged-in/tank-management
 import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenance-room-level/maintenance-room-level.component';
 import { MaintenanceGlobalLevelComponent } from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 import { AdminGuard } from './shared/admin.guard';
+import { RoomResolver } from './shared/api-services/room-resolver.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 /**
  * Routes are to decide which components get rendered based on the url.
  */
@@ -77,15 +79,18 @@ const routes: Routes = [
         children:[
           {
             path:'global',
-            component: MaintenanceGlobalLevelComponent
+            component: MaintenanceGlobalLevelComponent,
           },
           {
             path:'room/:roomId',
-            component: MaintenanceRoomLevelComponent
+            component: MaintenanceRoomLevelComponent,
           },
           {
-            path:'room',
-            component: MaintenanceRoomLevelComponent
+            path:"room",
+            component: MaintenanceRoomLevelComponent,
+            resolve: {
+              cres : RoomResolver
+            }
           }
         ]
       }
@@ -101,7 +106,7 @@ const routes: Routes = [
   /**
    * Regex to match any url not specified above, redirects to login
    */
-  { path: '**', redirectTo: 'login' }
+  { path: '**', component: PageNotFoundComponent }
 
 ];
 
