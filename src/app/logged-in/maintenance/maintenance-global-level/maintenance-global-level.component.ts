@@ -7,6 +7,7 @@ import { GlobalMaintenance } from '../../../shared/models/globalMaintenance';
 import { MaintenanceGlobalService } from '../../../shared/api-services/maintenance-global.service';
 import { MatTableDataSource } from '@angular/material';
 
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-maintenance-global-level',
   templateUrl: './maintenance-global-level.component.html',
@@ -14,7 +15,7 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class MaintenanceGlobalLevelComponent implements OnInit {
 
-  constructor(private dialogService: DialogService, private maintenanceGlobalService: MaintenanceGlobalService) { }
+  constructor(private dialogService: DialogService, public snackBar: MatSnackBar,private maintenanceGlobalService: MaintenanceGlobalService) { }
 
   displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<GlobalMaintenance>;
@@ -39,6 +40,7 @@ export class MaintenanceGlobalLevelComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           row.status = 'Completed'
+          this.snackBar.open(" Task Saved", "", { duration: 1000 });
           this.maintenanceGlobalService.updateRowInformation(row).subscribe(maintenanceList => {
           }
             );
@@ -51,5 +53,11 @@ export class MaintenanceGlobalLevelComponent implements OnInit {
   openDialog(): Observable<boolean> {
     return this.dialogService
       .confirm('Confirm Dialog', 'Are you sure you want to do this?');
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

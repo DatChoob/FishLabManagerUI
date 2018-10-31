@@ -8,6 +8,7 @@ import { RoomMaintenance } from '../../../shared/models/roomMaintenance';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-maintenance-room-level',
   templateUrl: './maintenance-room-level.component.html',
@@ -19,7 +20,7 @@ export class MaintenanceRoomLevelComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @Input() roomId;
   
-  constructor(private readonly route: ActivatedRoute, private dialogService: DialogService, 
+  constructor(private readonly route: ActivatedRoute, private dialogService: DialogService, public snackBar: MatSnackBar,
     private maintenanceRoomService: MaintenanceRoomService) { }
 
   displayedColumns = ['taskName', 'user', 'date', 'toggle'];
@@ -49,6 +50,7 @@ export class MaintenanceRoomLevelComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           row.status = 'Completed'
+          this.snackBar.open(" Task Saved", "", { duration: 1000 });
           this.maintenanceRoomService.updateRowInformation(row)
           .subscribe(maintenanceList => console.log(maintenanceList))
         }
@@ -61,5 +63,9 @@ export class MaintenanceRoomLevelComponent implements OnInit {
     return this.dialogService
       .confirm('Confirm Dialog', 'Are you sure you want to do this?');
   }
-
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
 }

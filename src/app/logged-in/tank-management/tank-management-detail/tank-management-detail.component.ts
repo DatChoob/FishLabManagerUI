@@ -11,6 +11,7 @@ import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
 import { ProjectService } from 'src/app/shared/api-services/project.service';
 
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-tank-management-detail',
   templateUrl: './tank-management-detail.component.html',
@@ -28,6 +29,7 @@ export class TankManagementDetailComponent implements OnInit {
     public projectService: ProjectService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder,
+    public snackBar: MatSnackBar,
     public authService: AuthService) {
   }
 
@@ -79,7 +81,7 @@ export class TankManagementDetailComponent implements OnInit {
             if (userConfirmed) {
               this.tankManagementService.createTank(tankForm.value).subscribe(Response => {
                 this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
-
+                this.snackBar.open("Tank Added", "", { duration: 1000 });
               });
             }
           }
@@ -92,7 +94,7 @@ export class TankManagementDetailComponent implements OnInit {
         if (userConfirmed) {
           this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
             this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
-
+            this.snackBar.open("Tank Saved", "", { duration: 1000 });
           });
         }
       });
@@ -104,7 +106,7 @@ export class TankManagementDetailComponent implements OnInit {
         if (userConfirmed) {
           this.tankManagementService.deleteTank(this.currentTank, tankForm.value).subscribe(response => {
             this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
-
+            this.snackBar.open("Tank Deleted", "", { duration: 1000 });
           });
         }
       });
@@ -114,6 +116,12 @@ export class TankManagementDetailComponent implements OnInit {
     return this.dialogService
       .confirm('Confirm Dialog', 'Are you sure you want to do this?')
 
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 }
