@@ -48,7 +48,8 @@ import { MaintenanceRoomLevelComponent } from './logged-in/maintenance/maintenan
 import { MaintenanceGlobalLevelComponent } from './logged-in/maintenance/maintenance-global-level/maintenance-global-level.component';
 import { TankManagementRoomOverviewComponent } from './logged-in/tank-management/tank-management-room-overview/tank-management-room-overview.component';
 import { RouterTabModule } from '@zerohouse/router-tab';
-import { MatSnackBarModule} from '@angular/material/snack-bar'
+import { MatSnackBarModule} from '@angular/material/snack-bar';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,7 +72,8 @@ import { MatSnackBarModule} from '@angular/material/snack-bar'
     LogoutComponent,
     MaintenanceGlobalLevelComponent,
     MaintenanceRoomLevelComponent,
-    TankManagementRoomOverviewComponent
+    TankManagementRoomOverviewComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
