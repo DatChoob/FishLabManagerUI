@@ -4,8 +4,8 @@ import { Tank } from '../../../shared/models/tank';
 import { TankManagementService } from '../../../shared/api-services/tank-management.service'
 import { DialogService } from '../../../shared/dialogs.service'
 import { cloneDeep } from 'lodash';
-import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AuthService } from '../../../shared/auth.service'
 import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
@@ -13,8 +13,6 @@ import { ProjectService } from 'src/app/shared/api-services/project.service';
 import { SpeciesService } from '../../../shared/api-services/species.service';
 import { SpeciesInTank } from '../../../shared/models/species-in-tank';
 import { TableDataSource } from 'angular4-material-table';
-import { Species } from 'src/app/shared/models/species';
-
 @Component({
   selector: 'app-tank-management-detail',
   templateUrl: './tank-management-detail.component.html',
@@ -25,6 +23,7 @@ export class TankManagementDetailComponent implements OnInit {
   currentTank: Tank;
   tankForm: FormGroup;
   dataSource: TableDataSource<SpeciesInTank>;
+  displayedColumns = ['currentName','speciesCount', 'actionsColumn'];
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
     private tankManagementService: TankManagementService,
@@ -47,6 +46,9 @@ export class TankManagementDetailComponent implements OnInit {
     { value: 'Other' }
   ];
 
+  routerSubscription: Subscription;
+  speciesSubscription: Subscription;
+
   ngOnInit() {
     //projedctId cannot be updated here. it will be update on the admin page
     //need dropdown of all people for participantCode/ for now just be a textfield
@@ -59,10 +61,10 @@ export class TankManagementDetailComponent implements OnInit {
       maintainer_participantCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
       trialCode: [''],
       status: ['', Validators.required],
-      speciesNames: ['']
+      species: ['']
     });
 
-    this.route.paramMap.subscribe(params => {
+    this.routerSubscription = this.route.paramMap.subscribe(params => {
       this.tankId = params.get("tankId");
       if (this.tankId) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));
@@ -72,25 +74,26 @@ export class TankManagementDetailComponent implements OnInit {
           if (project.name != null)
             projectNames.push(project.name)
         })
-        
-        
-        
-        console.log(projectNames);
-        this.tankForm.patchValue({ "projNames": projectNames.join(", ") });
-        console.log(this.currentTank);
-      }
-    });
 
-    this.speciesService.loadSpecies().subscribe(data => {
-      this.speciesList = data;
-    //   this.currentTank.speciesInTank.forEach(speciesInTank => {
-    //     // if speciesInTank.speciesId = species.speciesId{
-    //     //   speciesInTank.currentName = species.currentName;
-    //     // }
-    //     // })
-     });
-     let clone: SpeciesInTank[ = cloneDeep(data);]
-     this.dataSource = new TableDataSource(clone, SpeciesInTank);
+
+
+        this.tankForm.patchValue({ "projNames": projectNames.join(", ") });
+
+        this.speciesSubscription = this.speciesService.loadSpecies().subscribe(data => {
+          if (data.length > 0) {
+            this.speciesList = data;
+            this.currentTank.species.forEach(speciesInTank => {
+              speciesInTank.currentName = this.speciesService.getSpeciesById(speciesInTank.speciesId).currentName;
+            })
+            this.dataSource = new TableDataSource(this.currentTank.species, SpeciesInTank);
+            this.dataSource.datasourceSubject.subscribe((speciesInTank: SpeciesInTank[]) => {
+              this.currentTank.species = speciesInTank;
+            });
+          }
+        });
+      }
+
+    });
   }
 
 
@@ -114,6 +117,7 @@ export class TankManagementDetailComponent implements OnInit {
     if (tankForm.valid)
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
+          tankForm.value.species = this.currentTank.species
           this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
             this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
 
@@ -140,4 +144,11 @@ export class TankManagementDetailComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    if (this.routerSubscription != null)
+      this.routerSubscription.unsubscribe();
+    if (this.speciesSubscription != null)
+      this.speciesSubscription.unsubscribe();
+
+  }
 }

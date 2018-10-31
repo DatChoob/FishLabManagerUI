@@ -78,4 +78,10 @@ updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
         })
       );
   }
+
+  getSpeciesById(speciesId: number): Species {
+    let returnIndex = this.species.value.findIndex(speciesItem => speciesItem.speciesId == speciesId);
+    console.log(returnIndex);
+    return this.species.value[returnIndex];
+  }
 }

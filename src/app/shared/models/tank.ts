@@ -8,5 +8,5 @@ export class Tank {
     status: string;
     maintainer_participantCode: string;
     projects?:Project[];
-    speciesInTank?:SpeciesInTank[];
+    species?:SpeciesInTank[];
 }
