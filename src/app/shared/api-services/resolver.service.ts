@@ -14,7 +14,6 @@ export class AppResolver implements Resolve<any> {
  */
         this.maintenanceRoomService.getRoomList().subscribe((rooms:Room[])=>{
             if(rooms.length > 0){
-                console.log("Hello World");
                 console.log(this.route.toString());
                 this.router.navigate([`./tank-management/${rooms[0].roomId}`], {relativeTo: this.route})
             }
