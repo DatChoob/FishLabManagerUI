@@ -96,7 +96,7 @@ export class TankManagementDetailComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
-            this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
+            this.router.navigate([`../../../${tankForm.value.roomId}`], { relativeTo: this.route });
             this.snackBar.open("Tank Saved", "", { duration: 1000 });
           });
         }
@@ -108,7 +108,7 @@ export class TankManagementDetailComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           this.tankManagementService.deleteTank(this.currentTank, tankForm.value).subscribe(response => {
-            this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
+            this.router.navigate([`../../../${tankForm.value.roomId}`], { relativeTo: this.route });
             this.snackBar.open("Tank Deleted", "", { duration: 1000 });
           });
         }
