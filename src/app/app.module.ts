@@ -117,3 +117,7 @@ import { MatSnackBarModule} from '@angular/material/snack-bar'
   entryComponents: [ConfirmDialogComponent]
 })
 export class AppModule { }
+
+/**
+ * So i can do other cahnges too here
+ */

@@ -13,6 +13,8 @@ import { ProjectService } from 'src/app/shared/api-services/project.service';
 import { SpeciesService } from '../../../shared/api-services/species.service';
 import { SpeciesInTank } from '../../../shared/models/species-in-tank';
 import { TableDataSource } from 'angular4-material-table';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material';
 @Component({
   selector: 'app-tank-management-detail',
   templateUrl: './tank-management-detail.component.html',
@@ -83,6 +85,7 @@ export class TankManagementDetailComponent implements OnInit {
           if (data.length > 0) {
             this.speciesList = data;
             this.currentTank.species.forEach(speciesInTank => {
+              console.log(speciesInTank);
               speciesInTank.currentName = this.speciesService.getSpeciesById(speciesInTank.speciesId).currentName;
             })
             this.dataSource = new TableDataSource(this.currentTank.species, SpeciesInTank);
@@ -142,6 +145,29 @@ export class TankManagementDetailComponent implements OnInit {
     return this.dialogService
       .confirm('Confirm Dialog', 'Are you sure you want to do this?')
 
+  }
+  
+  addSpecies(matSelect:MatSelect) {
+    let matOption:MatOption = <MatOption>matSelect.selected;
+    matOption.value   
+    console.log(matSelect);
+    let newSpecies:SpeciesInTank = new SpeciesInTank();
+    newSpecies.speciesId = matOption.value;
+    newSpecies.currentName = matOption.viewValue;
+    newSpecies.amountOfSpecies = 0;
+    console.log(newSpecies);
+    if(this.currentTank.species == null) {
+      this.currentTank.species = [];
+    }
+    this.currentTank.species.push(newSpecies);
+    if(this.dataSource == null) {
+      this.dataSource = new TableDataSource(this.currentTank.species, SpeciesInTank);
+            this.dataSource.datasourceSubject.subscribe((speciesInTank: SpeciesInTank[]) => {
+              this.currentTank.species = speciesInTank;
+            });
+      }
+    else    
+      this.dataSource.updateDatasource(this.currentTank.species);
   }
 
   ngOnDestroy() {

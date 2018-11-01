@@ -64,7 +64,7 @@
   </ng-container>
 
   <ng-container matColumnDef="speciesCount">
-      <mat-header-cell *matHeaderCellDef> Number of Species </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Number of Individuals </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
           <input type="number" matInput [readonly]="!row.editing" placeholder="Number of species in tank" [(ngModel)]="row.currentData.speciesCount" required>
@@ -91,15 +91,13 @@
 </mat-table>
 
 <mat-form-field>
-  <mat-select placeholder="Species Names">
-    <mat-option *ngFor="let species of speciesList">
+  <mat-select placeholder="Species Names" #selectedSpeciesToAdd>
+    <mat-option  *ngFor="let species of speciesList" [value]=species.speciesId>
       {{ species.currentName }}
     </mat-option>
   </mat-select>
 </mat-form-field>
-<button mat-raised-button> Click me </button>
-
-
+<button mat-raised-button (click)="addSpecies(selectedSpeciesToAdd)"> Click me </button>
 
 <p>
   <button mat-raised-button *ngIf="!tankId" (click)="confirmAdd(tankForm)">Add</button>
