@@ -8,6 +8,7 @@ import { cloneDeep } from 'lodash';
 import { RoomService } from '../../../shared/api-services/room.service';
 import {MatSnackBar} from '@angular/material';
 import { duration, isDuration } from 'moment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-admin-projects',

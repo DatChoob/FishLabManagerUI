@@ -83,4 +83,9 @@ export class AuthService {
     return decodedAccessToken.identity.userData.name;
   
   }
+
+  getLoggedInUserParticipantCode(): string{
+    const decodedAccessToken:any = JWT(localStorage.getItem("access_token"));
+    return decodedAccessToken.identity.userData.participantCode;
+  }
 }

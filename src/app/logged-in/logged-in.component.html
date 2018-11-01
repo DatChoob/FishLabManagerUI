@@ -25,7 +25,7 @@
           *ngIf="isHandset$ | async">
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <span>fishlabmanager-ui</span>
+        <span>{{authService.getLoggedInUserParticipantCode()}}</span>
       </mat-toolbar>
       <!-- Add Content Here -->
       <router-outlet></router-outlet>
