@@ -17,6 +17,7 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './tank-management-detail.component.html',
   styleUrls: ['./tank-management-detail.component.css']
 })
+
 export class TankManagementDetailComponent implements OnInit {
   tankId: string;
   currentTank: Tank;
@@ -63,8 +64,10 @@ export class TankManagementDetailComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.tankId = params.get("tankId");
       console.log(this.tankId);
+      this.tankForm.patchValue({"roomId": +(params.get("roomId"))});
       if (this.tankId) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));
+        this.currentTank.roomId = +(params.get("roomId"));
         this.tankForm.patchValue(this.currentTank);
         let projectNames =  []
         this.currentTank.projects.forEach(project=>
@@ -97,7 +100,7 @@ export class TankManagementDetailComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
-            this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
+            this.router.navigate([`../../../${tankForm.value.roomId}`], { relativeTo: this.route });
             this.snackBar.open("Tank Saved", "", { duration: 1000 });
           });
         }
@@ -109,7 +112,7 @@ export class TankManagementDetailComponent implements OnInit {
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
           this.tankManagementService.deleteTank(this.currentTank, tankForm.value).subscribe(response => {
-            this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
+            this.router.navigate([`../../../${tankForm.value.roomId}`], { relativeTo: this.route });
             this.snackBar.open("Tank Deleted", "", { duration: 1000 });
           });
         }

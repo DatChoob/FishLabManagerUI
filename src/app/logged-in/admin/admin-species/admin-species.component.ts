@@ -8,6 +8,7 @@ import { DialogService } from '../../../shared/dialogs.service';
 import { SpeciesService } from '../../../shared/api-services/species.service';
 import {MatSnackBar} from '@angular/material';
 import { duration, isDuration } from 'moment';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { TableDataSource, TableElement } from 'angular4-material-table';
-import { cloneDeep } from 'lodash';
 import { MaintenanceRoomService } from '../../../shared/api-services/maintenance-room.service';
 import { DialogService } from '../../../shared/dialogs.service';
 import { Observable } from 'rxjs';
 import { RoomMaintenance } from '../../../shared/models/roomMaintenance';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/shared/auth.service';
 
 import { MatSnackBar } from '@angular/material';
 @Component({
@@ -20,8 +19,8 @@ export class MaintenanceRoomLevelComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @Input() roomId;
   
-  constructor(private readonly route: ActivatedRoute, private dialogService: DialogService, public snackBar: MatSnackBar,
-    private maintenanceRoomService: MaintenanceRoomService) { }
+  constructor(private readonly route: ActivatedRoute, private dialogService: DialogService, 
+    private maintenanceRoomService: MaintenanceRoomService, public authService:AuthService, private snackBar: MatSnackBar,) { }
 
   displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<RoomMaintenance>;

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { TableDataSource, TableElement } from 'angular4-material-table';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { DialogService } from '../../../shared/dialogs.service';
 import { GlobalMaintenance } from '../../../shared/models/globalMaintenance';
 import { MaintenanceGlobalService } from '../../../shared/api-services/maintenance-global.service';
 import { MatTableDataSource } from '@angular/material';
+import { AuthService } from 'src/app/shared/auth.service';
 
 import { MatSnackBar } from '@angular/material';
 @Component({
@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class MaintenanceGlobalLevelComponent implements OnInit {
 
-  constructor(private dialogService: DialogService, public snackBar: MatSnackBar,private maintenanceGlobalService: MaintenanceGlobalService) { }
+  constructor(private dialogService: DialogService, private maintenanceGlobalService: MaintenanceGlobalService, public authService:AuthService, private snackBar: MatSnackBar,) { }
 
   displayedColumns = ['taskName', 'user', 'date', 'toggle'];
   dataSource: MatTableDataSource<GlobalMaintenance>;
