@@ -25,7 +25,7 @@ export class TankManagementDetailComponent implements OnInit {
   currentTank: Tank;
   tankForm: FormGroup;
   dataSource: TableDataSource<SpeciesInTank>;
-  displayedColumns = ['currentName','speciesCount', 'actionsColumn'];
+  displayedColumns = ['currentName', 'speciesCount', 'actionsColumn'];
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
     private tankManagementService: TankManagementService,
@@ -54,7 +54,7 @@ export class TankManagementDetailComponent implements OnInit {
   ngOnInit() {
     //projedctId cannot be updated here. it will be update on the admin page
     //need dropdown of all people for participantCode/ for now just be a textfield
-
+    this.currentTank = new Tank();
 
     this.tankForm = this.formBuilder.group({
       roomId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
@@ -85,7 +85,6 @@ export class TankManagementDetailComponent implements OnInit {
           if (data.length > 0) {
             this.speciesList = data;
             this.currentTank.species.forEach(speciesInTank => {
-              console.log(speciesInTank);
               speciesInTank.currentName = this.speciesService.getSpeciesById(speciesInTank.speciesId).currentName;
             })
             this.dataSource = new TableDataSource(this.currentTank.species, SpeciesInTank);
@@ -97,6 +96,7 @@ export class TankManagementDetailComponent implements OnInit {
       }
 
     });
+    
   }
 
 
@@ -107,6 +107,7 @@ export class TankManagementDetailComponent implements OnInit {
         .subscribe(
           userConfirmed => {
             if (userConfirmed) {
+              tankForm.value.species = this.currentTank.species;
               this.tankManagementService.createTank(tankForm.value).subscribe(Response => {
                 this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
 
@@ -120,7 +121,7 @@ export class TankManagementDetailComponent implements OnInit {
     if (tankForm.valid)
       this.openDialog().subscribe(userConfirmed => {
         if (userConfirmed) {
-          tankForm.value.species = this.currentTank.species
+          tankForm.value.species = this.currentTank.species;
           this.tankManagementService.modifyTank(this.currentTank, tankForm.value).subscribe(response => {
             this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
 
@@ -146,30 +147,30 @@ export class TankManagementDetailComponent implements OnInit {
       .confirm('Confirm Dialog', 'Are you sure you want to do this?')
 
   }
-  
-  addSpecies(matSelect:MatSelect) {
-    let matOption:MatOption = <MatOption>matSelect.selected;
-    matOption.value   
-    console.log(matSelect);
-    let newSpecies:SpeciesInTank = new SpeciesInTank();
-    newSpecies.speciesId = matOption.value;
-    newSpecies.currentName = matOption.viewValue;
-    newSpecies.amountOfSpecies = 0;
-    console.log(newSpecies);
-    if(this.currentTank.species == null) {
-      this.currentTank.species = [];
-    }
-    this.currentTank.species.push(newSpecies);
-    if(this.dataSource == null) {
-      this.dataSource = new TableDataSource(this.currentTank.species, SpeciesInTank);
-            this.dataSource.datasourceSubject.subscribe((speciesInTank: SpeciesInTank[]) => {
-              this.currentTank.species = speciesInTank;
-            });
-      }
-    else    
-      this.dataSource.updateDatasource(this.currentTank.species);
-  }
 
+  addSpecies(matSelect: MatSelect) {
+    let matOption: MatOption = <MatOption>matSelect.selected;
+    let newSpecies: SpeciesInTank = new SpeciesInTank();
+    if(matOption != null) {
+      newSpecies.speciesId = matOption.value;
+      newSpecies.currentName = matOption.viewValue;
+      newSpecies.amountOfSpecies = 0;
+      if (this.currentTank.species == null) {
+        this.currentTank.species = [];
+      }
+      this.currentTank.species.push(newSpecies);
+      if (this.dataSource == null) {
+        this.dataSource = new TableDataSource(this.currentTank.species, SpeciesInTank);
+        this.dataSource.datasourceSubject.subscribe((speciesInTank: SpeciesInTank[]) => {
+          this.currentTank.species = speciesInTank;
+        });
+      }
+      else {        
+        this.dataSource.updateDatasource(cloneDeep(this.currentTank.species), { emitEvent: false });
+      }
+      console.log(this.currentTank);
+    }
+  }
   ngOnDestroy() {
     if (this.routerSubscription != null)
       this.routerSubscription.unsubscribe();

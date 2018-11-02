@@ -32,15 +32,17 @@ export class SpeciesService {
     }
   }
 
-
+ gettingSpecies = false;
  loadSpecies(): Observable<Species[]> {
-     this.http.get<Species[]>(environment.endpoints.SPECIES)
-    .subscribe(allSpecies => {
+  if (!this.gettingSpecies && (this.species.value.length == 0)) {
+     this.http.get<Species[]>(environment.endpoints.SPECIES).subscribe(allSpecies => {
           this.species.next(allSpecies)
-          return this.species.value;
+          this.gettingSpecies = false;
     });
-    return this.species.asObservable();
+    this.gettingSpecies = true;
   }
+  return this.species.asObservable();
+}
  
   createSpecies(speciesToCreate : Species): Observable<Species[]> {
     let originalData = this.species.getValue()
