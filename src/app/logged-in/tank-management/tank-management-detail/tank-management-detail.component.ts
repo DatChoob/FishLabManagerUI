@@ -168,7 +168,6 @@ export class TankManagementDetailComponent implements OnInit {
       else {        
         this.dataSource.updateDatasource(cloneDeep(this.currentTank.species), { emitEvent: false });
       }
-      console.log(this.currentTank);
     }
   }
   ngOnDestroy() {
