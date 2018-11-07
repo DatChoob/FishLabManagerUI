@@ -31,12 +31,14 @@ export class RoomService {
       return this.createRoom(roomToCreateOrUpdate);
     }
   }
-
+  gettingRooms = false;
   loadRooms(getLatest?: boolean): Observable<Room[]> {
-    if (this.rooms.value.length == 0 || getLatest){
+    if (!this.gettingRooms && (this.rooms.value.length == 0 || getLatest)) {
       this.http.get(environment.endpoints.ROOM).subscribe((allRooms: Room[]) => {
-          this.rooms.next(allRooms)
+        this.rooms.next(allRooms)
+        this.gettingRooms = false;
       });
+      this.gettingRooms = true
     }
     return this.rooms.asObservable();
   }

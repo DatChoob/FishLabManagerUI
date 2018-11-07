@@ -15,13 +15,17 @@ export class ParticipantService {
   // startedEditing = new Subject<number>();
 
   constructor(private http: HttpClient) { }
+
+  gettingParticipants = false;
   loadParticipants(getLatest?: boolean): Observable<Participant[]> {
-    if (this.participants.value.length == 0 || getLatest) {
+    if (!this.gettingParticipants && (this.participants.value.length == 0 || getLatest)) {
       this.http.get<Participant[]>(environment.endpoints.ACCOUNT).subscribe(
         allParticipants => {
-          this.participants.next(allParticipants)
+          this.participants.next(allParticipants);
+          this.gettingParticipants = false;
         }
       );
+      this.gettingParticipants = true;
     }
     return this.participants.asObservable();
   }
