@@ -100,7 +100,7 @@
 <button mat-raised-button (click)="addSpecies(selectedSpeciesToAdd)">Add Species</button>
 
 <p>
-  <button mat-raised-button *ngIf="!tankId" (click)="confirmAdd(tankForm)">Add</button>
-  <button mat-raised-button *ngIf="tankId" (click)="confirmSave(tankForm)">Save</button>
-  <button mat-raised-button *ngIf="tankId" (click)="confirmDelete(tankForm)">Delete</button>
+  <button mat-raised-button *ngIf="!tankId && !authService.userIsViewOnly()" (click)="confirmAdd(tankForm)">Add</button>
+  <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmSave(tankForm)">Save</button>
+  <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmDelete(tankForm)">Delete</button>
 </p>

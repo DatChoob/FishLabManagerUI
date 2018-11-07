@@ -19,7 +19,7 @@
   <ng-container matColumnDef="toggle">
     <th mat-header-cell *matHeaderCellDef> Status </th>
     <td mat-cell *matCellDef="let row"  > 
-      <mat-checkbox #checkbox (click)="changeStatus(row, checkbox.disabled, $event)" [checked]="row.status == 'Completed'" [disabled]="row.status == 'Completed'"></mat-checkbox>
+      <mat-checkbox #checkbox (click)="changeStatus(row, checkbox.disabled, $event)" [checked]="row.status == 'Completed'" [disabled]="row.status == 'Completed' || authService.userIsViewOnly()"></mat-checkbox>
     </td>
   </ng-container>
 

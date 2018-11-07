@@ -41,11 +41,11 @@ export class AdminAccountsComponent implements OnInit {
   }
 
   addRow() {
-    this.router.navigate([`./account/details`], { relativeTo: this.route });
+    this.router.navigate([`./details`], { relativeTo: this.route });
   }
 
   modifyRow() {
-      this.router.navigate([`./account/details/${this.selectedParticipant.participantCode}`], { relativeTo: this.route });
+      this.router.navigate([`./details/${this.selectedParticipant.participantCode}`], { relativeTo: this.route });
   }
   
   applyFilter(filterValue: string) {
