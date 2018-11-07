@@ -41,6 +41,10 @@ export class TankManagementDetailComponent implements OnInit {
     { value: 'Fry' },
     { value: 'Dead' },
     { value: 'Watch' },
+    { value: 'One Fish'},
+    { value: 'Pair'},
+    { value: 'Breeder'},
+    { value: 'Growing'},
     { value: 'Other' }
   ];
 
