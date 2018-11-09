@@ -2,7 +2,7 @@
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+      <mat-form-field class = "input-full-width" floatLabel="{{ row.editing ? 'float' : 'never'}}">
         <input matInput [readonly]="!row.editing" placeholder="Description" [(ngModel)]="row.currentData.description" [disabled]="!row.editing" required [minlength]="2">
       </mat-form-field>
     </mat-cell>

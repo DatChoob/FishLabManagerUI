@@ -2,7 +2,7 @@
   <ng-container matColumnDef="currentName">
     <mat-header-cell *matHeaderCellDef> Current Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+      <mat-form-field class="input-full-width" floatLabel="{{ row.editing ? 'float' : 'never'}}">
         <input matInput [readonly]="!row.editing" placeholder="Current Name" [(ngModel)]="row.currentData.currentName" required [disabled]="!row.editing">
       </mat-form-field>
     </mat-cell>
@@ -12,7 +12,7 @@
   <ng-container matColumnDef="commonName">
     <mat-header-cell *matHeaderCellDef> Common Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+      <mat-form-field class="input-full-width" floatLabel="{{ row.editing ? 'float' : 'never'}}">
         <input matInput [readonly]="!row.editing" placeholder="Common Name" [(ngModel)]="row.currentData.commonName" required [disabled]="!row.editing">
       </mat-form-field>
     </mat-cell>
@@ -21,7 +21,7 @@
   <ng-container matColumnDef="originalName">
     <mat-header-cell *matHeaderCellDef> Original Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+      <mat-form-field class="input-full-width" floatLabel="{{ row.editing ? 'float' : 'never'}}">
         <input matInput [readonly]="!row.editing" placeholder="Original Name" [(ngModel)]="row.currentData.originalName" required [disabled]="!row.editing">
       </mat-form-field>
     </mat-cell>
