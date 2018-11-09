@@ -67,7 +67,7 @@
       <mat-header-cell *matHeaderCellDef> Number of Individuals </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-          <input type="number" matInput [readonly]="!row.editing" placeholder="Number of species in tank" [(ngModel)]="row.currentData.speciesCount" required>
+          <input type="number" matInput [readonly]="!row.editing" placeholder="Number of species in tank" [(ngModel)]="row.currentData.speciesCount" required [disabled]="!row.editing">
         </mat-form-field>
       </mat-cell>
     </ng-container>
