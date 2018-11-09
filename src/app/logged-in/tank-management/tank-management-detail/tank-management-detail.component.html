@@ -33,7 +33,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select matInput placeholder="User ID" formControlName="maintainer_participantCode">
+      <mat-select matInput placeholder="User ID" formControlName="maintainer_participantCode" required>
         <mat-option *ngFor="let participant of participantService.loadParticipants() | async as participants" [value]="participant.participantCode">
           {{participant.name}} - {{participant.participantCode}}
         </mat-option>
@@ -67,7 +67,7 @@
       <mat-header-cell *matHeaderCellDef> Number of Individuals </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-          <input type="number" matInput [readonly]="!row.editing" placeholder="Number of species in tank" [(ngModel)]="row.currentData.speciesCount" required>
+          <input type="number" matInput [readonly]="!row.editing" placeholder="Number of species in tank" [(ngModel)]="row.currentData.speciesCount" required [disabled]="!row.editing">
         </mat-form-field>
       </mat-cell>
     </ng-container>
