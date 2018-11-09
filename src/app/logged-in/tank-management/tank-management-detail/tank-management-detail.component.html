@@ -33,7 +33,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select matInput placeholder="User ID" formControlName="maintainer_participantCode">
+      <mat-select matInput placeholder="User ID" formControlName="maintainer_participantCode" required>
         <mat-option *ngFor="let participant of participantService.loadParticipants() | async as participants" [value]="participant.participantCode">
           {{participant.name}} - {{participant.participantCode}}
         </mat-option>
