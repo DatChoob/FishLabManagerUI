@@ -21,4 +21,19 @@
       <h4>Submit</h4>
     </button>
   </form>
+
+  <!--dropdown thingy -->
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Notifications
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngFor="let notification of notifications">
+      <p>Tank # {{notification.tankId}} changed by {{notification.owner_ParticipantCode}} {{notification.editor_ParticipantCode}} {{notification.beforeChange}} {{notification.afterChange}} {{notification.timestamp_Updated}}  </p>
+    </div>
+  </mat-expansion-panel>
+ 
+  
 </div>

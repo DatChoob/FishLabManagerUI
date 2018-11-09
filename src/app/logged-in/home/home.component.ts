@@ -7,6 +7,7 @@ import { AuthService } from '../../shared/auth.service';
 import { NgForm } from '@angular/forms';
 import { cloneDeep } from "lodash";
 import { MatSnackBar } from '@angular/material';
+import { UserNotificationService } from '../../shared/api-services/user-notification.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -17,15 +18,18 @@ import { MatSnackBar } from '@angular/material';
 
 export class HomeComponent implements OnInit {
 
-  constructor(private homepageService: HomepageService, public snackBar: MatSnackBar, public authService: AuthService) { }
+  constructor(private homepageService: HomepageService, public snackBar: MatSnackBar, public authService: AuthService, private userNotificationService: UserNotificationService) { }
 
   fishfeed: FishFeed;
+  notifications: Notification[];
   ngOnInit() {
     this.homepageService.getLatestStatus().subscribe(newFishFeed => {
       console.log(newFishFeed);
       this.fishfeed = cloneDeep(newFishFeed)
     });
-
+    this.userNotificationService.getNotification().subscribe(notificationList => {
+      this.notifications = notificationList;
+    })
   }
 
   onSubmit(form: NgForm) {
@@ -38,7 +42,7 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-  
+
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 2000,

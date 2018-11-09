@@ -12,7 +12,7 @@ import { tap } from 'rxjs/internal/operators/tap';
 export class HomepageService {
   
   fishFeedStatus: Subject<FishFeed> = new Subject<FishFeed>( );
- 
+
   getLatestStatus() : Observable <FishFeed> {
     return this.http.get<FishFeed>(environment.endpoints.FISH_FEED + "/latest").pipe(
       tap(fishfeed => {
