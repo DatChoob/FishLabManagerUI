@@ -3,7 +3,7 @@
   <ng-container matColumnDef="building">
     <mat-header-cell *matHeaderCellDef> Building </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-form-field class="input-full-width" floatLabel="{{ row.editing ? 'float' : 'never'}}">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
         <input matInput minlength="3" placeholder="Building" [(ngModel)]="row.currentData.building" required [disabled]="!row.editing">
       </mat-form-field>
     </mat-cell>
@@ -11,7 +11,7 @@
   <ng-container matColumnDef="roomNumber">
     <mat-header-cell *matHeaderCellDef> Room Number </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-form-field  class="input-full-width" floatLabel="{{ row.editing ? 'float' : 'never'}}">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
         <input matInput minlength="2" placeholder="Room Number" [(ngModel)]="row.currentData.roomNumber" required [disabled]="!row.editing">
       </mat-form-field>
     </mat-cell>
