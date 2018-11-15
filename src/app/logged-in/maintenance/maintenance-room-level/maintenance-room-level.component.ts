@@ -5,7 +5,7 @@ import { MaintenanceRoomService } from '../../../shared/api-services/maintenance
 import { DialogService } from '../../../shared/dialogs.service';
 import { Observable } from 'rxjs';
 import { RoomMaintenance } from '../../../shared/models/roomMaintenance';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatSort } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -15,7 +15,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MaintenanceRoomLevelComponent implements OnInit {
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Input() roomId;
   
@@ -34,7 +33,6 @@ export class MaintenanceRoomLevelComponent implements OnInit {
         this.maintenanceRoomService.getRoomTasksByRoomId(this.roomId).subscribe(
           tasksForSelectedRoom => {
             this.dataSource = new MatTableDataSource(tasksForSelectedRoom);
-            this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           }
         )
