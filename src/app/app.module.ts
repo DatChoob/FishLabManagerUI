@@ -51,6 +51,8 @@ import { RouterTabModule } from '@zerohouse/router-tab';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component'
 import { MatExpansionModule } from '@angular/material/expansion';
+import {MatBadgeModule} from '@angular/material/badge';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -108,7 +110,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatIconModule,
     RouterTabModule,
     MatSnackBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatBadgeModule
   ],
   providers: [
     {

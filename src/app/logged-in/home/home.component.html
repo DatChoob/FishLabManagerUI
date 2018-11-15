@@ -22,16 +22,21 @@
     </button>
   </form>
 
+  <button mat-raised-button
+    matBadge={{notifications.length}} onclick="clearNotifications()">
+    Clear
+  </button>
   <!--dropdown thingy -->
   <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+                       (closed)="panelOpenState = false"
+                       matBadge={{notifications.length}}>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Notifications
+          Notifications
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div *ngFor="let notification of notifications">
-      <p>Tank # {{notification.tankId}} changed by {{notification.owner_ParticipantCode}} {{notification.editor_ParticipantCode}} {{notification.beforeChange}} {{notification.afterChange}} {{notification.timestamp_Updated}}  </p>
+      <p>Tank # {{notification.tankId}} changed by {{notification.owner_ParticipantCode}} {{notification.editor_ParticipantCode}} {{notification.beforeChange}} {{notification.afterChange}} {{notification.timestamp_Updated | date:'MMM d, y, h:mm a':'+0000'}}  </p>
     </div>
   </mat-expansion-panel>
  
