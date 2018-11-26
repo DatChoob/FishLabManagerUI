@@ -1,3 +1,7 @@
+<h3 fxLayout="row" fxLayoutAlign = "end"> 
+    <button mat-raised-button (click)="exportData()" >Export</button>
+</h3>
+
 <mat-tab-group [selectedIndex] = "selectedTabIndex" (selectedIndexChange)=changeTab($event) routerTabs>  
   <mat-tab label="Species" routerLink="/admin/species">
     <app-admin-species></app-admin-species>
