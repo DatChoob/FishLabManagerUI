@@ -44,5 +44,5 @@
   </mat-paginator>
 
   <button *ngIf="authService.userIsAdmin()" mat-raised-button (click)="addRow()">Add</button>
-  <button mat-raised-button (click)="modifyRow()">Modify</button>
+  <button mat-raised-button (click)="modifyRow()" [disabled]="selectedTankId == 0">Modify</button>
 </div>
