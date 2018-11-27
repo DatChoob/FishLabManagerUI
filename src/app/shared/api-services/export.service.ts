@@ -17,7 +17,7 @@ export class ExportService {
 
     .pipe(
       catchError(e=>throwError(new Error("Error occurred downloading file")))
-    ).subscribe(data => saveAs(data, "testexport.csv"),
+    ).subscribe(data => saveAs(data, "FishLabManager Export.csv"),
         error => console.log("Error downloading the file."),
         () => console.info("OK")
       )

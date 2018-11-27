@@ -1,5 +1,5 @@
-<h3 fxLayout="row" fxLayoutAlign = "end"> 
-    <button mat-raised-button (click)="exportData()" >Export</button>
+<h3 fxLayout="row"> 
+    <button class="leftMargin20px" mat-raised-button (click)="exportData()">Export</button>
 </h3>
 
 <mat-tab-group [selectedIndex] = "selectedTabIndex" (selectedIndexChange)=changeTab($event) routerTabs>  
