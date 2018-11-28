@@ -14,7 +14,7 @@
   <div fxLayout="column">
     <mat-form-field>
       <input matInput type="number" placeholder="Tank Number" formControlName="tankId" required />
-      <mat-error *ngIf="tankForm.controls['tankId'].value?.length && tankForm.controls['tankId'].invalid && (tankForm.controls['tankId'].dirty || tankForm.controls['tankId'].touched)">Tank Id already exists</mat-error>
+      <mat-error *ngIf="tankForm.controls['tankId'].invalid && (tankForm.controls['tankId'].dirty || tankForm.controls['tankId'].touched)">Tank Id already exists</mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -106,4 +106,7 @@
   <button mat-raised-button *ngIf="!tankId && !authService.userIsViewOnly()" (click)="confirmAdd(tankForm)">Add</button>
   <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmSave(tankForm)">Save</button>
   <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmDelete(tankForm)">Delete</button>
+  <button mat-raised-button (click)="printA()">OPr</button>
+
 </p>
+
