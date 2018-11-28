@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { ParticipantService } from '../../../../shared/api-services/participant.service';
 import { Participant } from '../../../../shared/models/participant';
-import { NgForm, FormControl, FormGroup } from '@angular/forms';
+import { NgForm, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'src/app/shared/dialogs.service';
 
 
@@ -22,18 +22,18 @@ export class AdminAccountDetailComponent implements OnInit {
 
   participantCode: string;
   name: string;
+
   constructor(private readonly route: ActivatedRoute, private accountDetails: ParticipantService, private router: Router,
     private dialogService: DialogService) {
-
   }
 
   ngOnInit() {
     this.participantForm = new FormGroup({
-      name: new FormControl(''),
-      participantCode: new FormControl(''),
-      password: new FormControl(''),
-      role: new FormControl(''),
-      status: new FormControl(''),
+      name: new FormControl('', Validators.required),
+      participantCode: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      role: new FormControl('user', Validators.required),
+      status: new FormControl('Y', Validators.required),
     });
     this.participantCode = this.route.snapshot.paramMap.get('participantCode');
     if (this.participantCode != null) {
@@ -44,61 +44,48 @@ export class AdminAccountDetailComponent implements OnInit {
       }
       this.participantForm.patchValue(this.participantInfo);
     }
-
   }
 
   confirmSave() {
-    if(this.participantForm.valid){
-      let updatedParticipant:Participant = this.participantForm.value; 
-      this.openDialog().subscribe(
-        (confirmed:boolean) => {
-          if(confirmed){
-            this.accountDetails.saveParticipant(this.participantInfo.participantCode,updatedParticipant)
-            .subscribe( (apiParticipant) => 
-              this.router.navigate(["/admin"],{ relativeTo: this.route })
-            );
+    if (this.participantForm.valid) {
+      let updatedParticipant: Participant = this.participantForm.value;
+      this.openDialog().subscribe((confirmed: boolean) => {
+          if (confirmed) {
+            this.accountDetails.saveParticipant(this.participantInfo.participantCode, updatedParticipant)
+              .subscribe((apiParticipant) => this.router.navigate(["/admin"], { relativeTo: this.route }));
           }
         }
       )
-    
     }
   }
 
   confirmDelete() {
-    if(this.participantForm.valid){
-      let deletedParticipant:Participant = this.participantForm.value;
-      this.openDialog().subscribe(
-        (confirmed:boolean) => {
-          if(confirmed){
-            this.accountDetails.deleteParticipant(deletedParticipant)
-            .subscribe( (apiDeleteParticipant) =>
-            this.router.navigate(["/admin"], {relativeTo: this.route})
-            )
-          }
-        }
-      )
-    }
-      //means row was in not edit mode and we are deleting entry
-      //delete row from database
-   
-  }
-
-  confirmAdd(){
-    if(this.participantForm.valid){
-      let newParticipant:Participant = this.participantForm.value;
-      this.openDialog().subscribe(
-        (confirmed:boolean) => {
-          if(confirmed){
-            this.accountDetails.addParticipant(newParticipant)
-            .subscribe((apiNewParticipant) =>
-            this.router.navigate(["/admin"]))
+    if (this.participantForm.valid) {
+      let deletedParticipant: Participant = this.participantForm.value;
+      this.openDialog().subscribe((confirmed: boolean) => {
+          if (confirmed) {
+            this.accountDetails.deleteParticipant(deletedParticipant).subscribe((apiDeleteParticipant) =>
+                this.router.navigate(["/admin"], { relativeTo: this.route }))
           }
         }
       )
     }
   }
 
-  openDialog(): Observable<boolean>{
+  confirmAdd() {
+    console.log(this.participantForm)
+    if (this.participantForm.valid) {
+      let newParticipant: Participant = this.participantForm.value;
+      this.openDialog().subscribe((confirmed: boolean) => {
+          if (confirmed) {
+            this.accountDetails.addParticipant(newParticipant).subscribe((apiNewParticipant) => this.router.navigate(["/admin"]))
+          }
+        }
+      )
+    }
+  }
+
+  openDialog(): Observable<boolean> {
     return this.dialogService.confirm('Confirm Dialog', 'Are you sure you want to do this?')
   }
 
