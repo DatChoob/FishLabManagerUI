@@ -1,15 +1,4 @@
 <p>Tank Information</p>
-<!-- 
-    ngModel on inputs, change row to tank, 
-    show who's (single person, 3 letter username) assigned to the tank, 
-    drop-down with species and number of that species, 
-    user can't change project ID/tank ID/user assigned (make it a label, not a input if it's a user), 
-    display project name not ID,
-    change room the tank is in,
-    trial codes on initial page (ask Ron if he cares)
-    NTH: SnackBar 
-  -->
-
 <form [formGroup]="tankForm">
   <div fxLayout="column">
     <mat-form-field>
@@ -106,7 +95,5 @@
   <button mat-raised-button *ngIf="!tankId && !authService.userIsViewOnly()" (click)="confirmAdd(tankForm)">Add</button>
   <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmSave(tankForm)">Save</button>
   <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmDelete(tankForm)">Delete</button>
-  <button mat-raised-button (click)="printA()">OPr</button>
-
 </p>
 
