@@ -23,7 +23,7 @@ export class AuthService {
         tap(this.setSession),
         shareReplay(),
         catchError(err => {
-          console.log("error occured during loggin. throwing error")
+          console.log("error occured during login. throwing error")
           return throwError(err);
         })
       );

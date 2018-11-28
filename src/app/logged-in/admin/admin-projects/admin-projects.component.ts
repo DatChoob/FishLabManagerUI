@@ -47,18 +47,8 @@ export class AdminProjectsComponent implements OnInit {
             row.confirmEditCreate();
             //open snackbar
             this.snackBar.open("Saved!", "", {duration: 1000});
-            
-            
-            
-              
-
           },
-      
           err => console.log(err));
-            
-            //this.snackBar.open("ERROR", "Not saved", {duration:1000});
-            
-          
   }
 
   cancelOrDelete(row: TableElement<Project>) {

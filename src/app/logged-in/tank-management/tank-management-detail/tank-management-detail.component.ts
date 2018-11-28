@@ -76,7 +76,6 @@ export class TankManagementDetailComponent implements OnInit {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
       this.tankId = params.get("tankId");
-      console.log(this.tankId);
       this.tankForm.patchValue({"roomId": +(params.get("roomId"))});
       if (this.tankId) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));

@@ -12,6 +12,7 @@ export const environment = {
     FISH_FEED: "/api/fish-feed",
     ACCOUNT: "/api/account",
     TANK: "/api/tank",
+    NOTIFICATION: "/notification",
     EXPORT:"/api/export"
   }
 };

@@ -22,7 +22,6 @@ export class RoomService {
    */
 
   createOrUpdate(roomToCreateOrUpdate: Room) {
-    console.log(roomToCreateOrUpdate)
     if (roomToCreateOrUpdate.roomId) {
       //this is an update. find the index by id and replace the item at the index with our updated one
       return this.updateRoom(roomToCreateOrUpdate);
@@ -47,7 +46,6 @@ export class RoomService {
     let originalData = this.rooms.getValue()
     return this.http.post(environment.endpoints.ROOM, roomToCreate).pipe(
       map((createdRoom: Room) => {
-        console.log("created room" + createdRoom);
         originalData.push(createdRoom);
         this.rooms.next(originalData);
         return this.rooms.value;
@@ -56,12 +54,10 @@ export class RoomService {
   }
 
   updateRoom(roomToUpdate: Room): Observable<Room[]> {
-    console.log(roomToUpdate);
     let indexToUpdate = this.rooms.value.findIndex(currentRoom => currentRoom.roomId == roomToUpdate.roomId);
     return this.http.put(environment.endpoints.ROOM + "/" + roomToUpdate.roomId, roomToUpdate).
       pipe(
         map((updatedRoom: Room) => {
-          console.log("updated room" + updatedRoom);
           this.rooms.value[indexToUpdate] = updatedRoom;
           this.rooms.next(this.rooms.value);
           return this.rooms.value;
@@ -74,7 +70,6 @@ export class RoomService {
     return this.http.delete(environment.endpoints.ROOM + "/" + roomToDelete.roomId).
       pipe(
         map((deletedRoom: Room) => {
-          console.log("deleted room" + deletedRoom);
           this.rooms.value.splice(indexToDelete, 1)
           this.rooms.next(this.rooms.value)
         })

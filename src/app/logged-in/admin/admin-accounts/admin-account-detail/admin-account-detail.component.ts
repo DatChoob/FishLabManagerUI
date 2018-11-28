@@ -42,7 +42,6 @@ export class AdminAccountDetailComponent implements OnInit {
         this.router.navigate(["/"])
         return;
       }
-      console.log(this.participantCode);
       this.participantForm.patchValue(this.participantInfo);
     }
 
@@ -66,9 +65,7 @@ export class AdminAccountDetailComponent implements OnInit {
   }
 
   confirmDelete() {
-    console.log(this.participantForm);
     if(this.participantForm.valid){
-      console.log(this.participantForm.value);
       let deletedParticipant:Participant = this.participantForm.value;
       this.openDialog().subscribe(
         (confirmed:boolean) => {
@@ -87,9 +84,7 @@ export class AdminAccountDetailComponent implements OnInit {
   }
 
   confirmAdd(){
-    console.log(this.participantForm);
     if(this.participantForm.valid){
-      console.log(this.participantForm.value);
       let newParticipant:Participant = this.participantForm.value;
       this.openDialog().subscribe(
         (confirmed:boolean) => {

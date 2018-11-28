@@ -60,7 +60,6 @@ export class TankManagementService {
   }
 
   modifyTank(unmodifiedTank: Tank, newTank: Tank): Observable<Tank[]> {
-    console.log(newTank);
     let originalData = this.tankList.getValue();
     return this.http.put<Tank>(`${environment.endpoints.TANK}/${unmodifiedTank.tankId}`, newTank).pipe(
       map(tank => {
