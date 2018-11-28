@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogService } from '../../shared/dialogs.service';
+import { Observable } from 'rxjs';
 
 // to import things from service
 import { HomepageService } from '../../shared/api-services/homepage.service';
@@ -18,7 +20,7 @@ import { UserNotificationService } from '../../shared/api-services/user-notifica
 
 export class HomeComponent implements OnInit {
 
-  constructor(private homepageService: HomepageService, public snackBar: MatSnackBar, public authService: AuthService, private userNotificationService: UserNotificationService) { }
+  constructor(private dialogService: DialogService, private homepageService: HomepageService, public snackBar: MatSnackBar, public authService: AuthService, private userNotificationService: UserNotificationService) { }
 
   fishfeed: FishFeed;
   notifications: Notification[];
@@ -47,5 +49,19 @@ export class HomeComponent implements OnInit {
     this.snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  clearNotifications() {
+    this.openDialog().subscribe(userConfirmed => {
+      if(userConfirmed){
+        this.userNotificationService.deleteNotification();
+      }
+  }
+    );
+}
+
+  openDialog(): Observable<boolean> {
+    return this.dialogService
+      .confirm('Confirm Dialog', 'Are you sure you want to do this?');
   }
 }

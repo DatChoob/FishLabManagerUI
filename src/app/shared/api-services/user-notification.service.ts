@@ -17,6 +17,10 @@ export class UserNotificationService {
           });
         return this.userNotification.asObservable();
       }
-
+    
+    deleteNotification() {
+      this.http.delete(environment.endpoints.NOTIFICATION)
+        .subscribe(() => this.userNotification.next([]));
+    } 
       constructor(private http: HttpClient) { }
 }
