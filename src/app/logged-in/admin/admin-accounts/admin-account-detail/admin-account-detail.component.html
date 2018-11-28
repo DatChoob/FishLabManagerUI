@@ -2,20 +2,24 @@
 
 
 <p>User Information</p>
+
+<div *ngIf="savedSuccessfully">Save was successfull</div>
+<div *ngIf="addedSuccessfully">Add was successfull</div>
+
 <form [formGroup]="participantForm">
     <div fxLayout="column">
         <mat-form-field>
             <input matInput type="text" placeholder="Name" formControlName="name" required>
             <mat-error *ngIf="participantForm.controls['name'].invalid  && participantForm.controls['name'].errors?.required ">Name is required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
             <input matInput type="text" placeholder="Participant Code" formControlName="participantCode" required>
             <mat-error *ngIf="participantForm.controls['participantCode'].invalid  && participantForm.controls['participantCode'].errors?.required ">Participant Code is required</mat-error>
         </mat-form-field>
-        <mat-form-field>
-            <input matInput type="password" placeholder="Password" formControlName="password" required>
-            <mat-error *ngIf="participantForm.controls['password'].invalid  && participantForm.controls['password'].errors?.required ">Password is required</mat-error>
 
+        <mat-form-field>
+            <input matInput type="password" placeholder="Password" formControlName="password">
         </mat-form-field>
 
         <mat-form-field>
@@ -32,9 +36,7 @@
                 <mat-option value="Y">Active</mat-option>
             </mat-select>
         </mat-form-field>
-
     </div>
-
 </form>
 
 

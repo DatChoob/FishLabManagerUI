@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { TableDataSource, TableElement } from 'angular4-material-table';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { ParticipantService } from '../../../../shared/api-services/participant.service';
 import { Participant } from '../../../../shared/models/participant';
-import { NgForm, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'src/app/shared/dialogs.service';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -24,14 +24,14 @@ export class AdminAccountDetailComponent implements OnInit {
   name: string;
 
   constructor(private readonly route: ActivatedRoute, private accountDetails: ParticipantService, private router: Router,
-    private dialogService: DialogService) {
+    private dialogService: DialogService,private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
     this.participantForm = new FormGroup({
       name: new FormControl('', Validators.required),
       participantCode: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      password: new FormControl(''),
       role: new FormControl('user', Validators.required),
       status: new FormControl('Y', Validators.required),
     });
@@ -50,12 +50,13 @@ export class AdminAccountDetailComponent implements OnInit {
     if (this.participantForm.valid) {
       let updatedParticipant: Participant = this.participantForm.value;
       this.openDialog().subscribe((confirmed: boolean) => {
-          if (confirmed) {
-            this.accountDetails.saveParticipant(this.participantInfo.participantCode, updatedParticipant)
-              .subscribe((apiParticipant) => this.router.navigate(["/admin"], { relativeTo: this.route }));
-          }
+        if (confirmed) {
+          this.accountDetails.saveParticipant(this.participantInfo.participantCode, updatedParticipant).subscribe(
+            (apiParticipant)=> this.snackBar.open("Successfully Saved Account", "", {duration:1000})
+
+          )
         }
-      )
+      })
     }
   }
 
@@ -63,25 +64,27 @@ export class AdminAccountDetailComponent implements OnInit {
     if (this.participantForm.valid) {
       let deletedParticipant: Participant = this.participantForm.value;
       this.openDialog().subscribe((confirmed: boolean) => {
-          if (confirmed) {
-            this.accountDetails.deleteParticipant(deletedParticipant).subscribe((apiDeleteParticipant) =>
-                this.router.navigate(["/admin"], { relativeTo: this.route }))
-          }
+        if (confirmed) {
+          this.accountDetails.deleteParticipant(deletedParticipant).subscribe((apiDeleteParticipant) =>
+            this.router.navigate(["/admin/accounts"], { relativeTo: this.route }))
+            this.snackBar.open("Successfully Deleted Account", "", {duration:1000});
         }
-      )
+      })
     }
   }
 
   confirmAdd() {
-    console.log(this.participantForm)
     if (this.participantForm.valid) {
       let newParticipant: Participant = this.participantForm.value;
       this.openDialog().subscribe((confirmed: boolean) => {
-          if (confirmed) {
-            this.accountDetails.addParticipant(newParticipant).subscribe((apiNewParticipant) => this.router.navigate(["/admin"]))
-          }
+        if (confirmed) {
+          this.accountDetails.addParticipant(newParticipant).subscribe((apiNewParticipant) => {
+            this.router.navigate([`/admin/accounts/details/${apiNewParticipant.participantCode}`])
+            this.snackBar.open("Successfully Added Account", "", {duration:1000});
+
+          })
         }
-      )
+      })
     }
   }
 
