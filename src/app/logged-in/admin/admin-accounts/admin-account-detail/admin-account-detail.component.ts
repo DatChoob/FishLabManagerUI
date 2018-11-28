@@ -49,9 +49,7 @@ export class AdminAccountDetailComponent implements OnInit {
   }
 
   confirmSave() {
-    console.log(this.participantForm);
     if(this.participantForm.valid){
-      console.log(this.participantForm.value);
       let updatedParticipant:Participant = this.participantForm.value; 
       this.openDialog().subscribe(
         (confirmed:boolean) => {

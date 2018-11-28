@@ -19,7 +19,8 @@ export const environment = {
     FISH_FEED: host + "/fish-feed",
     TANK: host + "/tank",
     ACCOUNT: host+"/account",
-    NOTIFICATION: host+"/notification"
+    NOTIFICATION: host+"/notification",
+    EXPORT:host+"/export"
   }
 
 };

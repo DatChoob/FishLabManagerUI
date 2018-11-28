@@ -32,15 +32,17 @@ export class SpeciesService {
     }
   }
 
-
+ gettingSpecies = false;
  loadSpecies(): Observable<Species[]> {
-     this.http.get<Species[]>(environment.endpoints.SPECIES)
-    .subscribe(allSpecies => {
+  if (!this.gettingSpecies && (this.species.value.length == 0)) {
+     this.http.get<Species[]>(environment.endpoints.SPECIES).subscribe(allSpecies => {
           this.species.next(allSpecies)
-          return this.species.value;
+          this.gettingSpecies = false;
     });
-    return this.species.asObservable();
+    this.gettingSpecies = true;
   }
+  return this.species.asObservable();
+}
  
   createSpecies(speciesToCreate : Species): Observable<Species[]> {
     let originalData = this.species.getValue()
@@ -77,5 +79,13 @@ updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
           this.species.next(this.species.value)
         })
       );
+  }
+
+  getSpeciesById(speciesId: number): Species {
+    console.log(speciesId);
+    let returnIndex = this.species.value.findIndex(speciesItem => speciesItem.speciesId == speciesId);
+    console.log(returnIndex);
+    console.log(this.species.value);
+    return this.species.value[returnIndex];
   }
 }
