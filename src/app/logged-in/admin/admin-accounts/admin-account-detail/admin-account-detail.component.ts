@@ -53,7 +53,6 @@ export class AdminAccountDetailComponent implements OnInit {
         if (confirmed) {
           this.accountDetails.saveParticipant(this.participantInfo.participantCode, updatedParticipant).subscribe(
             (apiParticipant)=> this.snackBar.open("Successfully Saved Account", "", {duration:1000})
-
           )
         }
       })
@@ -81,7 +80,6 @@ export class AdminAccountDetailComponent implements OnInit {
           this.accountDetails.addParticipant(newParticipant).subscribe((apiNewParticipant) => {
             this.router.navigate([`/admin/accounts/details/${apiNewParticipant.participantCode}`])
             this.snackBar.open("Successfully Added Account", "", {duration:1000});
-
           })
         }
       })
