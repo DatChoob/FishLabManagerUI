@@ -31,7 +31,6 @@ export class ParticipantService {
   }
 
   getParticipant(participantCode: string): Participant {
-    console.log(this.participants.value);
     let indexToUpdate = this.participants.value.findIndex(currentParticipant => currentParticipant.participantCode == participantCode);
     return this.participants.value[indexToUpdate];
   }
@@ -40,7 +39,6 @@ export class ParticipantService {
     return this.http.put(environment.endpoints.ACCOUNT + "/" + oldParticipantCode, updatedParticipant)
       .pipe(
         map((apiParticipant: Participant) => {
-          console.log(apiParticipant);
           let indexToUpdate = this.participants.value.findIndex(participants => participants.participantCode == updatedParticipant.participantCode);
           this.participants.value[indexToUpdate] = apiParticipant;
           this.participants.next(this.participants.value)
@@ -55,7 +53,6 @@ export class ParticipantService {
     return this.http.post(environment.endpoints.ACCOUNT, newParticipant)
       .pipe(
         map((apiNewParticipant: Participant) => {
-          console.log(apiNewParticipant);
           originalData.push(apiNewParticipant)
           this.participants.next(originalData)
           return apiNewParticipant;
@@ -67,7 +64,6 @@ export class ParticipantService {
     return this.http.delete(environment.endpoints.ACCOUNT + "/" + oldParticipant.participantCode)
       .pipe(
         map((apiDeleteParticipant: Participant) => {
-          console.log(apiDeleteParticipant);
           let indexToDelete = this.participants.value.findIndex(participants => participants.participantCode == oldParticipant.participantCode)
           this.participants.value.splice(indexToDelete, 1)
           this.participants.next(this.participants.value)

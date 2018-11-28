@@ -22,7 +22,6 @@ export class SpeciesService {
  constructor(private http: HttpClient) { }
 
  createOrUpdate(speciesToCreateOrUpdate: Species) {
-    console.log(speciesToCreateOrUpdate)
     if (speciesToCreateOrUpdate.speciesId) {
       //this is an update. find the index by id and replace the item at the index with our updated one
       return this.updateSpecies(speciesToCreateOrUpdate);
@@ -48,7 +47,6 @@ export class SpeciesService {
     let originalData = this.species.getValue()
     return this.http.post(environment.endpoints.SPECIES, speciesToCreate).pipe(
       map((createdSpecies: Species) => {
-        console.log("created species" + createdSpecies);  
         originalData.push(createdSpecies);
         this.species.next(originalData);
         return this.species.value;
@@ -58,11 +56,9 @@ export class SpeciesService {
 
 
 updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
-    console.log(speciesToUpdate);
     let indexToUpdate = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToUpdate.speciesId);
     return this.http.put(environment.endpoints.SPECIES + "/" + speciesToUpdate.speciesId, speciesToUpdate).pipe(
         map((updatedSpecies: Species) => {
-          console.log("updated species" + updatedSpecies);
           this.species.value[indexToUpdate] = updatedSpecies;
           this.species.next(this.species.value);
           return this.species.value;
@@ -74,7 +70,6 @@ updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
     let indexToDelete = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToDelete.speciesId);
     return this.http.delete(environment.endpoints.SPECIES + "/" + speciesToDelete.speciesId).pipe(
         map((deletedSpecies: Species) => {
-          console.log("deleted species" + deletedSpecies);
           this.species.value.splice(indexToDelete, 1)
           this.species.next(this.species.value)
         })
@@ -82,10 +77,7 @@ updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
   }
 
   getSpeciesById(speciesId: number): Species {
-    console.log(speciesId);
     let returnIndex = this.species.value.findIndex(speciesItem => speciesItem.speciesId == speciesId);
-    console.log(returnIndex);
-    console.log(this.species.value);
     return this.species.value[returnIndex];
   }
 }

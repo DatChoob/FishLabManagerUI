@@ -15,21 +15,12 @@ export class HomepageService {
 
   getLatestStatus() : Observable <FishFeed> {
     return this.http.get<FishFeed>(environment.endpoints.FISH_FEED + "/latest").pipe(
-      tap(fishfeed => {
-        this.fishFeedStatus.next(fishfeed);
-        console.log(fishfeed);
-        })
-    );
-    
+      tap(fishfeed => this.fishFeedStatus.next(fishfeed)))
   }
 
 updateStatus(fishFeed:FishFeed){
   return this.http.put<FishFeed>(environment.endpoints.FISH_FEED + "/latest",fishFeed).pipe(
-    tap(fishfeed => {
-      this.fishFeedStatus.next(fishfeed);
-      console.log(fishfeed);
-      })
-  );
+    tap(fishfeed => this.fishFeedStatus.next(fishfeed)))
 }
 
   constructor(private http: HttpClient) { }

@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
   notifications: Notification[];
   ngOnInit() {
     this.homepageService.getLatestStatus().subscribe(newFishFeed => {
-      console.log(newFishFeed);
       this.fishfeed = cloneDeep(newFishFeed)
     });
     this.userNotificationService.getNotification().subscribe(notificationList => {
@@ -38,7 +37,6 @@ export class HomeComponent implements OnInit {
     if (form.valid) {
       this.fishfeed.status = form.value.status
       this.homepageService.updateStatus(this.fishfeed).subscribe(newFishFeed => {
-        console.log(newFishFeed);
         this.fishfeed = cloneDeep(newFishFeed)
         this.snackBar.open("Saved", "", { duration: 1000 });
       });
