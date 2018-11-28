@@ -14,6 +14,7 @@
   <div fxLayout="column">
     <mat-form-field>
       <input matInput type="number" placeholder="Tank Number" formControlName="tankId" required />
+      <mat-error *ngIf="tankForm.controls['tankId'].value?.length && tankForm.controls['tankId'].invalid && (tankForm.controls['tankId'].dirty || tankForm.controls['tankId'].touched)">Tank Id already exists</mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -30,6 +31,8 @@
           {{ status.value }}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="tankForm.controls['status'].invalid &&  tankForm.controls['status'].touched">Tank Status is required</mat-error>
+
     </mat-form-field>
 
     <mat-form-field>

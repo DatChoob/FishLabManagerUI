@@ -4,8 +4,8 @@ import { Tank } from '../../../shared/models/tank';
 import { TankManagementService } from '../../../shared/api-services/tank-management.service'
 import { DialogService } from '../../../shared/dialogs.service'
 import { cloneDeep } from 'lodash';
-import { Observable, Subscription } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, Subscription, of } from 'rxjs';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../../shared/auth.service'
 import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
@@ -17,6 +17,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material';
 
 import { MatSnackBar } from '@angular/material';
+import { map, catchError, debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-tank-management-detail',
   templateUrl: './tank-management-detail.component.html',
@@ -66,7 +67,7 @@ export class TankManagementDetailComponent implements OnInit {
 
     this.tankForm = this.formBuilder.group({
       roomId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
-      tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
+      tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required, this.validateTankIdExists.bind(this)],
       projNames: [{ value: '', disabled: true }],
       maintainer_participantCode: [{ value: 'RMC', disabled: !this.authService.userIsAdmin() }],
       trialCode: [''],
@@ -192,5 +193,17 @@ export class TankManagementDetailComponent implements OnInit {
       duration: 2000,
     });
   }
-
+  //returns null if tankId does not already exist
+  // if object if it not a unique tank Id
+  validateTankIdExists(control: AbstractControl): ValidationErrors | null{
+    return this.tankManagementService.getTankByIdFromService(control.value).pipe(
+      catchError((err,caught)=> {
+       return of(false);
+      }),
+      map(tank => {
+        return tank ? null : { 'uniqueTankId': true };
+      }),
+      debounceTime(500),
+    )
+  }
 }
