@@ -18,7 +18,8 @@ export const environment = {
     SPECIES: host + "/species",
     FISH_FEED: host + "/fish-feed",
     TANK: host + "/tank",
-    ACCOUNT: host+"/account" 
+    ACCOUNT: host+"/account",
+    EXPORT:host+"/export"
   }
 
 };
