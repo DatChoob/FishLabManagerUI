@@ -5,7 +5,7 @@ import { TankManagementService } from '../../../shared/api-services/tank-managem
 import { DialogService } from '../../../shared/dialogs.service'
 import { cloneDeep } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/auth.service'
 import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
@@ -68,7 +68,7 @@ export class TankManagementDetailComponent implements OnInit {
       roomId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
       tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
       projNames: [{ value: '', disabled: true }],
-      maintainer_participantCode: [{ value: '', disabled: !this.authService.userIsAdmin() }],
+      maintainer_participantCode: [{ value: 'RMC', disabled: !this.authService.userIsAdmin() }],
       trialCode: [''],
       status: ['', Validators.required],
       species: ['']
