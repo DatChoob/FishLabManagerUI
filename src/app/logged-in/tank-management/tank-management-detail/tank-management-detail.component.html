@@ -1,19 +1,9 @@
 <p>Tank Information</p>
-<!-- 
-    ngModel on inputs, change row to tank, 
-    show who's (single person, 3 letter username) assigned to the tank, 
-    drop-down with species and number of that species, 
-    user can't change project ID/tank ID/user assigned (make it a label, not a input if it's a user), 
-    display project name not ID,
-    change room the tank is in,
-    trial codes on initial page (ask Ron if he cares)
-    NTH: SnackBar 
-  -->
-
 <form [formGroup]="tankForm">
   <div fxLayout="column">
     <mat-form-field>
       <input matInput type="number" placeholder="Tank Number" formControlName="tankId" required />
+      <mat-error *ngIf="tankForm.controls['tankId'].invalid && (tankForm.controls['tankId'].dirty || tankForm.controls['tankId'].touched)">Tank Id already exists</mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -30,6 +20,8 @@
           {{ status.value }}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="tankForm.controls['status'].invalid &&  tankForm.controls['status'].touched">Tank Status is required</mat-error>
+
     </mat-form-field>
 
     <mat-form-field>
@@ -104,3 +96,4 @@
   <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmSave(tankForm)">Save</button>
   <button mat-raised-button *ngIf="tankId && !authService.userIsViewOnly()" (click)="confirmDelete(tankForm)">Delete</button>
 </p>
+

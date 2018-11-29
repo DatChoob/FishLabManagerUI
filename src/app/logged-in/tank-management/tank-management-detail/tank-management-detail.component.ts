@@ -4,8 +4,8 @@ import { Tank } from '../../../shared/models/tank';
 import { TankManagementService } from '../../../shared/api-services/tank-management.service'
 import { DialogService } from '../../../shared/dialogs.service'
 import { cloneDeep } from 'lodash';
-import { Observable, Subscription } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, Subscription, of } from 'rxjs';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../../shared/auth.service'
 import { RoomService } from 'src/app/shared/api-services/room.service';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
@@ -17,6 +17,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material';
 
 import { MatSnackBar } from '@angular/material';
+import { map, catchError, debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-tank-management-detail',
   templateUrl: './tank-management-detail.component.html',
@@ -49,10 +50,10 @@ export class TankManagementDetailComponent implements OnInit {
     { value: 'Fry' },
     { value: 'Dead' },
     { value: 'Watch' },
-    { value: 'One Fish'},
-    { value: 'Pair'},
-    { value: 'Breeder'},
-    { value: 'Growing'},
+    { value: 'One Fish' },
+    { value: 'Pair' },
+    { value: 'Breeder' },
+    { value: 'Growing' },
     { value: 'Other' }
   ];
 
@@ -66,7 +67,7 @@ export class TankManagementDetailComponent implements OnInit {
 
     this.tankForm = this.formBuilder.group({
       roomId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
-      tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required],
+      tankId: [{ value: '', disabled: !this.authService.userIsAdmin() }, Validators.required, this.validateTankIdExists.bind(this)],
       projNames: [{ value: '', disabled: true }],
       maintainer_participantCode: [{ value: 'RMC', disabled: !this.authService.userIsAdmin() }],
       trialCode: [''],
@@ -76,7 +77,7 @@ export class TankManagementDetailComponent implements OnInit {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
       this.tankId = params.get("tankId");
-      this.tankForm.patchValue({"roomId": +(params.get("roomId"))});
+      this.tankForm.patchValue({ "roomId": +(params.get("roomId")) });
       if (this.tankId) {
         this.currentTank = cloneDeep(this.tankManagementService.getTankById(this.tankId));
         this.currentTank.roomId = +(params.get("roomId"));
@@ -106,25 +107,23 @@ export class TankManagementDetailComponent implements OnInit {
       }
 
     });
-    
+
   }
 
 
 
   confirmAdd(tankForm) {
     if (tankForm.valid)
-      this.openDialog()
-        .subscribe(
-          userConfirmed => {
-            if (userConfirmed) {
-              tankForm.value.species = this.currentTank.species;
-              this.tankManagementService.createTank(tankForm.value).subscribe(Response => {
-                this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
-                this.snackBar.open("Tank Added", "", { duration: 1000 });
-              });
-            }
-          }
-        )
+      this.openDialog().subscribe(userConfirmed => {
+        if (userConfirmed) {
+          tankForm.value.species = this.currentTank.species;
+          this.tankManagementService.createTank(tankForm.value).subscribe(Response => {
+            this.router.navigate([`../../${tankForm.value.roomId}`], { relativeTo: this.route });
+            this.snackBar.open("Tank Added", "", { duration: 1000 });
+          });
+        }
+      }
+      )
   }
 
   confirmSave(tankForm) {
@@ -153,15 +152,13 @@ export class TankManagementDetailComponent implements OnInit {
   }
 
   openDialog(): Observable<boolean> {
-    return this.dialogService
-      .confirm('Confirm Dialog', 'Are you sure you want to do this?')
-
+    return this.dialogService.confirm('Confirm Dialog', 'Are you sure you want to do this?')
   }
 
   addSpecies(matSelect: MatSelect) {
     let matOption: MatOption = <MatOption>matSelect.selected;
     let newSpecies: SpeciesInTank = new SpeciesInTank();
-    if(matOption != null) {
+    if (matOption != null) {
       newSpecies.speciesId = matOption.value;
       newSpecies.currentName = matOption.viewValue;
       newSpecies.amountOfSpecies = 0;
@@ -175,7 +172,7 @@ export class TankManagementDetailComponent implements OnInit {
           this.currentTank.species = speciesInTank;
         });
       }
-      else {        
+      else {
         this.dataSource.updateDatasource(cloneDeep(this.currentTank.species), { emitEvent: false });
       }
     }
@@ -192,5 +189,17 @@ export class TankManagementDetailComponent implements OnInit {
       duration: 2000,
     });
   }
-
+  //returns null if tankId does not already exist
+  // if object if it not a unique tank Id
+  validateTankIdExists(control: AbstractControl): ValidationErrors | null {
+    return this.tankManagementService.getTankByIdFromService(control.value).pipe(
+      catchError((err, caught) => {
+        return of(false);
+      }),
+      map(tank => {
+        return tank ? null : { 'uniqueTankId': true };
+      }),
+      debounceTime(500),
+    )
+  }
 }
