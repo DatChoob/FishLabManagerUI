@@ -197,7 +197,7 @@ export class TankManagementDetailComponent implements OnInit {
         return of(false);
       }),
       map(tank => {
-        return tank ? null : { 'uniqueTankId': true };
+        return tank ?  { 'uniqueTankId': true } : null ;
       }),
       debounceTime(500),
     )
