@@ -1,4 +1,4 @@
-<div *ngIf="fishfeed" class="lol">
+<div *ngIf="fishfeed" class="center">
 
   <!-- this the the welcome part -->
   <h1>Welcome {{authService.getLoggedInUserName()}}</h1>
@@ -21,4 +21,24 @@
       <h4>Submit</h4>
     </button>
   </form>
+
+  
+  <!--dropdown thingy -->
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" [matBadge] = "notifications.length" matBadgePosition="above before">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3> Notifications </h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngFor="let notification of notifications">
+      <p>Tank # {{notification.tankId}} changed by
+        {{notification.editor_ParticipantCode}} from {{notification.beforeChange}} to {{notification.afterChange}}
+        on {{notification.timestamp_Updated | date:'MMM d, y, h:mm a':'+0000'}} </p>
+    </div>
+  </mat-expansion-panel>
+
+  <button mat-raised-button [disabled] = "!notifications?.length" (click) = "clearNotifications()">
+    Clear Notifications
+  </button>
+
 </div>

@@ -1,11 +1,11 @@
 <table mat-table [dataSource]="dataSource">
   <ng-container matColumnDef="taskName">
     <th mat-header-cell *matHeaderCellDef> Task Name </th>
-    <td mat-cell *matCellDef="let row"> {{row.globalMaintenanceTaskDescription?.description}}</td>
+    <td mat-cell *matCellDef="let row; let i =  index">{{i+1}}. {{row.globalMaintenanceTaskDescription?.description}}</td>
   </ng-container>
   
   <ng-container matColumnDef="user">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th mat-header-cell *matHeaderCellDef> User Name </th>
     <td mat-cell *matCellDef="let row">{{row.lastUpdateId}}</td>
   </ng-container>
 

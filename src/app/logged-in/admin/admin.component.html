@@ -1,17 +1,21 @@
-<mat-tab-group>
-  <mat-tab label="Species">
+<h3 fxLayout="row"> 
+    <button class="leftMargin20px" mat-raised-button (click)="exportData()">Export</button>
+</h3>
+
+<mat-tab-group [selectedIndex] = "selectedTabIndex" (selectedIndexChange)=changeTab($event) routerTabs>  
+  <mat-tab label="Species" routerLink="/admin/species">
     <app-admin-species></app-admin-species>
   </mat-tab>
-  <mat-tab label="Projects">
+  <mat-tab label="Projects" routerLink="/admin/projects">
     <app-admin-projects></app-admin-projects>
   </mat-tab>
-  <mat-tab label="Tasks">
+  <mat-tab label="Tasks" routerLink="/admin/tasks">
     <app-admin-tasks></app-admin-tasks>
   </mat-tab>
-  <mat-tab label="Rooms">
+  <mat-tab label="Rooms" routerLink="/admin/rooms">
     <app-admin-rooms></app-admin-rooms>
   </mat-tab>
-  <mat-tab label="Accounts">
+  <mat-tab label="Accounts" routerLink="/admin/accounts">
     <app-admin-accounts></app-admin-accounts>
   </mat-tab>
 </mat-tab-group>

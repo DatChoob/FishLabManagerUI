@@ -1,18 +1,25 @@
+<button mat-raised-button routerLink="/admin/accounts">Back</button>
+
+
 <p>User Information</p>
 <form [formGroup]="participantForm">
     <div fxLayout="column">
         <mat-form-field>
-            <input matInput type="text" placeholder="Name" formControlName="name">
+            <input matInput type="text" placeholder="Name" formControlName="name" required>
+            <mat-error *ngIf="participantForm.controls['name'].invalid  && participantForm.controls['name'].errors?.required ">Name is required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
-            <input matInput type="text" placeholder="Participant Code" formControlName="participantCode">
+            <input matInput type="text" placeholder="Participant Code" formControlName="participantCode" required>
+            <mat-error *ngIf="participantForm.controls['participantCode'].invalid  && participantForm.controls['participantCode'].errors?.required ">Participant Code is required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
             <input matInput type="password" placeholder="Password" formControlName="password">
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select placeholder="Permission Level" formControlName="role">
+            <mat-select placeholder="Permission Level" formControlName="role" required>
                 <mat-option value="admin">Admin</mat-option>
                 <mat-option value="user">User</mat-option>
                 <mat-option value="view">View Only</mat-option>
@@ -20,14 +27,12 @@
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select placeholder="Status" formControlName="status">
+            <mat-select placeholder="Status" formControlName="status" required>
                 <mat-option value="N">Non Active</mat-option>
                 <mat-option value="Y">Active</mat-option>
             </mat-select>
         </mat-form-field>
-
     </div>
-
 </form>
 
 

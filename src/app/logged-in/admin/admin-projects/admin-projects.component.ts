@@ -8,6 +8,7 @@ import { cloneDeep } from 'lodash';
 import { RoomService } from '../../../shared/api-services/room.service';
 import {MatSnackBar} from '@angular/material';
 import { duration, isDuration } from 'moment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-admin-projects',
@@ -46,18 +47,8 @@ export class AdminProjectsComponent implements OnInit {
             row.confirmEditCreate();
             //open snackbar
             this.snackBar.open("Saved!", "", {duration: 1000});
-            
-            
-            
-              
-
           },
-      
           err => console.log(err));
-            
-            //this.snackBar.open("ERROR", "Not saved", {duration:1000});
-            
-          
   }
 
   cancelOrDelete(row: TableElement<Project>) {

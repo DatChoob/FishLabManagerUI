@@ -22,7 +22,6 @@ export class SpeciesService {
  constructor(private http: HttpClient) { }
 
  createOrUpdate(speciesToCreateOrUpdate: Species) {
-    console.log(speciesToCreateOrUpdate)
     if (speciesToCreateOrUpdate.speciesId) {
       //this is an update. find the index by id and replace the item at the index with our updated one
       return this.updateSpecies(speciesToCreateOrUpdate);
@@ -32,21 +31,22 @@ export class SpeciesService {
     }
   }
 
-
+ gettingSpecies = false;
  loadSpecies(): Observable<Species[]> {
-     this.http.get<Species[]>(environment.endpoints.SPECIES)
-    .subscribe(allSpecies => {
+  if (!this.gettingSpecies && (this.species.value.length == 0)) {
+     this.http.get<Species[]>(environment.endpoints.SPECIES).subscribe(allSpecies => {
           this.species.next(allSpecies)
-          return this.species.value;
+          this.gettingSpecies = false;
     });
-    return this.species.asObservable();
+    this.gettingSpecies = true;
   }
+  return this.species.asObservable();
+}
  
   createSpecies(speciesToCreate : Species): Observable<Species[]> {
     let originalData = this.species.getValue()
     return this.http.post(environment.endpoints.SPECIES, speciesToCreate).pipe(
       map((createdSpecies: Species) => {
-        console.log("created species" + createdSpecies);  
         originalData.push(createdSpecies);
         this.species.next(originalData);
         return this.species.value;
@@ -56,11 +56,9 @@ export class SpeciesService {
 
 
 updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
-    console.log(speciesToUpdate);
     let indexToUpdate = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToUpdate.speciesId);
     return this.http.put(environment.endpoints.SPECIES + "/" + speciesToUpdate.speciesId, speciesToUpdate).pipe(
         map((updatedSpecies: Species) => {
-          console.log("updated species" + updatedSpecies);
           this.species.value[indexToUpdate] = updatedSpecies;
           this.species.next(this.species.value);
           return this.species.value;
@@ -72,10 +70,14 @@ updateSpecies(speciesToUpdate : Species): Observable<Species[]> {
     let indexToDelete = this.species.value.findIndex(currentSpecies => currentSpecies.speciesId == speciesToDelete.speciesId);
     return this.http.delete(environment.endpoints.SPECIES + "/" + speciesToDelete.speciesId).pipe(
         map((deletedSpecies: Species) => {
-          console.log("deleted species" + deletedSpecies);
           this.species.value.splice(indexToDelete, 1)
           this.species.next(this.species.value)
         })
       );
+  }
+
+  getSpeciesById(speciesId: number): Species {
+    let returnIndex = this.species.value.findIndex(speciesItem => speciesItem.speciesId == speciesId);
+    return this.species.value[returnIndex];
   }
 }

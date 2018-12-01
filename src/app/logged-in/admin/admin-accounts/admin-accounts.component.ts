@@ -4,8 +4,6 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ParticipantService } from 'src/app/shared/api-services/participant.service';
 import { Participant } from "src/app/shared/models/participant";
 
-
-
 @Component({
   selector: 'app-admin-accounts',
   templateUrl: './admin-accounts.component.html',
@@ -37,18 +35,16 @@ export class AdminAccountsComponent implements OnInit {
       }
     });
   }
-
   highlightSelectedRow(selectedParticipant) {
-    console.log(selectedParticipant);
     this.selectedParticipant = selectedParticipant;
   }
 
   addRow() {
-    this.router.navigate([`./account/details`], { relativeTo: this.route });
+    this.router.navigate([`./details`], { relativeTo: this.route });
   }
 
   modifyRow() {
-      this.router.navigate([`./account/details/${this.selectedParticipant.participantCode}`], { relativeTo: this.route });
+      this.router.navigate([`./details/${this.selectedParticipant.participantCode}`], { relativeTo: this.route });
   }
   
   applyFilter(filterValue: string) {

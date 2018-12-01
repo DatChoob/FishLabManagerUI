@@ -16,9 +16,7 @@ export class TankManagementService {
   constructor(private http: HttpClient) { }
 
   roomList: BehaviorSubject<Room[]> = new BehaviorSubject<Room[]>([]);
-
   tankList: BehaviorSubject<Tank[]> = new BehaviorSubject<Tank[]>([]);
-
   roomTanks$: Observable<Room[]> = this.roomList.asObservable();
 
   getRoomList(): Observable<Room[]> {
@@ -40,11 +38,15 @@ export class TankManagementService {
     return this.tankList.asObservable()
   }
 
+  //Application is always in context of a room, so we only load 1 room worth of data at a time
   getTankById(tankId) {
     let tankIndex = this.tankList.value.findIndex(tank => tank.tankId == tankId);
     return this.tankList.value[tankIndex];
   }
 
+  getTankByIdFromService(tankId) {
+    return this.http.get<Tank[]>(`${environment.endpoints.TANK}/${tankId}`);
+  }
   createTank(newTank: Tank): Observable<Tank[]> {
     let originalData = this.tankList.getValue();
     return this.http.post<Tank>(`${environment.endpoints.TANK}/${newTank.roomId}`, newTank).pipe(
@@ -60,7 +62,6 @@ export class TankManagementService {
   }
 
   modifyTank(unmodifiedTank: Tank, newTank: Tank): Observable<Tank[]> {
-    console.log(newTank);
     let originalData = this.tankList.getValue();
     return this.http.put<Tank>(`${environment.endpoints.TANK}/${unmodifiedTank.tankId}`, newTank).pipe(
       map(tank => {

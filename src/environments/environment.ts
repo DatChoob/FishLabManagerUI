@@ -3,6 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 const host = "https://www.fishlabmanager.com/api";
+
+//Use this host if you're wanting to hit local api
 // const host = "http://localhost:5000/api";
 
 export const environment = {
@@ -18,7 +20,9 @@ export const environment = {
     SPECIES: host + "/species",
     FISH_FEED: host + "/fish-feed",
     TANK: host + "/tank",
-    ACCOUNT: host+"/account" 
+    ACCOUNT: host+"/account",
+    NOTIFICATION: host+"/notification",
+    EXPORT:host+"/export"
   }
 
 };

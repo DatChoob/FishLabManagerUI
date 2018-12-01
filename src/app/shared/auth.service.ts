@@ -23,7 +23,7 @@ export class AuthService {
         tap(this.setSession),
         shareReplay(),
         catchError(err => {
-          console.log("error occured during loggin. throwing error")
+          console.log("error occured during login. throwing error")
           return throwError(err);
         })
       );
@@ -82,5 +82,10 @@ export class AuthService {
     const decodedAccessToken:any = JWT(localStorage.getItem("access_token"));
     return decodedAccessToken.identity.userData.name;
   
+  }
+
+  getLoggedInUserParticipantCode(): string{
+    const decodedAccessToken:any = JWT(localStorage.getItem("access_token"));
+    return decodedAccessToken.identity.userData.participantCode;
   }
 }
