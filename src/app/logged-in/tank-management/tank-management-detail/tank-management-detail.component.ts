@@ -192,6 +192,11 @@ export class TankManagementDetailComponent implements OnInit {
   //returns null if tankId does not already exist
   // if object if it not a unique tank Id
   validateTankIdExists(control: AbstractControl): ValidationErrors | null {
+
+    if(control.value == this.tankId){
+      // we didn't update the tank Id. so valid
+      return of(null);
+    }
     return this.tankManagementService.getTankByIdFromService(control.value).pipe(
       catchError((err, caught) => {
         return of(false);
