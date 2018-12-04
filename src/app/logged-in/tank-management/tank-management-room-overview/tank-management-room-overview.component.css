@@ -3,7 +3,7 @@ table {
 }
 
 .highlight {
-    background: #42A948; /* green */
+    background: rgb(170, 220, 240);
 }
 
 .mat-form-field{
